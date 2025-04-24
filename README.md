@@ -36,3 +36,6 @@ Het project moet afgewerkt en gepresenteerd worden tegen het einde van het semes
 
 ## 📁 Structuur
 - ...
+
+## Bronnen
+- Chatgpt
