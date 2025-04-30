@@ -25,7 +25,6 @@ Dit project is gerealiseerd door studenten van het eerste jaar Toegepaste Inform
 
 - Diouri El Jadidi Yanis 
 - Libenge Masta 
-- Laghzaoui Adam
 - Azanay Yousra
 - Ouanane Omar
 - Ben Mohand Nohman
