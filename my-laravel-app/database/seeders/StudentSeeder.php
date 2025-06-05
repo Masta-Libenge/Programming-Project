@@ -2,16 +2,20 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class StudentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        //
+        User::create([
+            'name' => 'Masta',
+            'email' => 'masta@gmail.com',
+            'password' => Hash::make('masta'),
+            'role' => 'student',
+        ]);
     }
 }
+
