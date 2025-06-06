@@ -43,3 +43,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', function () {
     return view('home');
 });
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+});
+

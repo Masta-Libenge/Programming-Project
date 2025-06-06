@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea210b2c-5087-40e1-887f-ea2d47ae9cf2" name="Changes" comment="Onnodige features verwijdert dat buiten onze focus ligt.">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/AdminController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/BedrijfController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/StudentController.php" afterDir="false" />
+    <list default="true" id="ea210b2c-5087-40e1-887f-ea2d47ae9cf2" name="Changes" comment="Controller aangemaakt voor elke type user">
+      <change afterPath="$PROJECT_DIR$/resources/views/student/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/StudentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/StudentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,7 +315,7 @@
       <workItem from="1749108899969" duration="378000" />
       <workItem from="1749109286819" duration="109000" />
       <workItem from="1749109400597" duration="241000" />
-      <workItem from="1749196156714" duration="2270000" />
+      <workItem from="1749196156714" duration="2917000" />
     </task>
     <task id="LOCAL-00001" summary="Laravel project aangemaakt, form (template) aangemaakt">
       <option name="closed" value="true" />
@@ -398,7 +397,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749196255858</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Controller aangemaakt voor elke type user">
+      <option name="closed" value="true" />
+      <created>1749198547781</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1749198547781</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,6 +427,7 @@
     <MESSAGE value="Laravel project aangemaakt, form (template) aangemaakt" />
     <MESSAGE value="Merge remote-tracking branch 'origin/main'" />
     <MESSAGE value="Onnodige features verwijdert dat buiten onze focus ligt." />
-    <option name="LAST_COMMIT_MESSAGE" value="Onnodige features verwijdert dat buiten onze focus ligt." />
+    <MESSAGE value="Controller aangemaakt voor elke type user" />
+    <option name="LAST_COMMIT_MESSAGE" value="Controller aangemaakt voor elke type user" />
   </component>
 </project>
