@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>Inloggen als Student</h1>
+    <input type="hidden" name="role" value="student">
     <form method="POST" action="{{ url('/login/student') }}">
         @csrf
         <label>Email:</label>
