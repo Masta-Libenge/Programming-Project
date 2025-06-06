@@ -8,7 +8,7 @@ use App\Models\User;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function studentlogin(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -36,7 +36,7 @@ class LoginController extends Controller
     {
         return view('auth.login_bedrijf');
     }
-    
+
 
 
 }
