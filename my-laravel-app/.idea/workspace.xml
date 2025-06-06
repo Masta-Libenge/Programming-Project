@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea210b2c-5087-40e1-887f-ea2d47ae9cf2" name="Changes" comment="Hidden input (role) toegevoegd bij de student login blade zodat de rol (student) ook wordt doorgestuurt naar de controller">
+    <list default="true" id="ea210b2c-5087-40e1-887f-ea2d47ae9cf2" name="Changes" comment="Controller Debugging">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,7 +313,7 @@
       <workItem from="1749108899969" duration="378000" />
       <workItem from="1749109286819" duration="109000" />
       <workItem from="1749109400597" duration="241000" />
-      <workItem from="1749196156714" duration="4699000" />
+      <workItem from="1749196156714" duration="7090000" />
     </task>
     <task id="LOCAL-00001" summary="Laravel project aangemaakt, form (template) aangemaakt">
       <option name="closed" value="true" />
@@ -428,7 +427,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749200296283</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Controller Debugging">
+      <option name="closed" value="true" />
+      <created>1749200946090</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1749200946090</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,6 +460,7 @@
     <MESSAGE value="Controller aangemaakt voor elke type user" />
     <MESSAGE value="Student dashboard aangemaakt (views) routing en controller geupdate." />
     <MESSAGE value="Hidden input (role) toegevoegd bij de student login blade zodat de rol (student) ook wordt doorgestuurt naar de controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hidden input (role) toegevoegd bij de student login blade zodat de rol (student) ook wordt doorgestuurt naar de controller" />
+    <MESSAGE value="Controller Debugging" />
+    <option name="LAST_COMMIT_MESSAGE" value="Controller Debugging" />
   </component>
 </project>
