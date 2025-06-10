@@ -6,12 +6,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\VacatureController;
 use App\Http\Controllers\StudentController;
 
-// ✅ Homepage met keuze: Student of Bedrijf (je hebt gekozen voor home.blade.php)
-Route::get('/', function () {
-    return view('home'); // --> resources/views/home.blade.php
-})->name('home');
 
-// ✅ Login routes 
+
+// ✅ Login routes
 Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
 Route::get('/login/bedrijf', [LoginController::class, 'showBedrijfLoginForm'])->name('login.bedrijf');
 Route::post('/login/student', [LoginController::class, 'studentLogin']);
@@ -23,17 +20,21 @@ Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegister
 Route::post('/register/student', [RegisterController::class, 'studentRegister']);
 Route::post('/register/bedrijf', [RegisterController::class, 'bedrijfRegister']);
 
-// ✅ Beschermde routes (alle ingelogde gebruikers)
+// ✅ Beschermde routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
 });
 
-// ✅ Student-dashboard (alleen voor studenten)
+// ✅ Student-dashboard
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
 });
+Route::get('/register_student', function () {
+    return view('auth.register_student');
+});
 
-Route::get('/register_bedrijf', function () {
-    return view('auth.register_bedrijf');
+// routes/web.php
+Route::get('/register_student', function () {
+    return view('auth.register_student');
 });
