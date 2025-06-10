@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Registreren als student</title>
+    <title>Registreren als bedrijf</title>
     <style>
         body {
             margin: 0;

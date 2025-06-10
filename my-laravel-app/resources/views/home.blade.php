@@ -26,10 +26,7 @@
         .button-container {
             display: flex;
             gap: 20px;
-        }
-
-        .dropdown {
-            position: relative;
+            justify-content: center;
         }
 
         .button {
@@ -41,63 +38,22 @@
             font-size: 1rem;
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            display: inline-block;
         }
 
         .button:hover {
             background-color: #2779bd;
             transform: scale(1.05);
         }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 110%;
-            left: 0;
-            background-color: #ffffff;
-            min-width: 160px;
-            border-radius: 6px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-            text-align: left;
-        }
-
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.2s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
     </style>
 </head>
 <body>
+
 <h1>Welkom bij CareerLaunch</h1>
 
 <div class="button-container">
-    <div class="dropdown">
-        <a href="#" class="button">Inloggen</a>
-        <div class="dropdown-content">
-            <a href="{{ route('login.student') }}">Student</a>
-            <a href="{{ route('login.bedrijf') }}">Bedrijf</a>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <a href="#" class="button">Registreren</a>
-        <div class="dropdown-content">
-            <a href="{{ route('register.student') }}">Student</a>
-            <a href="{{ route('register.bedrijf') }}">Bedrijf</a>
-        </div>
-    </div>
+    <a href="#" class="button">Student</a>
+    <a href="#" class="button">Bedrijf</a>
 </div>
+
 </body>
 </html>
