@@ -51,8 +51,8 @@
 <h1>Welkom bij CareerLaunch</h1>
 
 <div class="button-container">
-    <a href="#" class="button">Student</a>
-    <a href="#" class="button">Bedrijf</a>
+    <a href="{{ route('login.student') }}" class="button">Student</a>
+    <a href="{{ route('login.bedrijf') }}" class="button">Bedrijf</a>
 </div>
 
 </body>
