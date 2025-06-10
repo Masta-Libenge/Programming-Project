@@ -78,6 +78,11 @@
         <input type="password" name="password" id="password" required>
 
         <button type="submit">Inloggen</button>
+
+        <a href="{{ url('/register_bedrijf') }}" style="display: block; margin-top: 15px; color: #3490dc; text-decoration: none;">
+        Nog geen account? Registreer hier
+    </a>
+
     </form>
 </body>
 </html>
