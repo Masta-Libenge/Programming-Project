@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .mailbox-container {
-        height: calc(100vh - 4rem); /* si la navbar fait 4rem de haut */
+        height: calc(100vh - 4rem);
     }
 </style>
 @endpush
@@ -18,23 +18,21 @@
         <div class="p-4 font-bold text-lg text-blue-800 border-b">Boîte de réception</div>
 
         <ul id="mailList">
-            @foreach($mails as $mail)
-            <li 
-                class="px-4 py-3 border-b hover:bg-blue-50 cursor-pointer" 
-                onclick="showMail({{ $mail['id'] }})"
-                data-id="{{ $mail['id'] }}"
-            >
-                <div class="font-semibold text-gray-800">{{ $mail['sender'] }}</div>
-                <div class="text-sm text-gray-600 truncate">{{ $mail['subject'] }}</div>
+        @foreach($mails as $mail)
+            <li onclick="showMail({{ $mail->id }})" class="...">
+                <div class="font-semibold text-gray-800">
+                    {{ $mail->subject }} - {{ $mail->sender_name }}
+                </div>
             </li>
-            @endforeach
+        @endforeach
         </ul>
     </div>
 
-    {{-- Vue du message sélectionné --}}
+    {{-- Contenu du mail sélectionné --}}
     <div class="w-2/3 bg-white p-6 overflow-y-auto" id="mailContent">
         <div class="text-gray-400 text-center">Sélectionnez un message à gauche</div>
     </div>
+
 </div>
 @endsection
 
@@ -50,8 +48,8 @@
         container.innerHTML = `
             <div>
                 <h2 class="text-xl font-bold text-blue-800 mb-2">${mail.subject}</h2>
-                <p class="text-sm text-gray-500 mb-1"><strong>De :</strong> ${mail.sender}</p>
-                <p class="text-sm text-gray-500 mb-4"><strong>Reçu le :</strong> ${mail.date}</p>
+                <p class="text-sm text-gray-500 mb-1"><strong>De :</strong> ${mail.sender_name}</p>
+                <p class="text-sm text-gray-500 mb-4"><strong>Envoyé le :</strong> ${new Date(mail.created_at).toLocaleString()}</p>
                 <div class="text-gray-800 whitespace-pre-line">${mail.body}</div>
             </div>
         `;

@@ -4,7 +4,7 @@
         <ul class="flex space-x-6">
             <li><a href="{{ route('profil.student') }}" class="text-white hover:text-blue-300 font-medium">Profil</a></li>
             <li><a href="{{ route('planning.student') }}" class="text-white hover:text-blue-300 font-medium">Planning</a></li>
-            <li><a href="{{ route('mailbox.student') }}" class="text-white hover:text-blue-300 font-medium">MailBox</a></li>
+            <li><a href="{{ route('mailbox') }}" class="text-white hover:text-blue-300 font-medium">MailBox</a></li>
         </ul>
     </div>
 </nav>

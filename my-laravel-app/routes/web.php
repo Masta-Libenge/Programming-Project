@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\BedrijfController;
-use App\Http\Controllers\MailController;
+use App\Http\Controllers\MailboxController;
 
 
 Route::get('/', function () {
@@ -39,7 +39,7 @@ Route::get('/planning', function () {
 })->name('planning.student');
 
 // MailBox
-Route::get('/mailbox', [MailController::class, 'index'])->name('mailbox.student');
+Route::get('/mailbox', [MailboxController::class, 'index'])->name('mailbox');
 
 Route::get('/homepage', function () {
     return view('auth.Homepage');
