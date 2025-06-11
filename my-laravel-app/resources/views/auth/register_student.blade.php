@@ -2,77 +2,53 @@
 
 @section('title', 'Registreren als student')
 
-@push('styles')
-<style>
-    body {
-        background: #e0f0ff;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        color: #2c3e50;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .register-container {
-        padding: 2rem;
-        width: 90%;
-        max-width: 500px;
-        background: #f8fbff;
-        border-radius: 20px;
-        box-shadow: 8px 8px 16px #c0d6e4, -8px -8px 16px #ffffff;
-        text-align: center;
-    }
-
-    h2 {
-        color: #004080;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        padding: 0.6rem;
-        width: 80%;
-        margin: 10px 0;
-        border: none;
-        border-radius: 10px;
-        box-shadow: inset 4px 4px 8px #c0d6e4, inset -4px -4px 8px #ffffff;
-    }
-
-    button {
-        background: #ffffff;
-        border: none;
-        border-radius: 12px;
-        padding: 12px 20px;
-        box-shadow: 4px 4px 8px #bdd0e0, -4px -4px 8px #ffffff;
-        cursor: pointer;
-        color: #004080;
-        margin-top: 15px;
-        transition: background 0.3s, transform 0.2s;
-    }
-
-    button:hover {
-        background: #d0e7ff;
-        transform: scale(1.02);
-    }
-</style>
-@endpush
-
 @section('content')
-<div class="register-container">
-    <h2>Student Registratie</h2>
+<div class="flex items-center justify-center min-h-screen bg-white px-4">
+    <div class="w-full max-w-md p-8 rounded-md shadow-md border border-gray-200">
+        <h2 class="text-3xl font-semibold text-blue-600 mb-8 text-center">Student Registratie</h2>
 
-    <form method="POST" action="{{ route('registerStudent.submit') }}">
-        @csrf
+        <form method="POST" action="{{ route('registerStudent.submit') }}" class="space-y-6">
+            @csrf
 
-        <input type="text" name="name" placeholder="Naam" required><br>
-        <input type="email" name="email" placeholder="E-mail" required><br>
-        <input type="password" name="password" placeholder="Wachtwoord" required><br>
-        <input type="password" name="password_confirmation" placeholder="Herhaal wachtwoord" required><br>
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="Naam" 
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            >
+            <input 
+                type="email" 
+                name="email" 
+                placeholder="E-mail" 
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            >
+            <input 
+                type="password" 
+                name="password" 
+                placeholder="Wachtwoord" 
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            >
+            <input 
+                type="password" 
+                name="password_confirmation" 
+                placeholder="Herhaal wachtwoord" 
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            >
 
-        <button type="submit">Registreren</button>
-    </form>
+            <button 
+                type="submit" 
+                class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+            >
+                Registreren
+            </button>
+        </form>
+        <div class="mt-6 text-center">
+            <p class="text-gray-600">Al een account? <a href="{{ route('login.student') }}" class="text-blue-600 hover:underline">Inloggen</a></p>
+        </div>
+    </div>
 </div>
 @endsection
