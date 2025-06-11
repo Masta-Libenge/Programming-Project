@@ -10,17 +10,21 @@ Route::get('/', function () {
 })->name('keuze');
 
 // Login Student
-Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
-Route::post('/login/submit', [LoginController::class, 'studentlogin'])->name('loginStudent.submit');
+Route::get('/student/login', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
+Route::post('/student/login/submit', [LoginController::class, 'studentlogin'])->name('loginStudent.submit');
 
 // Register Student
-Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
-Route::post('/register/submit', [RegisterController::class, 'studentRegister'])->name('registerStudent.submit');
+Route::get('/student/register', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
+Route::post('/student/register/submit', [RegisterController::class, 'studentRegister'])->name('registerStudent.submit');
 
 
-Route::get('/login/bedrijf', function () {
+Route::get('/bedrijf/login', function () {
     return view('auth.login_bedrijf');
 })->name('login.bedrijf');
+
+Route::post('/bedrijf/login/submit', function () {
+    return redirect()->route('homepage');
+})->name('login.submit');
 
 Route::get('/homepage', function () {
     return view('auth.Homepage');

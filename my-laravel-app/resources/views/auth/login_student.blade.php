@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Login Student</title>
-    
+@extends('layouts.app')
+
+@section('title', 'Login Student')
+
+@push('styles')
 <style>
 body {
     background: #e0f0ff;
@@ -17,7 +16,7 @@ body {
     height: 100vh;
 }
 
-.container {
+.login-container {
     padding: 2rem;
     width: 90%;
     max-width: 500px;
@@ -59,10 +58,10 @@ input[type="text"], input[type="password"] {
     box-shadow: inset 4px 4px 8px #c0d6e4, inset -4px -4px 8px #ffffff;
 }
 </style>
+@endpush
 
-</head>
-<body>
-<div class="container">
+@section('content')
+<div class="login-container">
     <h2>Student Login</h2>
     <form method="POST" action="{{ route('loginStudent.submit') }}">
         @csrf
@@ -71,5 +70,4 @@ input[type="text"], input[type="password"] {
         <button type="submit">Inloggen</button>
     </form>
 </div>
-</body>
-</html>
+@endsection

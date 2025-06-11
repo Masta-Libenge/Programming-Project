@@ -1,93 +1,94 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Homepage</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background: #e0f0ff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #2c3e50;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
+@extends('layouts.app')
 
-        .container {
-            padding: 2rem;
-            width: 100%;
-            max-width: 1000px;
-        }
+@section('title', 'Homepage')
 
-        h2 {
-            text-align: center;
-            color: #004080;
-        }
+@push('styles')
+<style>
+    body {
+        background: #e0f0ff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #2c3e50;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
 
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+    .container {
+        padding: 2rem;
+        width: 100%;
+        max-width: 1000px;
+    }
 
-        .filters input[type="text"], .filters select {
-            padding: 0.6rem;
-            border-radius: 10px;
-            border: none;
-            box-shadow: inset 4px 4px 8px #c0d6e4, inset -4px -4px 8px #ffffff;
-        }
+    h2 {
+        text-align: center;
+        color: #004080;
+    }
 
-        .company-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
+    .filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
 
-        .card {
-            background: #f0f8ff;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 8px 8px 16px #c0d6e4, -8px -8px 16px #ffffff;
-        }
+    .filters input[type="text"], .filters select {
+        padding: 0.6rem;
+        border-radius: 10px;
+        border: none;
+        box-shadow: inset 4px 4px 8px #c0d6e4, inset -4px -4px 8px #ffffff;
+    }
 
-        .card h3 {
-            margin: 0 0 0.5rem 0;
-            color: #004080;
-        }
+    .company-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
 
-        .card p {
-            margin: 0;
-            color: #2c3e50;
-        }
+    .card {
+        background: #f0f8ff;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 8px 8px 16px #c0d6e4, -8px -8px 16px #ffffff;
+    }
 
-        .apply-button {
-            margin-top: 1rem;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 4px 4px 8px #bdd0e0, -4px -4px 8px #ffffff;
-            color: #004080;
-            padding: 8px 16px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+    .card h3 {
+        margin: 0 0 0.5rem 0;
+        color: #004080;
+    }
 
-        .apply-button:hover {
-            background: #d0e7ff;
-        }
-    </style>
-</head>
-<body>
+    .card p {
+        margin: 0;
+        color: #2c3e50;
+    }
+
+    .apply-button {
+        margin-top: 1rem;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 4px 4px 8px #bdd0e0, -4px -4px 8px #ffffff;
+        color: #004080;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .apply-button:hover {
+        background: #d0e7ff;
+    }
+</style>
+@endpush
+
+@section('content')
 <div class="container">
     <h2>Vacatures beschikbaar</h2>
+
     <div class="filters">
         <input type="text" id="searchInput" placeholder="Zoek bedrijf...">
         <select id="categoryFilter">
@@ -99,46 +100,28 @@
             <option value="Energie">Energie</option>
         </select>
     </div>
+
     <div class="company-list" id="companyList">
-        <div class="card" data-category="Gezondheid" data-name="Oscorp">
-            <h3>Oscorp</h3>
-            <p>Ontwikkelt vaccins en geneesmiddelen om ziekten te voorkomen.</p>
-            <button class="apply-button">Apply</button>
-        </div>
-        <div class="card" data-category="IT" data-name="TechNova">
-            <h3>TechNova</h3>
-            <p>IT-bedrijf voor maatwerksoftware en digitale oplossingen.</p>
-            <button class="apply-button">Apply</button>
-        </div>
-        <div class="card" data-category="IT" data-name="Stark Industries">
-            <h3>Stark Industries</h3>
-            <p>High-tech oplossingen voor de defensie- en energiesector.</p>
-            <button class="apply-button">Apply</button>
-        </div>
-        <div class="card" data-category="Gezondheid" data-name="NeuroSoft">
-            <h3>NeuroSoft</h3>
-            <p>AI-gedreven oplossingen voor de gezondheidszorgsector.</p>
-            <button class="apply-button">Apply</button>
-        </div>
-        <div class="card" data-category="Energie" data-name="GreenPulse">
-            <h3>GreenPulse</h3>
-            <p>Start-up die slimme energiesystemen ontwikkelt.</p>
-            <button class="apply-button">Apply</button>
-        </div>
-        <div class="card" data-category="Design" data-name="PixelCore">
-            <h3>PixelCore</h3>
-            <p>Design studio gespecialiseerd in UX/UI en branding.</p>
-            <button class="apply-button">Apply</button>
-        </div>
-        <div class="card" data-category="Educatie" data-name="EduLink">
-            <h3>EduLink</h3>
-            <p>Onderwijsplatform voor interactieve online leerervaringen.</p>
-            <button class="apply-button">Apply</button>
-        </div>
+        @foreach([
+            ['name' => 'Oscorp', 'desc' => 'Ontwikkelt vaccins en geneesmiddelen om ziekten te voorkomen.', 'cat' => 'Gezondheid'],
+            ['name' => 'TechNova', 'desc' => 'IT-bedrijf voor maatwerksoftware en digitale oplossingen.', 'cat' => 'IT'],
+            ['name' => 'Stark Industries', 'desc' => 'High-tech oplossingen voor de defensie- en energiesector.', 'cat' => 'IT'],
+            ['name' => 'NeuroSoft', 'desc' => 'AI-gedreven oplossingen voor de gezondheidszorgsector.', 'cat' => 'Gezondheid'],
+            ['name' => 'GreenPulse', 'desc' => 'Start-up die slimme energiesystemen ontwikkelt.', 'cat' => 'Energie'],
+            ['name' => 'PixelCore', 'desc' => 'Design studio gespecialiseerd in UX/UI en branding.', 'cat' => 'Design'],
+            ['name' => 'EduLink', 'desc' => 'Onderwijsplatform voor interactieve online leerervaringen.', 'cat' => 'Educatie'],
+        ] as $company)
+            <div class="card" data-category="{{ $company['cat'] }}" data-name="{{ $company['name'] }}">
+                <h3>{{ $company['name'] }}</h3>
+                <p>{{ $company['desc'] }}</p>
+                <button class="apply-button">Apply</button>
+            </div>
+        @endforeach
     </div>
 </div>
+@endsection
 
-@verbatim
+@push('scripts')
 <script>
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
@@ -162,6 +145,4 @@
     searchInput.addEventListener('input', filterCards);
     categoryFilter.addEventListener('change', filterCards);
 </script>
-@endverbatim
-</body>
-</html>
+@endpush
