@@ -3,8 +3,8 @@
         <a href="{{ route('keuze') }}" class="text-white font-bold text-lg">MijnPlatform</a>
         <ul class="flex space-x-6">
             <li><a href="{{ route('profil.student') }}" class="text-white hover:text-blue-300 font-medium">Profil</a></li>
-            <li><a href="{{ route('register.student') }}" class="text-white hover:text-blue-300 font-medium">Registreren</a></li>
-            <li><a href="{{ route('login.bedrijf') }}" class="text-white hover:text-blue-300 font-medium">Login Bedrijf</a></li>
+            <li><a href="{{ route('planning.student') }}" class="text-white hover:text-blue-300 font-medium">Planning</a></li>
+            <li><a href="{{ route('mailbox.student') }}" class="text-white hover:text-blue-300 font-medium">MailBox</a></li>
         </ul>
     </div>
 </nav>

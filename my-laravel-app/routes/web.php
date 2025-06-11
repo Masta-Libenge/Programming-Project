@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\BedrijfController;
+use App\Http\Controllers\MailController;
 
 
 Route::get('/', function () {
@@ -36,6 +37,9 @@ Route::get('/profile', function () {
 Route::get('/planning', function () {
     return view('student.planning');
 })->name('planning.student');
+
+// MailBox
+Route::get('/mailbox', [MailController::class, 'index'])->name('mailbox.student');
 
 Route::get('/homepage', function () {
     return view('auth.Homepage');
