@@ -9,30 +9,24 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    public function studentlogin(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'type' => 'required|in:student,admin,bedrijf',
-        ]);
+   public function studentlogin(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $user = User::where('email', $request->email)
-                    ->where('type', $request->type) // ✅ match form input
-                    ->first();
+    $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['login' => 'Invalid credentials']);
-        }
-
-        auth()->login($user);
-
-        return match ($user->type) {
-            'student' => redirect()->route('student.dashboard'),
-            'admin' => redirect()->route('admin.dashboard'),
-            'bedrijf' => redirect()->route('bedrijf.dashboard'),
-        };
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        return back()->withErrors(['login' => 'Invalid credentials']);
     }
+
+    auth()->login($user);
+
+    return redirect()->route('student.dashboard');
+}
+
 
     public function showStudentLoginForm()
     {
