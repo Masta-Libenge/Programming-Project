@@ -32,7 +32,7 @@ class RegisterController extends Controller
         ]);
 
         auth()->login($student);
-        return redirect('/student/dashboard');
+        return redirect('/homepage');
     }
 
     // 🏢 Bedrijf registratie

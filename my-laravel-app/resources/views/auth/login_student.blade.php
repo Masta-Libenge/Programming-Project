@@ -64,7 +64,7 @@ input[type="text"], input[type="password"] {
 <body>
 <div class="container">
     <h2>Student Login</h2>
-    <form method="POST" action="{{ route('login.submit') }}">
+    <form method="POST" action="{{ route('loginStudent.submit') }}">
         @csrf
         <input type="text" name="email" placeholder="E-mail"><br>
         <input type="password" name="password" placeholder="Wachtwoord"><br>
