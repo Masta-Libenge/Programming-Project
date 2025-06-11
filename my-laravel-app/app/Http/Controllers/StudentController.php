@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,6 +14,8 @@ class StudentController extends Controller
         // You could load assignments, courses, etc.
         return view('student.dashboard');
     }
+
+    
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -13,18 +14,18 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'role' => 'required|in:student,admin,bedrijf',
+            'type' => 'required|in:student,admin,bedrijf',
         ]);
 
         $user = User::where('email', $request->email)
-            ->where('type', $request->role)
-            ->first();
-        // Check if user exists and password is correct
-        if (!$user || !\Hash::check($request->password, $user->password)) {
+                    ->where('type', $request->type) // ✅ match form input
+                    ->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors(['login' => 'Invalid credentials']);
         }
-        auth()->login($user);
 
+        auth()->login($user);
 
         return match ($user->type) {
             'student' => redirect()->route('student.dashboard'),
@@ -42,7 +43,4 @@ class LoginController extends Controller
     {
         return view('auth.login_bedrijf');
     }
-
-
-
 }

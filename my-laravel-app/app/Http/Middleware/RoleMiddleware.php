@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $type)
     {
-        if (!Auth::check() || Auth::user()->type !== $role) {
+
+        \Log::info('User in middleware:', ['user' => Auth::user()]);
+        
+        if (!Auth::check() || Auth::user()->type !== $type) {
+
             abort(403); // Geen toegang
         }
 

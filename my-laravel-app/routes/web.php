@@ -31,10 +31,25 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // ✅ Student-dashboard
-Route::middleware(['auth', 'role:student'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
 });
 
 Route::get('/', function () {
     return view('auth.home'); // Of pas aan naar het juiste pad als je view anders heet
 });
+Route::get('/login', function () {
+    return redirect('/login/student');
+})->name('login');
+
+Route::get('/debug', function () {
+    return 'Middleware is bypassed';
+});
+
+//logout
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/');
+})->name('logout');

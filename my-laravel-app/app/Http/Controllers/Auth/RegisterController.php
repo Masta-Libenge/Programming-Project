@@ -17,6 +17,7 @@ class RegisterController extends Controller
 
     public function studentRegister(Request $request)
     {
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
