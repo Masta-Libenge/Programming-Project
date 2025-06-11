@@ -2,87 +2,74 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Inloggen als student</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #e0f7fa, #fff);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+    <title>Login Student</title>
+    
+<style>
+body {
+    background: #e0f0ff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-        }
+.container {
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    background: #f8fbff;
+    border-radius: 20px;
+    box-shadow: 8px 8px 16px #c0d6e4, -8px -8px 16px #ffffff;
+    text-align: center;
+}
 
-        form {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
+h2 {
+    color: #004080;
+}
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            text-align: left;
-        }
+a.button, button {
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-shadow: 4px 4px 8px #bdd0e0, -4px -4px 8px #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    color: #004080;
+    display: inline-block;
+    margin: 10px;
+    transition: background 0.3s, transform 0.2s;
+}
 
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
+a.button:hover, button:hover {
+    background: #d0e7ff;
+    transform: scale(1.02);
+}
 
-        button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #3490dc;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
+input[type="text"], input[type="password"] {
+    padding: 0.6rem;
+    width: 80%;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    box-shadow: inset 4px 4px 8px #c0d6e4, inset -4px -4px 8px #ffffff;
+}
+</style>
 
-        button:hover {
-            background-color: #2779bd;
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 <body>
-    <h1>Inloggen als student</h1>
-    <form method="POST" action="{{ url('/login/student') }}">
+<div class="container">
+    <h2>Student Login</h2>
+    <form method="POST" action="{{ route('login.submit') }}">
         @csrf
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
-
-        <label for="password">Wachtwoord</label>
-        <input type="password" name="password" id="password" required>
-
+        <input type="text" name="email" placeholder="E-mail"><br>
+        <input type="password" name="password" placeholder="Wachtwoord"><br>
         <button type="submit">Inloggen</button>
-
-        <a href="{{ url('/register_student') }}" style="display: block; margin-top: 15px; color: #3490dc; text-decoration: none;">
-        Nog geen account? Registreer hier
-    </a>
-
     </form>
+</div>
 </body>
 </html>
