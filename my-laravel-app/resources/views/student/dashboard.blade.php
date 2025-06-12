@@ -28,7 +28,6 @@
             line-height: 1.6;
         }
 
-        /* ==== HEADER ==== */
         header.hero-header {
             background: linear-gradient(to right, var(--primary-light), var(--primary));
             color: white;
@@ -84,7 +83,6 @@
             background: #f0f9ff;
         }
 
-        /* ==== CONTAINER ==== */
         .container {
             max-width: 1100px;
             margin: auto;
@@ -114,7 +112,6 @@
         }
 
         .card {
-            background: var(--card-bg);
             border-radius: 12px;
             padding: 1.5rem;
             border: 1px solid var(--border);
@@ -136,20 +133,34 @@
             color: var(--text-light);
         }
 
-        .apply-button {
+        .apply-button, .favorite-button {
             margin-top: 1rem;
-            background: var(--primary);
-            color: white;
             padding: 0.6rem 1.2rem;
-            border: none;
             border-radius: 6px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: background 0.2s ease;
+            border: none;
+        }
+
+        .apply-button {
+            background: var(--primary);
+            color: white;
         }
 
         .apply-button:hover {
             background: #1d4ed8;
+        }
+
+        .favorite-button {
+            background: #fff;
+            color: red;
+            border: 1px solid red;
+            margin-left: 0.5rem;
+        }
+
+        .favorite-button:hover {
+            background: #ffe4e6;
         }
 
         @media (max-width: 600px) {
@@ -180,45 +191,40 @@
 
 <div class="container">
     <div class="filters">
-        <input type="text" id="searchInput" placeholder="Zoek bedrijf...">
+        <input type="text" id="searchInput" placeholder="Zoek vacature...">
         <select id="categoryFilter">
-            <option value="all">Alle categorieën</option>
-            <option value="IT">IT</option>
-            <option value="Gezondheid">Gezondheid</option>
-            <option value="Design">Design</option>
-            <option value="Educatie">Educatie</option>
-            <option value="Energie">Energie</option>
+            <option value="all">Alle types</option>
+            <option value="Stage">Stage</option>
+            <option value="Werknemer">Werknemer</option>
         </select>
     </div>
 
     <div class="company-list" id="companyList">
-        @foreach([
-            ['name' => 'Oscorp', 'desc' => 'Ontwikkelt vaccins en geneesmiddelen om ziekten te voorkomen.', 'cat' => 'Gezondheid'],
-            ['name' => 'TechNova', 'desc' => 'IT-bedrijf voor maatwerksoftware en digitale oplossingen.', 'cat' => 'IT'],
-            ['name' => 'Stark Industries', 'desc' => 'High-tech oplossingen voor de defensie- en energiesector.', 'cat' => 'IT'],
-            ['name' => 'NeuroSoft', 'desc' => 'AI-gedreven oplossingen voor de gezondheidszorgsector.', 'cat' => 'Gezondheid'],
-            ['name' => 'GreenPulse', 'desc' => 'Start-up die slimme energiesystemen ontwikkelt.', 'cat' => 'Energie'],
-            ['name' => 'PixelCore', 'desc' => 'Design studio gespecialiseerd in UX/UI en branding.', 'cat' => 'Design'],
-            ['name' => 'EduLink', 'desc' => 'Onderwijsplatform voor interactieve online leerervaringen.', 'cat' => 'Educatie'],
-        ] as $company)
-            <div class="card" data-category="{{ $company['cat'] }}" data-name="{{ $company['name'] }}">
-                <h3>{{ $company['name'] }}</h3>
-                <p>{{ $company['desc'] }}</p>
+        @forelse($vacatures as $vacature)
+            <div class="card"
+                 style="background-color: {{ $vacature->color }};"
+                 data-category="{{ $vacature->type }}"
+                 data-name="{{ $vacature->title }}">
+                <h3>{{ $vacature->title }}</h3>
+                <p>{{ $vacature->desc }}</p>
+                <p><strong>Contracttype:</strong> {{ $vacature->type }}</p>
                 <button class="apply-button">Apply</button>
+                <button class="favorite-button">❤️ Favoriet</button>
             </div>
-        @endforeach
+        @empty
+            <p>Er zijn momenteel geen vacatures beschikbaar.</p>
+        @endforelse
     </div>
 </div>
 
-@verbatim
 <script>
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
-    const cards = document.querySelectorAll('.card');
 
     function filterCards() {
         const search = searchInput.value.toLowerCase();
         const category = categoryFilter.value;
+        const cards = document.querySelectorAll('.card');
 
         cards.forEach(card => {
             const name = card.getAttribute('data-name').toLowerCase();
@@ -230,7 +236,6 @@
     searchInput.addEventListener('input', filterCards);
     categoryFilter.addEventListener('change', filterCards);
 </script>
-@endverbatim
 
 </body>
 </html>

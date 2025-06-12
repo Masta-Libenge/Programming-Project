@@ -1,73 +1,64 @@
 <?php
 
-namespace App\Http\Controllers\Auth; // Declares the namespace for organizing the controller within the Auth folder.
+namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller; // Imports the base controller class.
-use App\Models\User; // Imports the User model to create new users in the database.
-use Illuminate\Http\Request; // Handles HTTP requests (form submissions).
-use Illuminate\Support\Facades\Hash; // Used to securely hash passwords.
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
     // 👩‍🎓 Student registratie
     public function showStudentRegisterForm()
     {
-        // Returns the view that contains the student registration form
         return view('auth.register_student');
     }
 
     public function studentRegister(Request $request)
     {
-        // Validates the form input: all fields are required and must match the rules
         $request->validate([
-            'name' => 'required|string|max:255', // Name must be a string, max 255 chars
-            'email' => 'required|email|unique:users', // Email must be valid and unique in the users table
-            'password' => 'required|confirmed|min:6', // Password must match confirmation and be at least 6 chars
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:6',
         ]);
 
-        // Creates a new user with the role "student"
         $student = User::create([
-            'name' => $request->name, // Gets name from form input
-            'email' => $request->email, // Gets email from form input
-            'password' => Hash::make($request->password), // Hashes the password for secure storage
-            'type' => 'student', // Sets user type as 'student'
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'student',
         ]);
 
-        // Automatically logs in the new student
-        auth()->login($student);
+        Auth::login($student); // ✅ juiste login methode
 
-        // Redirects to the student dashboard
         return redirect('/student/dashboard');
     }
 
     // 🏢 Bedrijf registratie
     public function showBedrijfRegisterForm()
     {
-        // Returns the view that contains the company (bedrijf) registration form
         return view('auth.register_bedrijf');
     }
 
     public function bedrijfRegister(Request $request)
     {
-        // Validates the company registration input
         $request->validate([
-            'company_name' => 'required|string|max:255', // Company name is required
-            'email' => 'required|email|unique:users', // Email must be valid and unique
-            'password' => 'required|confirmed|min:6', // Password validation rules
+            'company_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:6',
         ]);
 
-        // Creates a new user with the role "bedrijf" (company)
         $bedrijf = User::create([
-            'name' => $request->company_name, // Uses company_name as the user's name
+            'name' => $request->company_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => 'bedrijf', // Sets user type as 'bedrijf'
+            'type' => 'bedrijf',
         ]);
 
-        // Automatically logs in the new company user
-        auth()->login($bedrijf);
+        Auth::login($bedrijf); // ✅ correcte login
 
-        // Redirects to the company dashboard using a named route
         return redirect()->route('bedrijf.dashboard');
     }
 }

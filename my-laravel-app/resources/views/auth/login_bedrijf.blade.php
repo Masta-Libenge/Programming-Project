@@ -69,7 +69,7 @@
 </head>
 <body>
     <h1>Inloggen als bedrijf</h1>
-    <form method="POST" action="{{ url('/login/student') }}">
+    <form method="POST" action="{{ url('/login/bedrijf') }}">
     @csrf
     <label for="email">Email</label>
     <input type="email" name="email" id="email" required>
@@ -79,8 +79,7 @@
 
     <button type="submit">Inloggen</button>
 
-    <a href="{{ url('/register_bedrijf') }}" style="display: block; margin-top: 15px; color: #3490dc; text-decoration: none;">
-        Nog geen account? Registreer hier
+<a href="{{ route('register.bedrijf') }}" style="display: block; margin-top: 15px; color: #3490dc; text-decoration: none;">        Nog geen account? Registreer hier
     </a>
 </form>
 

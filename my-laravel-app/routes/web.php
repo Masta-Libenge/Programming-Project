@@ -3,14 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\VacatureController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\VacatureController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
 | Auth: Login Routes
 |--------------------------------------------------------------------------
-| Routes voor het inloggen van studenten en bedrijven.
 */
 Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
 Route::get('/login/bedrijf', [LoginController::class, 'showBedrijfLoginForm'])->name('login.bedrijf');
@@ -21,7 +21,6 @@ Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin']);
 |--------------------------------------------------------------------------
 | Auth: Register Routes
 |--------------------------------------------------------------------------
-| Routes voor het registreren van studenten en bedrijven.
 */
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
 Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegisterForm'])->name('register.bedrijf');
@@ -30,10 +29,8 @@ Route::post('/register/bedrijf', [RegisterController::class, 'bedrijfRegister'])
 
 /*
 |--------------------------------------------------------------------------
-| Testroute (tijdelijk gebruik)
+| Testroute
 |--------------------------------------------------------------------------
-| Gebruik dit voor directe toegang tot het registratieformulier van studenten.
-| Enkel bedoeld voor testdoeleinden.
 */
 Route::get('/register_student', function () {
     return view('auth.register_student');
@@ -41,18 +38,24 @@ Route::get('/register_student', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Dashboard & Vacature Functionaliteiten
+| Dashboard & Vacature Routes (alleen na login)
 |--------------------------------------------------------------------------
-| Routes die enkel toegankelijk zijn voor ingelogde gebruikers.
 */
 Route::middleware(['auth'])->group(function () {
-    // Vacature overzicht en creatie
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
+    
+    Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
+    Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
 
-    // Student dashboard
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+
+    Route::get('/bedrijf/dashboard', function () {
+        $students = User::where('type', 'student')->get();
+        return view('bedrijf.bedrijfdashboard', compact('students'));
+    })->name('bedrijf.dashboard');
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +72,7 @@ Route::get('/login', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Debug Route (voor tests, geen middleware)
+| Debug
 |--------------------------------------------------------------------------
 */
 Route::get('/debug', function () {
@@ -78,9 +81,8 @@ Route::get('/debug', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Logout Route
+| Logout
 |--------------------------------------------------------------------------
-| Logt de gebruiker uit, maakt de sessie ongeldig en stuurt terug naar home.
 */
 Route::post('/logout', function () {
     Auth::logout();
@@ -88,3 +90,7 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/');
 })->name('logout');
+
+Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
+Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
+

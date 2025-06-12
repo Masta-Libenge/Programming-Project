@@ -1,24 +1,21 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Vacature;
 
 class StudentController extends Controller
 {
-
+    /**
+     * Toon het dashboard voor studenten.
+     */
     public function dashboard()
     {
-        // You could load assignments, courses, etc.
-        return view('student.dashboard');
+        // Haal alle vacatures op
+        $vacatures = Vacature::all();
+
+        // Geef ze door aan de view
+        return view('student.dashboard', compact('vacatures'));
     }
-
-    
-
-
-
-
 }
-

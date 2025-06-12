@@ -69,12 +69,12 @@
     </style>
 </head>
 <body>
-    <h1>Registreren als Bedrijf</h1>
+    <h1>Registreren als bedrijf</h1>
     <form method="POST" action="{{ url('/register/bedrijf') }}">
         @csrf
 
-        <label for="name">Naam bedrijf</label>
-        <input type="text" name="name" id="name" required>
+        <label for="company_name">Bedrijfsnaam</label>
+        <input type="text" name="company_name" id="company_name" required>
 
         <label for="email">Email</label>
         <input type="email" name="email" id="email" required>

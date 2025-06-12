@@ -17,20 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('type', ['student', 'bedrijf', 'admin']);
+            $table->timestamps(); // ✅ Nodig voor created_at & updated_at
         });
-
     }
-
-
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-
-
         Schema::dropIfExists('users');
     }
 };
