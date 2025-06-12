@@ -2,107 +2,85 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Student Dashboard</title>
+    <title>Student Dashboard – CareerLaunch</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-light: #3b82f6;
-            --bg: #f9fafb;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --card-bg: #ffffff;
-            --border: #e2e8f0;
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-text: #0f172a;
+            --muted: #64748b;
+            --white: #ffffff;
+            --radius: 14px;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text-dark);
+            background-color: var(--light-bg);
+            color: var(--dark-text);
             line-height: 1.6;
         }
 
-        header.hero-header {
-            background: linear-gradient(to right, var(--primary-light), var(--primary));
+        header {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
             color: white;
-            text-align: center;
             padding: 3rem 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
         }
 
-        .header-content {
-            max-width: 600px;
-            margin: 0 auto;
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
         }
 
-        .avatar-circle {
-            width: 64px;
-            height: 64px;
-            background: #1e3a8a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: white;
-            margin: 0 auto 1rem;
-        }
-
-        .header-content h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .header-content .subtitle {
-            font-size: 1rem;
+        header .subtitle {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
             color: #dbeafe;
-            margin-bottom: 1.2rem;
         }
 
         .logout-btn {
+            margin-top: 1rem;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.9rem;
+            font-weight: 600;
             background: white;
             color: var(--primary);
+            border-radius: var(--radius);
             border: none;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s ease;
+            transition: 0.2s ease;
         }
 
         .logout-btn:hover {
-            background: #f0f9ff;
+            background: #f1f5f9;
         }
 
         .container {
             max-width: 1100px;
             margin: auto;
-            padding: 2rem 1rem;
+            padding: 2rem 1.5rem;
         }
 
         .filters {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
-            justify-content: center;
         }
 
         .filters input, .filters select {
-            padding: 0.7rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            flex: 1;
-            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 1rem;
         }
 
         .company-list {
@@ -112,34 +90,47 @@
         }
 
         .card {
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
+            background: var(--white);
+            padding: 1.8rem;
+            border-radius: var(--radius);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
             transition: transform 0.2s ease;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
         }
 
         .card h3 {
+            font-size: 1.3rem;
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-            color: var(--text-dark);
         }
 
         .card p {
             font-size: 0.95rem;
-            color: var(--text-light);
+            color: var(--muted);
+        }
+
+        .card .meta {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: var(--dark-text);
+        }
+
+        .actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
         }
 
         .apply-button, .favorite-button {
-            margin-top: 1rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
+            flex: 1;
+            padding: 0.6rem 1rem;
+            font-weight: 600;
+            border-radius: var(--radius);
             font-size: 0.9rem;
             cursor: pointer;
-            transition: background 0.2s ease;
             border: none;
         }
 
@@ -149,14 +140,13 @@
         }
 
         .apply-button:hover {
-            background: #1d4ed8;
+            background: #1e40af;
         }
 
         .favorite-button {
-            background: #fff;
-            color: red;
+            background: transparent;
             border: 1px solid red;
-            margin-left: 0.5rem;
+            color: red;
         }
 
         .favorite-button:hover {
@@ -164,32 +154,29 @@
         }
 
         @media (max-width: 600px) {
-            .filters {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .actions {
                 flex-direction: column;
-                align-items: stretch;
             }
         }
     </style>
 </head>
 <body>
 
-<header class="hero-header">
-    <div class="header-content">
-        <div class="avatar-circle">
-            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-        </div>
-        <h1>Welkom, {{ auth()->user()->name }}</h1>
-        <p class="subtitle">Je bent ingelogd als student</p>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-        <button class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            Uitloggen
-        </button>
-    </div>
+<header>
+    <h1>Welkom, {{ auth()->user()->name }}</h1>
+    <p class="subtitle">Je bent ingelogd als student</p>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+    <button class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Uitloggen</button>
 </header>
 
 <div class="container">
+
     <div class="filters">
         <input type="text" id="searchInput" placeholder="Zoek vacature...">
         <select id="categoryFilter">
@@ -207,14 +194,17 @@
                  data-name="{{ $vacature->title }}">
                 <h3>{{ $vacature->title }}</h3>
                 <p>{{ $vacature->desc }}</p>
-                <p><strong>Contracttype:</strong> {{ $vacature->type }}</p>
-                <button class="apply-button">Apply</button>
-                <button class="favorite-button">❤️ Favoriet</button>
+                <div class="meta"><strong>Contracttype:</strong> {{ $vacature->type }}</div>
+                <div class="actions">
+                    <button class="apply-button">Apply</button>
+                    <button class="favorite-button">❤️ Favoriet</button>
+                </div>
             </div>
         @empty
             <p>Er zijn momenteel geen vacatures beschikbaar.</p>
         @endforelse
     </div>
+
 </div>
 
 <script>

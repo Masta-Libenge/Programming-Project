@@ -2,105 +2,139 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Vacature aanmaken</title>
+    <title>Vacature Aanmaken - CareerLaunch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #e3f2fd, #ffffff);
+        :root {
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --accent: #0f172a;
+            --primary: #3b82f6;
+            --radius: 16px;
+            --muted: #64748b;
+            --shadow: 0 12px 24px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--accent);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 2rem;
         }
 
-        .form-container {
-            background: #fff;
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+        .form-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 3rem 2.5rem;
             width: 100%;
+            max-width: 600px;
         }
 
         h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
             text-align: center;
-            margin-bottom: 25px;
-            color: #1e88e5;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #333;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent);
         }
 
         input[type="text"],
         textarea,
-        select,
-        input[type="color"] {
+        select {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            transition: border 0.3s ease;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            background-color: #fff;
+            transition: border-color 0.2s ease;
+        }
+
+        textarea {
+            resize: vertical;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
-            border-color: #1e88e5;
+            border-color: var(--primary);
             outline: none;
         }
 
         button {
-            margin-top: 25px;
+            margin-top: 2rem;
             width: 100%;
-            padding: 12px;
+            padding: 0.9rem;
+            background-color: var(--primary);
+            color: white;
             border: none;
-            border-radius: 8px;
-            background-color: #1e88e5;
-            color: #fff;
-            font-size: 16px;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #1565c0;
+            background-color: #2563eb;
+        }
+
+        .hint {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h1>Vacature Aanmaken</h1>
+<div class="form-card">
+    <h1>Vacature Aanmaken</h1>
 
-        <form method="POST" action="{{ route('vacature.store') }}">
-            @csrf
+    <form method="POST" action="{{ route('vacature.store') }}">
+        @csrf
 
-            <label for="name">Vacaturetitel</label>
-<input type="text" name="title" id="title" required>
+        <label for="title">Vacaturetitel</label>
+        <input type="text" name="title" id="title" required>
 
-            <label for="desc">Beschrijving</label>
-            <textarea name="desc" id="desc" rows="4" required></textarea>
+        <label for="desc">Beschrijving</label>
+        <textarea name="desc" id="desc" rows="5" required></textarea>
 
-            <label for="type">Contracttype</label>
-            <select name="type" id="type">
-                <option value="Stage">Stage</option>
-                <option value="Werknemer">Werknemer</option>
-            </select>
+        <label for="type">Contracttype</label>
+        <select name="type" id="type" required>
+            <option value="Stage">Stage</option>
+            <option value="Werknemer">Werknemer</option>
+        </select>
 
-            <label for="color">Kleur (hex)</label>
-            <input type="color" name="color" id="color" value="#ffffff">
+        <label for="color">Kleur van kaart</label>
+        <select name="color" id="color" required>
+            <option value="#3b82f6">🔵 Blauw</option>
+            <option value="#ef4444">🔴 Rood</option>
+            <option value="#10b981">🟢 Groen</option>
+            <option value="#facc15">🟡 Geel</option>
+        </select>
 
-            <button type="submit">Vacature toevoegen</button>
-        </form>
-    </div>
+        <button type="submit">Vacature Toevoegen</button>
+    </form>
+</div>
 
 </body>
 </html>
