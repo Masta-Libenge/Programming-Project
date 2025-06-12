@@ -70,7 +70,7 @@
 </head>
 <body>
     <h1>Registreren als Bedrijf</h1>
-    <form method="POST" action="{{ url('/register/student') }}">
+    <form method="POST" action="{{ url('/register/bedrijf') }}">
         @csrf
 
         <label for="name">Naam bedrijf</label>
