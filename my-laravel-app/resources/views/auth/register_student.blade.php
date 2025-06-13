@@ -121,7 +121,7 @@
 
 <div class="form-container">
     {{-- 🔙 Back to homepage --}}
-    <a href="{{ url('/') }}" class="back-button">← Terug</a>
+    <a href="{{ url('/login/student') }}" class="back-button">← Terug</a>
 
     <h1>Student registratie</h1>
     <p>Maak een studentenaccount aan om te starten</p>

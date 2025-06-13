@@ -121,7 +121,7 @@
 
 <div class="form-container">
     {{-- 🔙 Back to homepage --}}
-    <a href="{{ url('/') }}" class="back-button">← Terug</a>
+    <a href="{{ url('/login/bedrijf') }}" class="back-button">← Terug</a>
 
     <h1>Registreer je bedrijf</h1>
     <p>Vul de onderstaande gegevens in om te starten</p>
