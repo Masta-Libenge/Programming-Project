@@ -9,3 +9,32 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+/* General mobile tweaks for small screens */
+@media (max-width: 480px) {
+    .login-container,
+    .form-container {
+        padding: 2rem 1rem;
+        box-shadow: none;
+    }
+
+    .login-container h1,
+    .form-container h1 {
+        font-size: 1.8rem;
+    }
+
+    input,
+    button {
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+
+    .register-link {
+        font-size: 0.9rem;
+    }
+
+    .error-message {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.8rem;
+    }
+}
+
