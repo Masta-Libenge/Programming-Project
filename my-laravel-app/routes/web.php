@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\MailboxController;
+use App\Http\Middleware\StudentMiddleware;
+use App\Http\Middleware\BedrijfMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,14 +47,14 @@ Route::get('/register_student', function () {
 | Dashboard & Vacature Routes (alleen na login)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', BedrijfMiddleware::class])->group(function () {
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
     
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
 
-    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+   
 
     Route::get('/bedrijf/dashboard', function () {
         $students = User::where('type', 'student')->get();
@@ -104,14 +106,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', StudentMiddleware::class])->group(function () {
     Route::get('/student/profile', [ProfileController::class, 'edit'])->name('student.profile');
     Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
 
-    // Planning 
     Route::get('/student/planning', [PlanningController::class, 'showStudentPlanning'])->name('student.planning');
     Route::get('/student/mailbox', [MailboxController::class, 'index'])->name('student.mailbox');
+
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
 });
+
 
 
 

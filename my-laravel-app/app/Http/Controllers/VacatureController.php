@@ -46,4 +46,13 @@ class VacatureController extends Controller
         return redirect()->route('bedrijf.dashboard')->with('success', 'Vacature succesvol toegevoegd.');
         // The `with()` method flashes a message to the session for display on the next page
     }
+
+    public function index()
+    {
+        // Fetch all vacatures from the database
+        $vacatures = Vacature::all();
+
+        // Return the view that lists all vacatures, passing the vacatures data
+        return view('auth.homepage', compact('vacatures'));
+    }
 }

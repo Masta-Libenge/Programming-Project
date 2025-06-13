@@ -12,86 +12,132 @@
 
     #calendar {
         max-width: 100%;
-        margin: 0 auto;
-        padding: 1rem;
+        margin: auto;
     }
 
-    /* Bouton fixe en haut à droite */
-    #addEventBtn {
-        position: fixed;
-        top: 5rem;
-        right: 1rem;
-        z-index: 1000;
-        padding: 0.5rem 1rem;
-        background-color: #2563eb; /* bleu */
-        color: white;
-        border-radius: 0.375rem; /* arrondi */
-        cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        transition: background-color 0.2s ease-in-out;
+    /* Supprimer focus par défaut de FullCalendar */
+    .fc .fc-button:focus {
+        box-shadow: none !important;
     }
-    #addEventBtn:hover {
-        background-color: #1e40af;
+
+    /* Tailwind-friendly reset */
+    .fc {
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #1c1c1e;
+        background-color: white;
     }
+
+    /* En-tête propre */
+    .fc-toolbar-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1c1c1e;
+    }
+
+    .fc-button {
+        background-color: #f2f2f7 !important;
+        border: none !important;
+        color: #1c1c1e !important;
+        border-radius: 8px !important;
+        padding: 0.4rem 0.8rem !important;
+        transition: background 0.2s ease-in-out;
+    }
+
+    .fc-button:hover {
+        background-color: #e5e5ea !important;
+    }
+
+    /* Grille propre */
+    .fc-daygrid-day {
+        border-color: #e5e5ea !important;
+    }
+
+    /* Événements minimalistes */
+    .fc-event {
+        background-color: #007aff !important;
+        color: white !important;
+        border-radius: 8px;
+        padding: 2px 6px;
+        font-weight: 500;
+        font-size: 0.875rem;
+        border: none;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
 </style>
 @endpush
 
 @section('content')
-<div class="pt-20 px-4 bg-white min-h-screen">
-    <div id="calendar" class="bg-white shadow rounded-lg p-4"></div>
+<div class="h-screen bg-gray-100 pt-20 px-4">
 
-    <!-- Bouton Ajouter un événement -->
-    <button id="addEventBtn">Ajouter un événement</button>
+    <div class="max-w-6xl mx-auto p-6">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-6">Mon planning</h1>
 
-    <!-- Modal pour ajouter un événement -->
-    <div id="eventModal" class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white/30 hidden z-50">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Ajouter un événement</h2>
+        <div id="calendar" class="mt-6"></div>
+
+        <!-- Bouton flottant pour ajouter -->
+        <button id="addEventBtn" class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-full shadow-lg transition">
+            + Ajouter un événement
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div id="eventModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Ajouter / Modifier un événement</h2>
 
             <form id="eventForm" class="space-y-4">
                 <div>
                     <label for="eventTitle" class="block font-medium text-gray-700">Titre</label>
-                    <input type="text" id="eventTitle" name="title" placeholder="Nom de l'événement" required
-                        class="w-full border border-gray-300 rounded px-4 py-2">
+                    <input type="text" id="eventTitle" name="title" required placeholder="Titre de l'événement"
+                        class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
-                <div class="flex space-x-2">
+                <div class="flex gap-4">
                     <div class="flex-1">
                         <label for="startDate" class="block font-medium text-gray-700">Date début</label>
                         <input type="date" id="startDate" name="startDate" required
-                            class="w-full border border-gray-300 rounded px-4 py-2">
+                            class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md">
                     </div>
                     <div class="flex-1">
                         <label for="startTime" class="block font-medium text-gray-700">Heure début</label>
-                        <input type="time" id="startTime" name="startTime" required
-                            class="w-full border border-gray-300 rounded px-4 py-2">
+                        <input type="time" id="startTime" name="startTime"
+                            class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md">
                     </div>
                 </div>
 
-                <div class="flex space-x-2">
+                <div class="flex gap-4">
                     <div class="flex-1">
                         <label for="endDate" class="block font-medium text-gray-700">Date fin</label>
                         <input type="date" id="endDate" name="endDate" required
-                            class="w-full border border-gray-300 rounded px-4 py-2">
+                            class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md">
                     </div>
                     <div class="flex-1">
                         <label for="endTime" class="block font-medium text-gray-700">Heure fin</label>
-                        <input type="time" id="endTime" name="endTime" required
-                            class="w-full border border-gray-300 rounded px-4 py-2">
+                        <input type="time" id="endTime" name="endTime"
+                            class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md">
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="allDay" name="allDay">
-                    <label for="allDay" class="font-medium text-gray-700">Toute la journée</label>
+                    <input type="checkbox" id="allDay" name="allDay" class="h-4 w-4 text-blue-600">
+                    <label for="allDay" class="text-sm text-gray-700">Toute la journée</label>
                 </div>
 
-                <div class="flex justify-end space-x-2">
-                    <button type="button" id="cancelBtn" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Annuler</button>
-                    <button type="submit" id="saveEventBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Ajouter</button>
+                <div class="flex justify-between pt-4">
+                    <button type="button" id="cancelBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+                        Annuler
+                    </button>
+                    <div class="flex space-x-2">
+                        <button type="button" id="deleteBtn" class="hidden px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md">
+                            Supprimer
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
+                            Enregistrer
+                        </button>
+                    </div>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
@@ -106,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('eventModal');
     const addEventBtn = document.getElementById('addEventBtn');
     const cancelBtn = document.getElementById('cancelBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
     const eventForm = document.getElementById('eventForm');
 
     const eventTitleInput = document.getElementById('eventTitle');
@@ -115,12 +162,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const endTimeInput = document.getElementById('endTime');
     const allDayCheckbox = document.getElementById('allDay');
 
-    // Création bouton supprimer (qu’on ajoute dynamiquement dans le modal)
-    let deleteBtn = null;
+    let currentEvent = null;
 
-    let currentEvent = null; // Pour savoir si on édite un événement existant
-
-    // Init FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 'auto',
@@ -131,191 +174,123 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        events: [
-            {
-                id: '1',
-                title: 'Réunion',
-                start: '2025-06-14T10:00:00',
-                end: '2025-06-14T12:00:00'
-            },
-            {
-                id: '2',
-                title: 'Projet à rendre',
-                start: '2025-06-20'
-            }
-        ],
-        dateClick: function(info) {
+        events: [],
+        dateClick(info) {
             openModal(info.dateStr);
         },
-        eventClick: function(info) {
+        eventClick(info) {
             openModal(null, info.event);
         }
     });
 
-    // Ouvrir modal (date pour ajout, event pour édition)
     function openModal(date = null, event = null) {
         resetForm();
-
         currentEvent = event;
 
         if (event) {
-            // Edition : pré-remplir avec les données de l'événement
             eventTitleInput.value = event.title;
-
-            const start = event.start;
-            const end = event.end || event.start; // si pas de end
+            startDateInput.value = event.start.toISOString().slice(0, 10);
+            endDateInput.value = (event.end || event.start).toISOString().slice(0, 10);
 
             allDayCheckbox.checked = event.allDay;
-
-            startDateInput.value = start.toISOString().slice(0,10);
-            endDateInput.value = end.toISOString().slice(0,10);
+            deleteBtn.classList.remove('hidden');
 
             if (!event.allDay) {
-                startTimeInput.value = start.toTimeString().slice(0,5);
-                endTimeInput.value = end.toTimeString().slice(0,5);
-                startTimeInput.disabled = false;
-                endTimeInput.disabled = false;
+                startTimeInput.value = event.start.toTimeString().slice(0, 5);
+                endTimeInput.value = (event.end || event.start).toTimeString().slice(0, 5);
             } else {
                 startTimeInput.value = '';
                 endTimeInput.value = '';
-                startTimeInput.disabled = true;
-                endTimeInput.disabled = true;
             }
 
-            addDeleteButton();
+            toggleTimeInputs(event.allDay);
         } else {
-            // Ajout : on met date si présent
+            deleteBtn.classList.add('hidden');
             if (date) {
                 startDateInput.value = date;
                 endDateInput.value = date;
             }
-            allDayCheckbox.checked = false;
-            startTimeInput.disabled = false;
-            endTimeInput.disabled = false;
-
-            removeDeleteButton();
         }
 
         modal.classList.remove('hidden');
+        modal.classList.add('flex');
     }
 
-    // Reset formulaire et état
     function resetForm() {
         eventForm.reset();
-        startTimeInput.disabled = false;
-        endTimeInput.disabled = false;
         currentEvent = null;
     }
 
-    // Gestion checkbox allDay
-    allDayCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            startTimeInput.disabled = true;
-            endTimeInput.disabled = true;
-            startTimeInput.value = '';
-            endTimeInput.value = '';
-        } else {
-            startTimeInput.disabled = false;
-            endTimeInput.disabled = false;
+    function toggleTimeInputs(disabled) {
+        startTimeInput.disabled = disabled;
+        endTimeInput.disabled = disabled;
+    }
+
+    allDayCheckbox.addEventListener('change', function () {
+        toggleTimeInputs(this.checked);
+    });
+
+    addEventBtn.addEventListener('click', () => openModal());
+
+    cancelBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    });
+
+    deleteBtn.addEventListener('click', () => {
+        if (currentEvent && confirm('Supprimer cet événement ?')) {
+            currentEvent.remove();
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
     });
 
-    // Ouvrir modal via bouton "Ajouter un événement"
-    addEventBtn.addEventListener('click', function() {
-        openModal();
-    });
-
-    // Fermer modal sans rien faire
-    cancelBtn.addEventListener('click', function() {
-        modal.classList.add('hidden');
-    });
-
-    // Soumettre formulaire (ajout ou édition)
-    eventForm.addEventListener('submit', function(e) {
+    eventForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const title = eventTitleInput.value.trim();
-        if (!title) {
-            alert('Le titre est obligatoire.');
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+        const isAllDay = allDayCheckbox.checked;
+
+        if (!title || !startDate || !endDate) {
+            alert('Remplis tous les champs obligatoires.');
             return;
         }
 
-        let startDate = startDateInput.value;
-        let endDate = endDateInput.value;
-        if (!startDate || !endDate) {
-            alert('Les dates de début et fin sont obligatoires.');
-            return;
-        }
+        let start = startDate;
+        let end = endDate;
 
-        let startDateTime = startDate;
-        let endDateTime = endDate;
-
-        if (!allDayCheckbox.checked) {
+        if (!isAllDay) {
             const startTime = startTimeInput.value;
             const endTime = endTimeInput.value;
-
             if (!startTime || !endTime) {
-                alert('Les heures de début et fin sont obligatoires pour un événement horaire.');
+                alert('Heures requises pour événement horaire.');
                 return;
             }
 
-            startDateTime += 'T' + startTime;
-            endDateTime += 'T' + endTime;
-
-            if (endDateTime <= startDateTime) {
-                alert('La date/heure de fin doit être postérieure à la date/heure de début.');
-                return;
-            }
+            start += 'T' + startTime;
+            end += 'T' + endTime;
         }
 
         if (currentEvent) {
-            // Edition : modifier event existant
             currentEvent.setProp('title', title);
-            currentEvent.setStart(startDateTime);
-            currentEvent.setEnd(endDateTime);
-            currentEvent.setAllDay(allDayCheckbox.checked);
+            currentEvent.setStart(start);
+            currentEvent.setEnd(end);
+            currentEvent.setAllDay(isAllDay);
         } else {
-            // Ajout
             calendar.addEvent({
-                id: String(Date.now()), // id unique simple
-                title: title,
-                start: startDateTime,
-                end: endDateTime,
-                allDay: allDayCheckbox.checked
+                id: String(Date.now()),
+                title,
+                start,
+                end,
+                allDay: isAllDay,
             });
         }
 
         modal.classList.add('hidden');
+        modal.classList.remove('flex');
     });
-
-    // Ajouter bouton supprimer dans le modal
-    function addDeleteButton() {
-        if (!deleteBtn) {
-            deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Supprimer';
-            deleteBtn.type = 'button';
-            deleteBtn.className = 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 mr-2';
-            deleteBtn.style.marginRight = 'auto';
-            deleteBtn.addEventListener('click', function() {
-                if (currentEvent && confirm('Voulez-vous vraiment supprimer cet événement ?')) {
-                    currentEvent.remove();
-                    modal.classList.add('hidden');
-                }
-            });
-
-            // Insérer avant les boutons annuler / sauvegarder
-            const btnContainer = eventForm.querySelector('div.flex.justify-end');
-            btnContainer.insertBefore(deleteBtn, btnContainer.firstChild);
-        }
-    }
-
-    // Enlever bouton supprimer
-    function removeDeleteButton() {
-        if (deleteBtn && deleteBtn.parentNode) {
-            deleteBtn.parentNode.removeChild(deleteBtn);
-            deleteBtn = null;
-        }
-    }
 
     calendar.render();
 });

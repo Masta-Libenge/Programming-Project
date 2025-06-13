@@ -19,7 +19,7 @@
         <button
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
             style="width: 100%; margin-bottom: 1rem; padding: 0.9rem; font-size: 1rem; font-weight: 600;
-                   border: none; border-radius: var(--radius); background-color: var(--accent); color: white;
+                   border: none; border-radius: var(--radius); background-color: var(--accent); color: black;
                    cursor: pointer; transition: background 0.3s ease, transform 0.2s ease;">
             Uitloggen
         </button>

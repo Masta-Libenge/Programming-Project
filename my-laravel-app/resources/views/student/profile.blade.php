@@ -3,7 +3,7 @@
 @section('title', 'Profiel')
 
 @section('content')
-<div class="px-6 pt-32 pb-20 bg-white min-h-screen text-gray-800">
+<div class="px-6 pt-32 pb-20 bg-white h-screen text-gray-800">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-4xl font-bold text-blue-800 mb-10">Mijn Profiel</h1>
 
