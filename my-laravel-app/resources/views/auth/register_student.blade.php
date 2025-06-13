@@ -1,54 +1,164 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Registreren als student – CareerLaunch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-@section('title', 'Registreren als student')
+    <style>
+        :root {
+            --accent: #1e40af;
+            --bg: #f1f5f9;
+            --text: #0f172a;
+            --muted: #64748b;
+            --radius: 18px;
+        }
 
-@section('content')
-<div class="flex items-center justify-center min-h-screen bg-white px-4">
-    <div class="w-full max-w-md p-8 rounded-md shadow-md border border-gray-200">
-        <h2 class="text-3xl font-semibold text-blue-600 mb-8 text-center">Student Registratie</h2>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        <form method="POST" action="{{ route('registerStudent.submit') }}" class="space-y-6">
-            @csrf
+        body {
+            background-color: var(--bg);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text);
+        }
 
-            <input 
-                type="text" 
-                name="name" 
-                placeholder="Naam" 
-                required
-                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            >
-            <input 
-                type="email" 
-                name="email" 
-                placeholder="E-mail" 
-                required
-                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            >
-            <input 
-                type="password" 
-                name="password" 
-                placeholder="Wachtwoord" 
-                required
-                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            >
-            <input 
-                type="password" 
-                name="password_confirmation" 
-                placeholder="Herhaal wachtwoord" 
-                required
-                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            >
+        .form-container {
+            background: white;
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 480px;
+        }
 
-            <button 
-                type="submit" 
-                class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
-            >
-                Registreren
-            </button>
-        </form>
-        <div class="mt-6 text-center">
-            <p class="text-gray-600">Al een account? <a href="{{ route('login.student') }}" class="text-blue-600 hover:underline">Inloggen</a></p>
+        .form-container h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-container p {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+            display: block;
+            margin-top: 1.2rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            background-color: #f9fafb;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            background-color: var(--accent);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    {{-- 🔙 Back to homepage --}}
+    <a href="{{ url('/login/student') }}" class="back-button">← Terug</a>
+
+    <h1>Student registratie</h1>
+    <p>Maak een studentenaccount aan om te starten</p>
+
+    {{-- ✅ Show validation errors if they exist --}}
+    @php
+        $allErrors = $errors->all();
+    @endphp
+
+    @if (count($allErrors) > 0)
+        <div class="error-message">
+            <ul style="margin: 0; padding-left: 1rem;">
+                @foreach ($allErrors as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div>
+    @endif
+
+    <form method="POST" action="{{ url('/register/student') }}">
+        @csrf
+
+        <label for="name">Naam</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="email">E-mailadres</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="password">Wachtwoord</label>
+        <input type="password" name="password" id="password" required>
+
+        <label for="password_confirmation">Herhaal wachtwoord</label>
+        <input type="password" name="password_confirmation" id="password_confirmation" required>
+
+        <button type="submit">Registreren</button>
+    </form>
 </div>
-@endsection
+
+</body>
+</html>

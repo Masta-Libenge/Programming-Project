@@ -9,6 +9,39 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+:root {
+    --black: #0f172a;
+    --blue: #2563eb;
+    --bg: #f8fafc;
+    --text-muted: #64748b;
+    --radius: 20px;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.buttons a {
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius);
+    background-color: var(--blue);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.buttons a:hover {
+    cursor: pointer;
+    background-color: #1e40af;
+    transform: translateY(-2px);
+}
+
+
 /* General mobile tweaks for small screens */
 @media (max-width: 480px) {
     .login-container,

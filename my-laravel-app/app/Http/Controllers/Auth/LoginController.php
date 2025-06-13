@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Hash;
 // Define the LoginController to manage different user login types.
 class LoginController extends Controller
 {
-    public function login(Request $request) {
+    public function studentLogin(Request $request) {
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',

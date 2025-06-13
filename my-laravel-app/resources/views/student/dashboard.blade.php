@@ -1,19 +1,35 @@
-<header>
-    <h1>Welkom, {{ auth()->user()->name }}</h1>
-    <p class="subtitle">Je bent ingelogd als student</p>
+@extends('layouts.app')
 
-    {{-- 🔒 Logout form (hidden, triggered by button below) --}}
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
+@section('content')
+    <div class="form-container" style="margin-top: 3rem;">
+        <h1 style="font-size: 2rem; color: var(--text); font-weight: 700; text-align: center; margin-bottom: 0.5rem;">
+            Welkom, {{ auth()->user()->name }}
+        </h1>
 
-    {{-- 🔘 Logout button --}}
-    <button class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        Uitloggen
-    </button>
+        <p style="text-align: center; font-size: 1rem; color: var(--muted); margin-bottom: 2rem;">
+            Je bent ingelogd als student
+        </p>
 
-    {{-- 👤 Profile button – sends the student to their editable profile --}}
-    <a href="{{ route('student.profile') }}" class="logout-btn" style="display: inline-block; margin-top: 0.5rem; text-align: center;">
-        Bekijk je profiel
-    </a>
-</header>
+        {{-- 🔒 Logout form (hidden) --}}
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+
+        {{-- 🔘 Logout button --}}
+        <button
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+            style="width: 100%; margin-bottom: 1rem; padding: 0.9rem; font-size: 1rem; font-weight: 600;
+                   border: none; border-radius: var(--radius); background-color: var(--accent); color: white;
+                   cursor: pointer; transition: background 0.3s ease, transform 0.2s ease;">
+            Uitloggen
+        </button>
+
+        {{-- 👤 Profile link --}}
+        <a href="{{ route('student.profile') }}"
+           style="display: block; text-align: center; font-weight: 500; color: var(--accent); text-decoration: none;
+                  border: 1px solid var(--accent); padding: 0.75rem 1.25rem; border-radius: var(--radius);
+                  transition: background-color 0.3s ease, color 0.3s ease;">
+            Bekijk je profiel
+        </a>
+    </div>
+@endsection

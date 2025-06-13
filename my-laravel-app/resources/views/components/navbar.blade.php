@@ -1,11 +1,27 @@
-<nav class="fixed top-0 left-0 right-0 bg-blue-900 shadow-md z-50 h-16">
-    <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-        <a href="{{ route('keuze') }}" class="text-white font-bold text-lg">MijnPlatform</a>
-        <ul class="flex space-x-6">
-            <li><a href="{{ route('profil.student') }}" class="text-white hover:text-blue-300 font-medium">Profil</a></li>
-            <li><a href="{{ route('planning.student') }}" class="text-white hover:text-blue-300 font-medium">Planning</a></li>
-            <li><a href="{{ route('mailbox') }}" class="text-white hover:text-blue-300 font-medium">MailBox</a></li>
+<nav class="fixed top-0 left-0 right-0 bg-white shadow-md z-50 h-16 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+        <a href="{{ url('/') }}" class="text-[--accent] font-bold text-xl tracking-tight">CareerLaunch</a>
+        <ul class="flex space-x-6 items-center">
+            <li>
+                <a href="{{ route('student.profile') }}" class="text-[--text] hover:text-[--accent] font-medium transition-colors">
+                    Profiel
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('student.planning') }}" class="text-[--text] hover:text-[--accent] font-medium transition-colors">
+                    Planning
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('student.mailbox') }}" class="text-[--text] hover:text-[--accent] font-medium transition-colors">
+                    Mailbox
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('student.dashboard') }}" class="text-[--text] hover:text-[--accent] font-medium transition-colors">
+                    Dashboard
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
-

@@ -7,7 +7,9 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VacatureController;
 use App\Models\User;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\MailboxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,10 +103,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 });
-use App\Http\Controllers\Student\ProfileController;
 
-Route::middleware(['auth', 'student'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/student/profile', [ProfileController::class, 'edit'])->name('student.profile');
     Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+
+    // Planning 
+    Route::get('/student/planning', [PlanningController::class, 'showStudentPlanning'])->name('student.planning');
+    Route::get('/student/mailbox', [MailboxController::class, 'index'])->name('student.mailbox');
 });
+
+
 
