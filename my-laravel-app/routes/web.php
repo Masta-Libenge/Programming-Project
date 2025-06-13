@@ -96,7 +96,7 @@ Route::post('/logout', function () {
 Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
 Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
