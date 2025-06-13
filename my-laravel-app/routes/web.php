@@ -101,3 +101,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 });
+use App\Http\Controllers\Student\ProfileController;
+
+Route::middleware(['auth', 'student'])->group(function () {
+    Route::get('/student/profile', [ProfileController::class, 'edit'])->name('student.profile');
+    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+});
+
