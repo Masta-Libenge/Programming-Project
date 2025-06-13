@@ -2,81 +2,149 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Registreren als bedrijf</title>
+    <title>Registreren als bedrijf – CareerLaunch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
-        body {
+        :root {
+            --accent: #1e40af;
+            --bg: #f1f5f9;
+            --text: #0f172a;
+            --muted: #64748b;
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #e0f7fa, #fff);
-            height: 100vh;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            text-align: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text);
         }
 
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-        }
-
-        form {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        .form-container {
+            background: white;
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
             width: 100%;
-            max-width: 400px;
+            max-width: 480px;
+        }
+
+        .form-container h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-container p {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
         }
 
         label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
             display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            text-align: left;
+            margin-top: 1.2rem;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
+        input {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            padding: 0.85rem;
             font-size: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            background-color: #f9fafb;
         }
 
         button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #3490dc;
-            color: white;
-            border: none;
-            border-radius: 6px;
+            width: 100%;
+            margin-top: 2rem;
+            padding: 0.9rem;
             font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            background-color: var(--accent);
+            color: white;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
-            background-color: #2779bd;
-            transform: scale(1.05);
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent);
+            color: white;
         }
     </style>
 </head>
 <body>
-    <h1>Registreren als Bedrijf</h1>
-    <form method="POST" action="{{ url('/register/student') }}">
+
+<div class="form-container">
+    {{-- 🔙 Back to homepage --}}
+    <a href="{{ url('/login/bedrijf') }}" class="back-button">← Terug</a>
+
+    <h1>Registreer je bedrijf</h1>
+    <p>Vul de onderstaande gegevens in om te starten</p>
+
+    {{-- ✅ Show all validation errors if any --}}
+    @if ($errors->any())
+        <div class="error-message">
+            <ul style="margin: 0; padding-left: 1rem;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- 🧾 Registration form --}}
+    <form method="POST" action="{{ url('/register/bedrijf') }}">
         @csrf
 
-        <label for="name">Naam bedrijf</label>
-        <input type="text" name="name" id="name" required>
+        <label for="company_name">Bedrijfsnaam</label>
+        <input type="text" name="company_name" id="company_name" required>
 
-        <label for="email">Email</label>
+        <label for="email">E-mailadres</label>
         <input type="email" name="email" id="email" required>
 
         <label for="password">Wachtwoord</label>
@@ -87,5 +155,7 @@
 
         <button type="submit">Registreren</button>
     </form>
+</div>
+
 </body>
 </html>
