@@ -1,84 +1,98 @@
 <?php
 
-// Define the namespace for this controller class so it can be autoloaded correctly.
+// Define the namespace so Laravel can autoload this controller.
 namespace App\Http\Controllers\Auth;
 
-// Import the base Controller class.
+// Base Controller import.
 use App\Http\Controllers\Controller;
 
-// Import the Request class to handle HTTP requests.
+// Handles incoming HTTP requests.
 use Illuminate\Http\Request;
 
-// Import the User model to interact with the users table in the database.
+// User model to query the users table.
 use App\Models\User;
 
-// Import the Hash facade to securely check hashed passwords.
+// Hash facade for secure password checking.
 use Illuminate\Support\Facades\Hash;
 
-// Define the LoginController class that extends the base Controller.
+// Define the LoginController to manage different user login types.
 class LoginController extends Controller
 {
-    // 🎓 Method for handling student login logic
+    // 🎓 Handles login logic for students
     public function studentlogin(Request $request)
     {
-        // Validate that the 'email' and 'password' fields are provided and the email is properly formatted.
+        // Validate the submitted email and password.
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Try to find a user in the database by the provided email address.
+        // Find the user by email.
         $user = User::where('email', $request->email)->first();
 
-        // Check if no user was found, or if the password is incorrect.
-        if (!$user || !Hash::check($request->password, $user->password) || $user->type !== 'student') {
-            // If validation fails, redirect back with an error message.
+        // If no user found or password is incorrect, return error.
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors(['login' => 'Invalid credentials']);
         }
 
-        // If login is successful, log the user in using Laravel's auth system.
-        auth()->login($user);
+        // If the user is an admin, redirect to the admin dashboard instead.
+        if ($user->type === 'admin') {
+            auth()->login($user);
+            return redirect()->route('admin.dashboard'); // 👈 Make sure this route exists
+        }
 
-        // Redirect the user to the student dashboard route.
+        // If the user is not a student, block the login attempt.
+        if ($user->type !== 'student') {
+            return back()->withErrors(['login' => 'You are not authorized to log in as a student.']);
+        }
+
+        // All checks passed — log in the student.
+        auth()->login($user);
         return redirect()->route('student.dashboard');
     }
 
-    // 🏢 Method for handling company (bedrijf) login logic
+    // 🏢 Handles login logic for companies (bedrijven)
     public function bedrijfLogin(Request $request)
     {
-        // Validate that the 'email' and 'password' fields are filled in correctly.
+        // Validate the email and password fields.
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Look up the user with the given email in the database.
+        // Try to find the user by email.
         $user = User::where('email', $request->email)->first();
 
-        // Check if the user doesn't exist, the password is wrong, or the user is not of type 'bedrijf'.
-        if (!$user || !Hash::check($request->password, $user->password) || $user->type !== 'bedrijf') {
-            // If any of the conditions fail, show an error message specific to company login.
-            return back()->withErrors(['login' => 'Ongeldige logingegevens voor bedrijf.']);
+        // Reject if no user or wrong password.
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['login' => 'Ongeldige logingegevens.']);
         }
 
-        // Log in the user if all checks pass.
-        auth()->login($user);
+        // Redirect admins to their own dashboard.
+        if ($user->type === 'admin') {
+            auth()->login($user);
+            return redirect()->route('admin.dashboard'); // 👈 Make sure this route exists
+        }
 
-        // Redirect to the company (bedrijf) dashboard.
+        // Block access if the user is not a company.
+        if ($user->type !== 'bedrijf') {
+            return back()->withErrors(['login' => 'Je bent niet gemachtigd om als bedrijf in te loggen.']);
+        }
+
+        // Log in the company user.
+        auth()->login($user);
         return redirect()->route('bedrijf.dashboard');
     }
 
-    // 📄 Show the login form view for students
+    // 📄 Returns the student login form view
     public function showStudentLoginForm()
     {
-        // Return the view that shows the student login form.
         return view('auth.login_student');
     }
 
-    // 📄 Show the login form view for companies
+    // 📄 Returns the company login form view
     public function showBedrijfLoginForm()
     {
-        // Return the view that shows the company login form.
         return view('auth.login_bedrijf');
     }
 }
