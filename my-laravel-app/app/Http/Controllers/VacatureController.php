@@ -51,8 +51,25 @@ class VacatureController extends Controller
     {
         // Fetch all vacatures from the database
         $vacatures = Vacature::all();
+        $categories = [
+            'Alle vacatures',
+            'Stage',
+            'Werknemer',
+        ];
 
         // Return the view that lists all vacatures, passing the vacatures data
-        return view('auth.homepage', compact('vacatures'));
+        return view('auth.homepage', compact('vacatures', 'categories'));
+    }
+
+    public function solliciteer(Request $request, Vacature $vacature)
+    {
+        $user = auth()->user();
+
+        if (!$user->sollicitaties->contains($vacature->id)) {
+            $user->sollicitaties()->attach($vacature->id);
+            return redirect()->back()->with('success', 'Je hebt succesvol gesolliciteerd!');
+        }
+
+        return redirect()->back()->with('info', 'Je hebt al op deze vacature gesolliciteerd.');
     }
 }

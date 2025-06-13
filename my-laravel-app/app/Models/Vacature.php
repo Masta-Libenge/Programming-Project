@@ -10,4 +10,16 @@ class Vacature extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'desc', 'type', 'color'];
+
+    public function bedrijf()
+    {
+        return $this->belongsTo(User::class, 'bedrijf_id');
+    }
+
+    public function sollicitanten()
+    {
+        return $this->belongsToMany(User::class, 'sollicitaties');
+    }
+
+
 }

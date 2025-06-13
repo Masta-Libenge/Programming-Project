@@ -40,6 +40,11 @@
                 <a href="{{ url('/') }}" class="text-[--accent] font-bold text-xl tracking-tight">CareerLaunch</a>
                 <ul class="flex space-x-6 items-center">
                     <li>
+                        <a href="{{ route('vacatures.index') }}" class="text-[--text] hover:text-[--accent] font-medium transition-colors">
+                            Vacatures
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('bedrijf.dashboard') }}" class="text-[--text] hover:text-[--accent] font-medium transition-colors">
                             Dashboard
                         </a>

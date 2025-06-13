@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');                    // titel vacature
             $table->text('desc');                       // beschrijving
-            $table->string('type');                     // stage / werknemer
+            $table->enum('type', ['Stage', 'Werknemer']); // stage / werknemer
             $table->string('color')->default('#ffffff'); // kaartkleur
+            $table->unsignedBigInteger('bedrijf_id');
+            $table->foreign('bedrijf_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

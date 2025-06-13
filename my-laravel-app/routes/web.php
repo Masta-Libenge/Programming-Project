@@ -48,7 +48,6 @@ Route::get('/register_student', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', BedrijfMiddleware::class])->group(function () {
-    Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
     
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
@@ -60,6 +59,10 @@ Route::middleware(['auth', BedrijfMiddleware::class])->group(function () {
         $students = User::where('type', 'student')->get();
         return view('bedrijf.bedrijfdashboard', compact('students'));
     })->name('bedrijf.dashboard');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
 });
 
 
@@ -114,6 +117,10 @@ Route::middleware(['auth', StudentMiddleware::class])->group(function () {
     Route::get('/student/mailbox', [MailboxController::class, 'index'])->name('student.mailbox');
 
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+
+    Route::post('/vacatures/{vacature}/solliciteer', [VacatureController::class, 'solliciteer'])->name('vacatures.solliciteer');
+
+
 });
 
 

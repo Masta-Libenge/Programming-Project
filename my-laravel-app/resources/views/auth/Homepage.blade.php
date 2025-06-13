@@ -3,126 +3,43 @@
 @section('title', 'Vacatures')
 
 @section('content')
-<style>
-    :root {
-        --accent: #1e40af;
-        --bg: #f1f5f9;
-        --text: #0f172a;
-        --muted: #64748b;
-        --radius: 18px;
-    }
+<div class="container mx-auto px-6 py-8">
 
-    body {
-        margin-top: 3rem;
-        background-color: var(--bg);
-        color: var(--text);
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    .vacatures-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 3rem 2rem;
-    }
-
-    .vacatures-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .vacatures-header h2 {
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: var(--accent);
-    }
-
-    .filters {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .filters input,
-    .filters select {
-        padding: 0.85rem 1rem;
-        font-size: 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: var(--radius);
-        background-color: #f9fafb;
-        min-width: 250px;
-    }
-
-    .vacature-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: var(--radius);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e2e8f0;
-        margin-bottom: 1.5rem;
-    }
-
-    .vacature-card h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--accent);
-        margin-bottom: 0.5rem;
-    }
-
-    .vacature-card p {
-        color: var(--text);
-    }
-
-    .vacature-card button {
-        margin-top: 1rem;
-        padding: 0.75rem 1.4rem;
-        background-color: var(--accent);
-        color: white;
-        border: none;
-        border-radius: var(--radius);
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .vacature-card button:hover {
-        background-color: #1d4ed8;
-        transform: translateY(-2px);
-    }
-</style>
-
-<div class="vacatures-container">
-    <div class="vacatures-header">
-        <h2>Vacatures beschikbaar</h2>
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-blue-600">Vacatures beschikbaar</h2>
     </div>
 
-    <div class="filters">
-        <input type="text" id="searchInput" placeholder="Zoek bedrijf...">
-        <select id="categoryFilter">
-            <option value="all">Alle categorieën</option>
-            <option value="IT">IT</option>
-            <option value="Gezondheid">Gezondheid</option>
-            <option value="Design">Design</option>
-            <option value="Educatie">Educatie</option>
-            <option value="Energie">Energie</option>
+    <div class="flex justify-center gap-4 mb-8">
+        <input type="text" id="searchInput" placeholder="Zoek bedrijf..." class="py-2 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-80">
+        <select id="categoryFilter" class="py-2 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-80">
+            @foreach($categories as $category)
+                <option value="{{ $category }}">{{ $category }}</option>
+            @endforeach
         </select>
     </div>
 
-    <div id="companyList">
-        @foreach([
-            ['name' => 'Oscorp', 'desc' => 'Ontwikkelt vaccins en geneesmiddelen om ziekten te voorkomen.', 'cat' => 'Gezondheid'],
-            ['name' => 'TechNova', 'desc' => 'IT-bedrijf voor maatwerksoftware en digitale oplossingen.', 'cat' => 'IT'],
-            ['name' => 'Stark Industries', 'desc' => 'High-tech oplossingen voor de defensie- en energiesector.', 'cat' => 'IT'],
-            ['name' => 'NeuroSoft', 'desc' => 'AI-gedreven oplossingen voor de gezondheidszorgsector.', 'cat' => 'Gezondheid'],
-            ['name' => 'GreenPulse', 'desc' => 'Start-up die slimme energiesystemen ontwikkelt.', 'cat' => 'Energie'],
-            ['name' => 'PixelCore', 'desc' => 'Design studio gespecialiseerd in UX/UI en branding.', 'cat' => 'Design'],
-            ['name' => 'EduLink', 'desc' => 'Onderwijsplatform voor interactieve online leerervaringen.', 'cat' => 'Educatie'],
-        ] as $company)
-            <div class="vacature-card" data-category="{{ $company['cat'] }}" data-name="{{ $company['name'] }}">
-                <h3>{{ $company['name'] }}</h3>
-                <p>{{ $company['desc'] }}</p>
-                <button>Solliciteer</button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        @foreach($vacatures as $vacature)
+            <div class="vacature-card w-[350px] h-[350px] bg-white rounded-lg shadow-md border border-gray-200 flex flex-col justify-between p-4" data-category="{{ $vacature['type'] }}" data-name="{{ $vacature['title'] }}">
+                <div class="flex justify-between items-start mb-3">
+                    <h2 class="text-2xl font-semibold text-blue-600">{{ $vacature['title'] }}</h2>
+                    <p class="text-2xl font-semibold italic text-gray-700 text-sm">{{ $vacature->bedrijf->name }}</p>
+                </div>
+                <p class="text-gray-700 text-sm flex-grow mb-4">{{ \Illuminate\Support\Str::limit($vacature['desc'], 450, '...') }}</p>
+                <div class="mt-auto flex items-center buttons">
+                @php
+                    $alreadyApplied = auth()->user()->sollicitaties->contains($vacature->id);
+                @endphp
+
+                <form action="{{ route('vacatures.solliciteer', $vacature->id) }}" method="POST" class="w-full">
+                    @csrf
+                    <button type="submit"
+                        class="w-full cursor-pointer {{ $alreadyApplied ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }} text-white font-semibold py-2 px-4 rounded"
+                        {{ $alreadyApplied ? 'disabled' : '' }}>
+                        {{ $alreadyApplied ? 'Al gesolliciteerd' : 'Solliciteer' }}
+                    </button>
+                </form>
+                </div>
             </div>
         @endforeach
     </div>
@@ -144,7 +61,7 @@
             const cat = card.getAttribute('data-category');
 
             const matchesSearch = name.includes(search);
-            const matchesCategory = category === 'all' || cat === category;
+            const matchesCategory = category === 'Alle vacatures' || cat === category;
 
             card.style.display = (matchesSearch && matchesCategory) ? 'block' : 'none';
         });

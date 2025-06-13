@@ -46,4 +46,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function sollicitaties()
+    {
+        return $this->belongsToMany(Vacature::class, 'sollicitaties');
+    }
+
 }
