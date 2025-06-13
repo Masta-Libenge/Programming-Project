@@ -31,7 +31,7 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
 
         // Check if no user was found, or if the password is incorrect.
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password) || $user->type !== 'student') {
             // If validation fails, redirect back with an error message.
             return back()->withErrors(['login' => 'Invalid credentials']);
         }

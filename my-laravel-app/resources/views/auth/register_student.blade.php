@@ -89,6 +89,15 @@
             background-color: #1d4ed8;
             transform: translateY(-1px);
         }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -96,6 +105,21 @@
 <div class="form-container">
     <h1>Student registratie</h1>
     <p>Maak een studentenaccount aan om te starten</p>
+
+    {{-- ✅ Show validation errors if they exist --}}
+    @php
+        $allErrors = $errors->all();
+    @endphp
+
+    @if (count($allErrors) > 0)
+        <div class="error-message">
+            <ul style="margin: 0; padding-left: 1rem;">
+                @foreach ($allErrors as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form method="POST" action="{{ url('/register/student') }}">
         @csrf
