@@ -32,7 +32,7 @@ class LoginController extends Controller
 
         // If no user found or password is incorrect, return error.
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['login' => 'Invalid credentials']);
+            return back()->withErrors(['login' => 'Ongeldige logingegevens']);
         }
 
         // If the user is an admin, redirect to the admin dashboard instead.
@@ -43,7 +43,7 @@ class LoginController extends Controller
 
         // If the user is not a student, block the login attempt.
         if ($user->type !== 'student') {
-            return back()->withErrors(['login' => 'You are not authorized to log in as a student.']);
+            return back()->withErrors(['login' => 'Je bent niet gemachtigd om als student in te loggen']);
         }
 
         // All checks passed — log in the student.
