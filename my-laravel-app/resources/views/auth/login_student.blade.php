@@ -102,6 +102,15 @@
         .register-link:hover {
             text-decoration: underline;
         }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +118,30 @@
 <div class="login-container">
     <h1>Student login</h1>
     <p>Log in om toegang te krijgen tot jouw persoonlijke dashboard</p>
+
+    {{-- ✅ Show the specific login error --}}
+    @if ($errors->has('login'))
+        <div class="error-message" style="text-align: center;">
+            {{ $errors->first('login') }}
+        </div>
+    @endif
+
+    {{-- ✅ Show other validation errors only if they exist (and exclude the login one) --}}
+    @php
+        $allErrors = $errors->all();
+        $loginError = $errors->first('login');
+        $otherErrors = array_filter($allErrors, fn($e) => $e !== $loginError);
+    @endphp
+
+    @if (count($otherErrors) > 0)
+        <div class="error-message" style="text-align: left;">
+            <ul style="margin: 0; padding-left: 1rem;">
+                @foreach ($otherErrors as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form method="POST" action="{{ url('/login/student') }}">
         @csrf
