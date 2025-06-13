@@ -113,8 +113,21 @@
     </style>
 </head>
 <body>
-
     <div class="login-container">
+        <a href="{{ url('/') }}" class="back-button" style="
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        ">
+            ← Terug
+        </a>
+
         <h1>Bedrijf login</h1>
         <p>Log in om vacatures te beheren en studenten te bereiken</p>
 
@@ -143,6 +156,5 @@
             Nog geen account? Registreer hier
         </a>
     </div>
-
 </body>
 </html>

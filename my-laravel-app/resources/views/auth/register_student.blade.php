@@ -98,11 +98,31 @@
             margin-bottom: 1rem;
             font-size: 0.95rem;
         }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
     </style>
 </head>
 <body>
 
 <div class="form-container">
+    {{-- 🔙 Back to homepage --}}
+    <a href="{{ url('/') }}" class="back-button">← Terug</a>
+
     <h1>Student registratie</h1>
     <p>Maak een studentenaccount aan om te starten</p>
 
