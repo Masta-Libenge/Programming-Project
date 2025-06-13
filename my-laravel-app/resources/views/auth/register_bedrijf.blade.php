@@ -89,6 +89,15 @@
             background-color: #1d4ed8;
             transform: translateY(-1px);
         }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +106,18 @@
     <h1>Registreer je bedrijf</h1>
     <p>Vul de onderstaande gegevens in om te starten</p>
 
+    {{-- ✅ Show all validation errors if any --}}
+    @if ($errors->any())
+        <div class="error-message">
+            <ul style="margin: 0; padding-left: 1rem;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- 🧾 Registration form --}}
     <form method="POST" action="{{ url('/register/bedrijf') }}">
         @csrf
 

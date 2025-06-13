@@ -119,14 +119,14 @@
     <h1>Student login</h1>
     <p>Log in om toegang te krijgen tot jouw persoonlijke dashboard</p>
 
-    {{-- ✅ Show the specific login error --}}
+    {{-- ✅ Show login-specific error (e.g. wrong credentials) --}}
     @if ($errors->has('login'))
         <div class="error-message" style="text-align: center;">
             {{ $errors->first('login') }}
         </div>
     @endif
 
-    {{-- ✅ Show other validation errors only if they exist (and exclude the login one) --}}
+    {{-- ✅ Show all other validation errors, if any --}}
     @php
         $allErrors = $errors->all();
         $loginError = $errors->first('login');
@@ -143,6 +143,7 @@
         </div>
     @endif
 
+    {{-- 🧾 Login form --}}
     <form method="POST" action="{{ url('/login/student') }}">
         @csrf
 
@@ -155,6 +156,7 @@
         <button type="submit">Inloggen</button>
     </form>
 
+    {{-- 🧭 Link to registration page --}}
     <a href="{{ url('/register_student') }}" class="register-link">
         Nog geen account? Registreer hier
     </a>

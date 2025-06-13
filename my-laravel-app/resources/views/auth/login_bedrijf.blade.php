@@ -102,6 +102,14 @@
         .register-link:hover {
             text-decoration: underline;
         }
+
+        .error-box {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +117,15 @@
     <div class="login-container">
         <h1>Bedrijf login</h1>
         <p>Log in om vacatures te beheren en studenten te bereiken</p>
+
+        {{-- 🛑 Error messages will show up here if something goes wrong --}}
+        @if ($errors->any())
+            <div class="error-box">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
         <form method="POST" action="{{ url('/login/bedrijf') }}">
             @csrf
