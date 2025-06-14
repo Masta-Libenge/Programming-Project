@@ -7,7 +7,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Import the Vacature model to interact with the vacatures table in the database
+use App\Models\Sollicitatie;
 use App\Models\Vacature;
+use App\Models\MailMessage;
+use Illuminate\Support\Facades\Auth;
 
 // Define the controller class responsible for managing vacatures (job posts)
 class VacatureController extends Controller
@@ -61,15 +64,33 @@ class VacatureController extends Controller
         return view('auth.homepage', compact('vacatures', 'categories'));
     }
 
-    public function solliciteer(Request $request, Vacature $vacature)
+    public function solliciteer(Request $request, $vacatureId)
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        $vacature = Vacature::findOrFail($vacatureId);
+        $bedrijf = $vacature->bedrijf;
 
-        if (!$user->sollicitaties->contains($vacature->id)) {
-            $user->sollicitaties()->attach($vacature->id);
-            return redirect()->back()->with('success', 'Je hebt succesvol gesolliciteerd!');
+        // Vérifie si l'étudiant a déjà postulé
+        if (Sollicitatie::where('user_id', $user->id)->where('vacature_id', $vacatureId)->exists()) {
+            return back()->with('error', 'Je hebt al gesolliciteerd voor deze vacature.');
         }
 
-        return redirect()->back()->with('info', 'Je hebt al op deze vacature gesolliciteerd.');
+        // Crée la sollicitation
+        Sollicitatie::create([
+            'user_id' => $user->id,
+            'vacature_id' => $vacatureId,
+        ]);
+
+        // Crée le "mail"
+        MailMessage::create([
+            'sender_id' => $user->id,
+            'receiver_id' => $bedrijf->id,
+            'sender_role' => 'student',
+            'receiver_role' => 'bedrijf',
+            'subject' => 'Nieuwe sollicitatie: ' . $vacature->title,
+            'body' => $user->name . ' heeft gesolliciteerd voor de vacature "' . $vacature->title . '".',
+        ]);
+
+        return redirect()->route('vacatures.index')->with('success', 'Sollicitatie verstuurd!');
     }
 }

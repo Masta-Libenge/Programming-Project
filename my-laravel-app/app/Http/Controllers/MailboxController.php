@@ -22,4 +22,5 @@ class MailboxController extends Controller
 
         return view('student.mailbox', compact('mails', 'role'));
     }
+
 }

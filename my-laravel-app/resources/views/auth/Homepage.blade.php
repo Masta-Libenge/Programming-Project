@@ -27,18 +27,18 @@
                 </div>
                 <p class="text-gray-700 text-sm flex-grow mb-4">{{ \Illuminate\Support\Str::limit($vacature['desc'], 450, '...') }}</p>
                 <div class="mt-auto flex items-center buttons">
-                @php
-                    $alreadyApplied = auth()->user()->sollicitaties->contains($vacature->id);
-                @endphp
+                    @php
+                        $alreadyApplied = auth()->user()->sollicitaties->contains($vacature->id);
+                    @endphp
 
-                <form action="{{ route('vacatures.solliciteer', $vacature->id) }}" method="POST" class="w-full">
-                    @csrf
-                    <button type="submit"
-                        class="w-full cursor-pointer {{ $alreadyApplied ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }} text-white font-semibold py-2 px-4 rounded"
-                        {{ $alreadyApplied ? 'disabled' : '' }}>
-                        {{ $alreadyApplied ? 'Al gesolliciteerd' : 'Solliciteer' }}
-                    </button>
-                </form>
+                    <form action="{{ route('vacature.solliciteer', $vacature->id) }}" method="POST" class="w-full">
+                        @csrf
+                        <button type="submit"
+                            class="w-full cursor-pointer {{ $alreadyApplied ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }} text-white font-semibold py-2 px-4 rounded"
+                            {{ $alreadyApplied ? 'disabled' : '' }}>
+                            {{ $alreadyApplied ? 'Al gesolliciteerd' : 'Solliciteer' }}
+                        </button>
+                    </form>
                 </div>
             </div>
         @endforeach

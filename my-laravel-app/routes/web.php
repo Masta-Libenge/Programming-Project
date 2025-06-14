@@ -12,6 +12,7 @@ use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\MailboxController;
 use App\Http\Middleware\StudentMiddleware;
 use App\Http\Middleware\BedrijfMiddleware;
+use App\Http\Controllers\SollicitatieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use App\Http\Middleware\BedrijfMiddleware;
 Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
 Route::get('/login/bedrijf', [LoginController::class, 'showBedrijfLoginForm'])->name('login.bedrijf');
 Route::post('/login/student', [LoginController::class, 'studentLogin']);
-Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin']);
+Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin'])->name('login_bedrijf.submit');
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +54,7 @@ Route::middleware(['auth', BedrijfMiddleware::class])->group(function () {
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
 
-   
+    Route::get('/bedrijf/mailbox', [MailboxController::class, 'index'])->name('bedrijf.mailbox');
 
     Route::get('/bedrijf/dashboard', function () {
         $students = User::where('type', 'student')->get();
@@ -118,7 +119,7 @@ Route::middleware(['auth', StudentMiddleware::class])->group(function () {
 
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
 
-    Route::post('/vacatures/{vacature}/solliciteer', [VacatureController::class, 'solliciteer'])->name('vacatures.solliciteer');
+    Route::post('/solliciteer/{vacature}', [VacatureController::class, 'solliciteer'])->name('vacature.solliciteer');
 
 
 });

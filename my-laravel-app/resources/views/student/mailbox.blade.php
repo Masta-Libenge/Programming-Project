@@ -2,37 +2,29 @@
 
 @section('title', 'Mailbox')
 
-@push('styles')
-<style>
-    .mailbox-container {
-        height: calc(100vh - 4rem);
-    }
-</style>
-@endpush
-
 @section('content')
-<div class="mailbox-container flex pt-20">
-
-    {{-- Liste des mails --}}
-    <div class="w-1/3 border-r border-gray-300 bg-white overflow-y-auto">
-        <div class="p-4 font-bold text-lg text-blue-800 border-b">Boîte de réception</div>
-
+<div class="flex pt-20 h-[calc(100vh-80px)] overflow-hidden">
+    {{-- Sidebar : Liste des mails --}}
+    <aside class="w-1/3 bg-gray-100 border-r border-gray-300 overflow-y-auto">
+        <h2 class="p-4 text-xl font-semibold text-blue-700 border-b">Boîte de réception</h2>
         <ul id="mailList">
-        @foreach($mails as $mail)
-            <li onclick="showMail({{ $mail->id }})" class="...">
-                <div class="font-semibold text-gray-800">
-                    {{ $mail->subject }} - {{ $mail->sender_name }}
-                </div>
-            </li>
-        @endforeach
+            @foreach($mails as $mail)
+                <li onclick="showMail({{ $mail->id }})" class="cursor-pointer px-4 py-3 border-b hover:bg-gray-100 transition">
+                    <div class="font-semibold text-gray-800">
+                        {{ $mail->subject }}
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        {{ $mail->sender_name }} – {{ \Carbon\Carbon::parse($mail->created_at)->format('d/m/Y H:i') }}
+                    </div>
+                </li>
+            @endforeach
         </ul>
-    </div>
+    </aside>
 
-    {{-- Contenu du mail sélectionné --}}
-    <div class="w-2/3 bg-white p-6 overflow-y-auto" id="mailContent">
-        <div class="text-gray-400 text-center">Sélectionnez un message à gauche</div>
-    </div>
-
+    {{-- Affichage du contenu du mail --}}
+    <section class="w-2/3 p-6 overflow-y-auto" id="mailContent">
+        <p class="text-gray-400 text-center">Sélectionnez un message à gauche</p>
+    </section>
 </div>
 @endsection
 

@@ -6,7 +6,7 @@
 <div class="flex items-center justify-center min-h-screen bg-white px-4">
     <div class="w-full max-w-md p-8 bg-white rounded-xl shadow-lg text-center">
         <h2 class="text-2xl font-semibold text-blue-700 mb-8">Bedrijf Login</h2>
-        <form method="POST" action="{{ route('loginBedrijf.submit') }}" class="space-y-6">
+        <form method="POST" action="{{ route('login_bedrijf.submit') }}" class="space-y-6">
             @csrf
             <input
                 type="text"
