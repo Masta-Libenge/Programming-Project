@@ -1,163 +1,144 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Registreren als student – CareerLaunch</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    {{-- 🎨 Basic styling for layout, form, and card preview --}}
-    <style>
-        :root {
-            --accent: #1e40af;
-            --bg: #f1f5f9;
-            --text: #0f172a;
-            --muted: #64748b;
-            --radius: 18px;
-        }
+@section('content')
+<div class="profile-container">
+    <div class="profile-header">
+        <button class="edit-btn">bewerken</button>
+        <img src="/images/avatar.png" alt="Profielfoto" class="profile-pic">
+        <h2>student</h2>
+    </div>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--bg);
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
-            color: var(--text);
-        }
-
-        .form-container {
-            background: white;
-            border-radius: var(--radius);
-            padding: 3rem 2rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
-            width: 100%;
-            max-width: 480px;
-        }
-
-        .form-container h1 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .form-container p {
-            text-align: center;
-            font-size: 1rem;
-            color: var(--muted);
-            margin-bottom: 2rem;
-        }
-
-        label {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.4rem;
-            display: block;
-            margin-top: 1.2rem;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 0.85rem;
-            font-size: 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius);
-            background-color: #f9fafb;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 2rem;
-            padding: 0.9rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: var(--radius);
-            background-color: var(--accent);
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-
-        button:hover {
-            background-color: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        .error-message {
-            background-color: #fee2e2;
-            color: #b91c1c;
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius);
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .preview-card {
-            margin-top: 2rem;
-            border-radius: var(--radius);
-            padding: 1rem;
-            color: white;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-
-<div class="form-container">
-    <h1>Student Profiel</h1>
-    <p>Pas je profiel aan en sla je wijzigingen op</p>
-
-    {{-- ✅ Toon validatiefouten als die er zijn --}}
-    @if ($errors->any())
-        <div class="error-message">
-            <ul style="margin: 0; padding-left: 1rem;">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="section">
+        <h3>Persoonlijke Informatie</h3>
+        <div class="info-grid">
+            <div class="info-box">Omar</div>
+            <div class="info-box">Ouanane</div>
+            <div class="info-box email">Email123@gmail.com</div>
         </div>
-    @endif
+    </div>
 
-    {{-- 🧾 Profiel bewerkingsformulier --}}
-    <form method="POST" action="{{ route('student.profile.update') }}" enctype="multipart/form-data">
-        @csrf
+    <div class="section">
+        <h3>Hogeschool</h3>
+        <div class="info-grid">
+            <div class="info-box">Toegepaste Informatica</div>
+            <div class="info-box">Jaar 1</div>
+        </div>
+    </div>
 
-        {{-- 📷 Profielfoto uploadveld --}}
-        <label for="photo">Profielfoto</label>
-        <input type="file" name="photo" id="photo">
-
-        {{-- 📝 Beschrijvingstekst --}}
-        <label for="description">Beschrijving</label>
-        <textarea name="description" id="description" rows="3" placeholder="Vertel iets over jezelf...">{{ old('description') }}</textarea>
-
-        {{-- 🎨 Kleurkeuze voor de kaart --}}
-        <label for="color">Kaartkleur</label>
-        <select name="color" id="color">
-            <option value="#1e40af" @selected(old('color') == '#1e40af')>Blauw</option>
-            <option value="#16a34a" @selected(old('color') == '#16a34a')>Groen</option>
-            <option value="#dc2626" @selected(old('color') == '#dc2626')>Rood</option>
-            <option value="#7c3aed" @selected(old('color') == '#7c3aed')>Paars</option>
-            <option value="#f97316" @selected(old('color') == '#f97316')>Oranje</option>
-        </select>
-
-        {{-- 💾 Opslaan knop --}}
-        <button type="submit">Opslaan</button>
-    </form>
-
-    {{-- 🧩 Live preview van de profielkaart --}}
-    <div class="preview-card" style="background-color: {{ old('color', '#1e40af') }}">
-        <p><strong>Jouw beschrijving:</strong></p>
-        <p>{{ old('description', 'Nog niets ingevuld.') }}</p>
+    <div class="section">
+        <h3>Vaardigheden</h3>
+        <div class="skills-grid">
+            <div class="skill">HTML</div>
+            <div class="skill">Javascript</div>
+            <div class="skill">CSS</div>
+            <div class="skill">ctrl c/ctrl v</div>
+        </div>
     </div>
 </div>
 
-</body>
-</html>
+<style>
+body {
+    background: #dceeff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-container {
+    max-width: 400px;
+    margin: 30px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.edit-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #e0f0fa;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-weight: bold;
+    color: #007acc;
+    box-shadow: 3px 3px 6px #c0d8ea, -3px -3px 6px #ffffff;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 8px #c0d8ea, -3px -3px 8px #ffffff;
+}
+    position: relative;
+}
+
+.edit-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #e0f0fa;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-weight: bold;
+    color: #007acc;
+    box-shadow: 3px 3px 6px #c0d8ea, -3px -3px 6px #ffffff;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 8px #c0d8ea, -3px -3px 8px #ffffff;
+}
+
+.section h3 {
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.info-grid, .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.info-box {
+    background: #e6f0fa;
+    padding: 10px 18px;
+    border-radius: 14px;
+    box-shadow: inset 2px 2px 4px #cddfea, inset -2px -2px 4px #ffffff;
+    font-weight: 500;
+    color: #444;
+    min-width: 120px;
+    text-align: center;
+}
+.email {
+    width: 100%;
+}
+
+.skill {
+    background: #3490dc;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 6px #c0d8ea, -2px -2px 6px #ffffff;
+    font-weight: bold;
+}
+</style>
+@endsection
