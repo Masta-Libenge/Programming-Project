@@ -35,7 +35,6 @@
       width: 100%;
       background-color: var(--bg-orange);
       padding: 1rem 6%;
-      box-shadow: none;
       z-index: 999;
     }
 
@@ -136,32 +135,81 @@
       color: #ffffff;
     }
 
+    /* iPhone Mockup */
     .phone-wrapper {
-      transform: translate(-90px, 40px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .chat-mockup {
+    .iphone-frame {
       position: relative;
-      width: 310px;
-      height: 600px;
+      width: 340px;
+      height: 680px;
       background: #0A3D2D;
-      border-radius: 40px;
+      border-radius: 60px;
       padding: 1rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      border: 6px solid #000;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      justify-content: space-between;
+    }
+
+    .volume-buttons {
+      position: absolute;
+      left: -12px;
+      top: 70px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .volume-buttons div {
+      width: 6px;
+      background: #333;
+      border-radius: 10px;
+    }
+
+    .mute-switch {
+      height: 20px;
+    }
+
+    .volume-up,
+    .volume-down {
+      height: 40px;
+    }
+
+    .power-button {
+      position: absolute;
+      right: -12px;
+      top: 100px;
+      width: 6px;
+      height: 60px;
+      background: #333;
+      border-radius: 10px;
     }
 
     .dynamic-island {
       position: absolute;
-      top: 12px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       width: 120px;
-      height: 30px;
+      height: 34px;
       background: #111;
-      border-radius: 20px;
+      border-radius: 22px;
+      z-index: 2;
+    }
+
+    .chat-mockup {
+      width: 100%;
+      height: 100%;
+      padding-top: 70px;
+      padding-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
     .chat-header {
@@ -169,7 +217,7 @@
       font-weight: bold;
       font-size: 1rem;
       text-align: center;
-      margin: 2.5rem 0 1rem;
+      margin-bottom: 1rem;
     }
 
     .chat-body {
@@ -211,19 +259,12 @@
     .bubble:nth-child(3) { animation-delay: 1.2s; }
     .bubble:nth-child(4) { animation-delay: 1.6s; }
 
-    .chat-buttons {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .chat-buttons button {
-      width: 12px;
-      height: 12px;
-      background-color: #ddd;
-      border-radius: 50%;
-      border: none;
+    .home-indicator {
+      width: 120px;
+      height: 5px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 4px;
+      margin: 12px auto 0;
     }
 
     @keyframes fadeInUp {
@@ -285,7 +326,7 @@
     </div>
   </header>
 
-  <!-- ✅ Hero + chatmockup -->
+  <!-- ✅ Hero + iPhone mockup -->
   <section class="main-section">
     <div class="text-content">
       <h1>Start je carrière met één klik</h1>
@@ -297,19 +338,23 @@
     </div>
 
     <div class="phone-wrapper">
-      <div class="chat-mockup">
-        <div class="dynamic-island"></div>
-        <div class="chat-header">WhatsApp</div>
-        <div class="chat-body">
-          <div class="bubble student">Hi 👋</div>
-          <div class="bubble bot">Hallo! 👋 Welkom bij CareerLaunch. Ben je op zoek naar een stage of job?</div>
-          <div class="bubble student">Ik zoek een stage voor webontwikkeling.</div>
-          <div class="bubble bot">Super! We tonen je graag enkele bedrijven die bij jouw profiel passen.</div>
+      <div class="iphone-frame">
+        <div class="volume-buttons">
+          <div class="mute-switch"></div>
+          <div class="volume-up"></div>
+          <div class="volume-down"></div>
         </div>
-        <div class="chat-buttons">
-          <button></button>
-          <button></button>
-          <button></button>
+        <div class="power-button"></div>
+        <div class="dynamic-island"></div>
+        <div class="chat-mockup">
+          <div class="chat-header">WhatsApp</div>
+          <div class="chat-body">
+            <div class="bubble student">Hi 👋</div>
+            <div class="bubble bot">Hallo! 👋 Welkom bij CareerLaunch. Ben je op zoek naar een stage of job?</div>
+            <div class="bubble student">Ik zoek een stage voor webontwikkeling.</div>
+            <div class="bubble bot">Super! We tonen je graag enkele bedrijven die bij jouw profiel passen.</div>
+          </div>
+          <div class="home-indicator"></div>
         </div>
       </div>
     </div>
