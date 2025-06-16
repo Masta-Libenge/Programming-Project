@@ -1,15 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VacatureController;
-use App\Models\User;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
-
-
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,28 +41,7 @@ Route::get('/register_student', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Dashboard & Vacature Routes (alleen na login)
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth'])->group(function () {
-    Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
-    Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
-    
-    Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
-    Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
-
-    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
-
-    Route::get('/bedrijf/dashboard', function () {
-        $students = User::where('type', 'student')->get();
-        return view('bedrijf.bedrijfdashboard', compact('students'));
-    })->name('bedrijf.dashboard');
-});
-
-
-/*
-|--------------------------------------------------------------------------
-| Algemene Routes
+| Public Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
@@ -76,16 +54,7 @@ Route::get('/login', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Debug
-|--------------------------------------------------------------------------
-*/
-Route::get('/debug', function () {
-    return 'Middleware is bypassed';
-});
-
-/*
-|--------------------------------------------------------------------------
-| Logout
+| Logout Route
 |--------------------------------------------------------------------------
 */
 Route::post('/logout', function () {
@@ -95,18 +64,64 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
-Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
+/*
+|--------------------------------------------------------------------------
+| Debug Route
+|--------------------------------------------------------------------------
+*/
+Route::get('/debug', function () {
+    return 'Middleware is bypassed';
+});
 
+/*
+|--------------------------------------------------------------------------
+| Routes for authenticated users only
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+
+    Route::get('/bedrijf/dashboard', function () {
+        $students = User::where('type', 'student')->get();
+        return view('bedrijf.bedrijfdashboard', compact('students'));
+    })->name('bedrijf.dashboard');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vacature Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
+    Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
+
+    // Clean: use only one consistent naming
+    Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
+    Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Profile Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
+    Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
+
+    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+    Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
+
 });
-
-
-Route::middleware(['auth',])->group(function () {
-    Route::get('/student/profile', [ProfileController::class, 'edit'])->name('student.profile');
-    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
-});
-
