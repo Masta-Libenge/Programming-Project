@@ -30,19 +30,24 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        // ✅ Validate incoming fields: description and card color
         $request->validate([
             'description' => 'nullable|string|max:500',
             'card_color' => 'nullable|string|max:20',
         ]);
 
-        // ✅ Update the user with the new values
         $user = Auth::user();
-        $user->description = $request->input('description');
-        $user->card_color = $request->input('card_color');
-        $user->save();
 
-        // ✅ Redirect back with a success message
+        // ✅ Make sure the user has a profile; create one if missing
+        if (!$user->profile) {
+            $user->profile()->create([]);
+        }
+
+        // ✅ Update the profile fields (NOT on User)
+        $user->profile->update([
+            'description' => $request->input('description'),
+            'card_color' => $request->input('card_color'),
+        ]);
+
         return redirect()->back()->with('success', 'Profiel bijgewerkt!');
     }
 
@@ -54,22 +59,27 @@ class ProfileController extends Controller
      */
     public function uploadProfilePicture(Request $request)
     {
-        // ✅ Validate the uploaded file: must be an image max 2MB
         $request->validate([
             'profile_picture' => 'required|image|max:2048',
         ]);
 
         $user = Auth::user();
 
+        // ✅ Make sure the user has a profile; create one if missing
+        if (!$user->profile) {
+            $user->profile()->create([]);
+        }
+
         // ✅ Store the uploaded file in 'public/profile_pictures'
         $path = $request->file('profile_picture')->store('public/profile_pictures');
 
         // ✅ Optionally delete the old picture if you want:
-        // Storage::delete($user->profile_picture);
+        // Storage::delete($user->profile->photo_path);
 
-        // ✅ Save the new path
-        $user->profile_picture = $path;
-        $user->save();
+        // ✅ Save the new path on the Profile (NOT on User)
+        $user->profile->update([
+            'photo_path' => $path,
+        ]);
 
         return redirect()->back()->with('success', 'Profielfoto geüpload!');
     }
