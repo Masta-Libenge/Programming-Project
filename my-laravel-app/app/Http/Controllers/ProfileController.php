@@ -40,6 +40,7 @@ class ProfileController extends Controller
         // ✅ Make sure the user has a profile; create one if missing
         if (!$user->profile) {
             $user->profile()->create([]);
+             $user->load('profile'); // <--- FIX: reload the relation!
         }
 
         // ✅ Update the profile fields (NOT on User)
