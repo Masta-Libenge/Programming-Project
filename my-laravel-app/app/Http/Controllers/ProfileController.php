@@ -1,42 +1,76 @@
-namespace App\Http\Controllers\Student;
+<?php
 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    // 🧾 Show the editable profile form
+    /**
+     * 🧭 Show the student's own profile page.
+     *
+     * @return \Illuminate\View\View
+     */
     public function edit()
     {
-        $student = Auth::user(); // Assuming the student is the logged-in user
-        return view('student.profile', compact('student'));
+        // ✅ Get the currently logged-in user (student)
+        $user = Auth::user();
+
+        // ✅ Pass the user to the 'student.profile' Blade view
+        return view('student.profile', compact('user'));
     }
 
-    // 💾 Handle form submission
+    /**
+     * 📝 Update the student's profile info (description, card color, etc).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request)
     {
-        $student = Auth::user();
-
-        // ✅ Basic validation
+        // ✅ Validate incoming fields: description and card color
         $request->validate([
-            'description' => 'nullable|string|max:255',
-            'color' => 'nullable|string|max:20',
-            'avatar' => 'nullable|image|max:2048',
+            'description' => 'nullable|string|max:500',
+            'card_color' => 'nullable|string|max:20',
         ]);
 
-        // ✏️ Save description and color
-        $student->description = $request->input('description');
-        $student->card_color = $request->input('color');
+        // ✅ Update the user with the new values
+        $user = Auth::user();
+        $user->description = $request->input('description');
+        $user->card_color = $request->input('card_color');
+        $user->save();
 
-        // 🖼️ Save uploaded profile picture (if any)
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $student->avatar_path = $path;
-        }
+        // ✅ Redirect back with a success message
+        return redirect()->back()->with('success', 'Profiel bijgewerkt!');
+    }
 
-        $student->save();
+    /**
+     * 📸 Upload a new profile picture for the student.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function uploadProfilePicture(Request $request)
+    {
+        // ✅ Validate the uploaded file: must be an image max 2MB
+        $request->validate([
+            'profile_picture' => 'required|image|max:2048',
+        ]);
 
-        return redirect()->route('student.profile')->with('success', 'Profiel succesvol bijgewerkt!');
+        $user = Auth::user();
+
+        // ✅ Store the uploaded file in 'public/profile_pictures'
+        $path = $request->file('profile_picture')->store('public/profile_pictures');
+
+        // ✅ Optionally delete the old picture if you want:
+        // Storage::delete($user->profile_picture);
+
+        // ✅ Save the new path
+        $user->profile_picture = $path;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profielfoto geüpload!');
     }
 }
