@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class ProfileController extends Controller
 {
     /**
-     * 🧭 Show the student's own profile page.
+     * 🧭 Show the student's own profile edit page.
      *
      * @return \Illuminate\View\View
      */
@@ -18,8 +18,8 @@ class ProfileController extends Controller
         // ✅ Get the currently logged-in user (student)
         $user = Auth::user();
 
-        // ✅ Pass the user to the 'student.profile' Blade view
-        return view('student.profile', compact('user'));
+        // ✅ Use the new Blade view name:
+        return view('student.profile_edit', compact('user'));
     }
 
     /**
@@ -37,13 +37,11 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // ✅ Make sure the user has a profile; create one if missing
         if (!$user->profile) {
             $user->profile()->create([]);
-             $user->load('profile'); // <--- FIX: reload the relation!
+            $user->load('profile');
         }
 
-        // ✅ Update the profile fields (NOT on User)
         $user->profile->update([
             'description' => $request->input('description'),
             'card_color' => $request->input('card_color'),
@@ -66,22 +64,24 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // ✅ Make sure the user has a profile; create one if missing
         if (!$user->profile) {
             $user->profile()->create([]);
+            $user->load('profile');
         }
 
-        // ✅ Store the uploaded file in 'public/profile_pictures'
         $path = $request->file('profile_picture')->store('public/profile_pictures');
 
-        // ✅ Optionally delete the old picture if you want:
-        // Storage::delete($user->profile->photo_path);
-
-        // ✅ Save the new path on the Profile (NOT on User)
         $user->profile->update([
             'photo_path' => $path,
         ]);
 
         return redirect()->back()->with('success', 'Profielfoto geüpload!');
     }
+public function show()
+{
+    $user = auth()->user();   // ✅ variable is $user
+    return view('student.profile', compact('user'));  // ✅ matches!
+}
+
+
 }
