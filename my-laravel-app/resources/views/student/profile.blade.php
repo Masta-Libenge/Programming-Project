@@ -1,13 +1,25 @@
-{{-- ✅ No @extends or @section --}}
+{{-- ✅ Navigatiebalk --}}
+<nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+    <a href="{{ route('student.dashboard') }}" class="text-xl font-bold text-[#1E40AF]">CareerLaunch</a>
+    <div class="space-x-4 text-sm font-medium text-gray-600">
+        <a href="#" class="hover:text-[#1E40AF]">Planning</a>
+        <a href="#" class="hover:text-[#1E40AF]">About Us</a>
+        <a href="#" class="hover:text-[#1E40AF]">FAQ</a>
+        <a href="#" class="hover:text-[#1E40AF]">Contact</a>
+        <a href="{{ route('student.profile.show') }}" class="hover:text-[#1E40AF]">Profiel</a>
+    </div>
+</nav>
 
+{{-- ✅ Spacing onder navbar --}}
+<div style="height: 80px;"></div>
+
+{{-- ✅ Profielinhoud --}}
 <div class="profile-container">
     <div class="profile-header">
-        {{-- Optional: link to your edit page --}}
         <a href="{{ route('student.profile') }}">
             <button class="edit-btn">Bewerken</button>
         </a>
 
-        {{-- ✅ Use actual user profile photo if it exists --}}
         @if ($user->profile && $user->profile->photo_path)
             <img src="{{ Storage::url($user->profile->photo_path) }}" alt="Profielfoto" class="profile-pic">
         @else
@@ -21,9 +33,6 @@
         <h3>Persoonlijke Informatie</h3>
         <div class="info-grid">
             <div class="info-box">{{ $user->name }}</div>
-            {{-- If you have first & last name, split here, else repeat name --}}
-            {{-- <div class="info-box">{{ $user->first_name }}</div> --}}
-            {{-- <div class="info-box">{{ $user->last_name }}</div> --}}
             <div class="info-box email">{{ $user->email }}</div>
         </div>
     </div>
@@ -47,6 +56,7 @@
     </div>
 </div>
 
+{{-- ✅ CSS blijft ongewijzigd --}}
 <style>
 body {
     background: #dceeff;
@@ -69,30 +79,29 @@ body {
     position: relative;
 }
 
-        .username {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+.username {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
 
-        .section-title {
-            font-weight: bold;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            font-size: 1rem;
-            color: var(--text-dark);
-        }
+.section-title {
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
 
-        .info-block {
-            background: #e2ecf9;
-            padding: 10px 16px;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            box-shadow: inset 1px 1px 3px #cbdbe8,
-                        inset -1px -1px 3px #ffffff;
-            color: var(--text-dark);
-        }
+.info-block {
+    background: #e2ecf9;
+    padding: 10px 16px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    box-shadow: inset 1px 1px 3px #cbdbe8, inset -1px -1px 3px #ffffff;
+    color: var(--text-dark);
+}
 
 .info-grid, .skills-grid {
     display: flex;

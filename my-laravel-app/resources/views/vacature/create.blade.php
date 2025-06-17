@@ -25,11 +25,41 @@
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
             color: var(--accent);
+            padding-top: 90px;
+        }
+
+        nav {
+            background-color: var(--white);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
+        }
+
+        nav .nav-left a {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav .nav-right a {
+            margin-left: 1.5rem;
+            color: var(--muted);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        nav .nav-right a:hover {
+            color: var(--primary);
+            text-decoration: underline;
         }
 
         .form-card {
@@ -39,6 +69,7 @@
             padding: 3rem 2.5rem;
             width: 100%;
             max-width: 600px;
+            margin: 0 auto;
         }
 
         h1 {
@@ -106,6 +137,21 @@
 </head>
 <body>
 
+<!-- ✅ NAVBAR -->
+<nav>
+    <div class="nav-left">
+        <a href="{{ route('bedrijf.dashboard') }}">CareerLaunch</a>
+    </div>
+    <div class="nav-right">
+        <a href="#">Planning</a>
+        <a href="#">About Us</a>
+        <a href="#">FAQ</a>
+        <a href="#">Contact</a>
+        <a href="{{ route('bedrijf.dashboard') }}">Dashboard</a>
+    </div>
+</nav>
+
+<!-- ✅ VACATURE FORM -->
 <div class="form-card">
     <h1>Vacature Aanmaken</h1>
 
