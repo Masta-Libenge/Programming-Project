@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-orange: #FF5A30;
+      --bg-orange: #1E40AF;
       --text-white: #ffffff;
       --btn-white: #ffffff;
       --btn-text: #1C1C1C;
@@ -250,7 +250,7 @@
     }
 
     .bubble.bot {
-      background: #FF5A30;
+      background: #1E40AF;
       color: white;
       align-self: flex-end;
     }
