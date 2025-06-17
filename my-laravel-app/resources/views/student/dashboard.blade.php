@@ -95,4 +95,11 @@
         <h2>Welkom, {{ Auth::user()->name }}</h2>
         <p>Je bent ingelogd als student</p>
     </div>
+</div>
+
+@section('content')
+    <!-- Add any content for this section -->
 @endsection
+
+</body>
+</html>

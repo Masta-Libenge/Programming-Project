@@ -46,6 +46,11 @@
     --radius: 100px;
 }
 
+body {
+    background-color: #1E40AF !important;
+    color: #ffffff;
+}
+
 .navbar {
     position: sticky;
     top: 0;
