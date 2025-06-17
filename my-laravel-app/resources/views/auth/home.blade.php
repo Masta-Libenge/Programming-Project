@@ -319,8 +319,9 @@
     <div class="nav-container">
       <div class="logo">CareerLaunch</div>
       <nav class="nav-links">
-        <a href="#about">About Us</a>
-        <a href="#faq">FAQ</a>
+<a href="{{ route('about') }}">About Us</a>  
+<a href="{{ route('faq') }}">FAQ</a>     
+
         <a href="#contact">Contact</a>
       </nav>
     </div>
