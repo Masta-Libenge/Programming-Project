@@ -100,7 +100,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
 
-    // Clean: use only one consistent naming
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
 
@@ -124,4 +123,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Student Profiel Update Extra
+    |--------------------------------------------------------------------------
+    */
+    Route::post('/student/profile/update', [ProfileController::class, 'update'])
+        ->name('student.profile.update');
 });
