@@ -21,8 +21,7 @@
         <a href="{{ route('student.dashboard') }}" class="text-xl font-bold text-[#1E40AF]">CareerLaunch</a>
         <div class="space-x-4 text-sm font-medium text-gray-600">
             <a href="#" class="hover:text-[#1E40AF]">Planning</a>
-            <a href="#" class="hover:text-[#1E40AF]">About Us</a>
-            <a href="#" class="hover:text-[#1E40AF]">FAQ</a>
+<a href="{{ route('about') }}">About Us</a>            <a href="#" class="hover:text-[#1E40AF]">FAQ</a>
             <a href="#" class="hover:text-[#1E40AF]">Contact</a>
             <a href="{{ route('student.profile.show') }}" class="hover:text-[#1E40AF]">Profiel</a>
         </div>

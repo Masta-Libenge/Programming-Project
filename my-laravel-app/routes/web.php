@@ -131,3 +131,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/student/profile/update', [ProfileController::class, 'update'])
         ->name('student.profile.update');
 });
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+use App\Http\Controllers\FaqController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+    Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
+});
