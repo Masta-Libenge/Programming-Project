@@ -7,11 +7,22 @@ use App\Models\FaqQuestion;
 
 class FaqController extends Controller
 {
+    /**
+     * Toon gepubliceerde FAQ's + vraagformulier
+     */
     public function index()
     {
-        return view('faq');
+        $faqs = FaqQuestion::where('gepubliceerd', true)
+                           ->whereNotNull('answer')
+                           ->latest()
+                           ->get();
+
+        return view('faq', compact('faqs'));
     }
 
+    /**
+     * Sla een nieuwe vraag op van de student
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -21,10 +32,9 @@ class FaqController extends Controller
 
         FaqQuestion::create([
             'user_id' => auth()->id(),
-            'subject' => $request->subject,
-            'question' => $request->question,
+            'subject' => $request->input('subject'),
+            'question' => $request->input('question'),
         ]);
 
-        return back()->with('success', 'Je vraag is verzonden naar de admin.');
-    }
+        return redirect()->route('faq')->with('success', 'Je vraag is verzonden naar de admin.');    }
 }

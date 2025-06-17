@@ -13,9 +13,13 @@ class FaqQuestion extends Model
         'user_id',
         'subject',
         'question',
+        'answer',
+        'gepubliceerd',
     ];
 
-    // optioneel: relatie naar de gebruiker
+    /**
+     * Relatie naar de gebruiker die de vraag stelde
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -11,6 +11,8 @@
       --white: #ffffff;
       --text: #0f172a;
       --muted: #64748b;
+      --green: #065f46;
+      --green-bg: #d1fae5;
       --radius: 12px;
     }
 
@@ -60,7 +62,7 @@
     }
 
     .faq-container {
-      max-width: 600px;
+      max-width: 750px;
       margin: 2rem auto;
       background-color: var(--white);
       color: var(--text);
@@ -72,8 +74,44 @@
     h1 {
       font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       text-align: center;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .faq-card {
+      background-color: #f1f5f9;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .faq-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-question {
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .faq-answer {
+      background-color: var(--green-bg);
+      color: var(--green);
+      border-left: 4px solid var(--green);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
     }
 
     form label {
@@ -113,11 +151,11 @@
     }
 
     .success {
-      background-color: #d1fae5;
-      color: #065f46;
+      background-color: var(--green-bg);
+      color: var(--green);
       padding: 1rem;
       border-radius: var(--radius);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       text-align: center;
     }
 
@@ -151,13 +189,33 @@
   </div>
 </nav>
 
-<!-- ✅ Formuliercontainer -->
+<!-- ✅ Inhoud -->
 <div class="faq-container">
-  <h1>Stel je vraag aan de admin</h1>
+  <h1>Veelgestelde Vragen</h1>
 
+  {{-- Succesbericht --}}
   @if (session('success'))
     <div class="success">{{ session('success') }}</div>
   @endif
+
+  {{-- Gepubliceerde FAQ's --}}
+  @if ($faqs->count())
+    @foreach ($faqs as $faq)
+      <div class="faq-card">
+        <h3 class="faq-title">{{ $faq->subject }}</h3>
+        <p class="faq-question"><strong>Vraag:</strong> {{ $faq->question }}</p>
+        <div class="faq-answer">
+          <strong>Antwoord:</strong>
+          <p>{{ $faq->answer }}</p>
+        </div>
+      </div>
+    @endforeach
+  @else
+    <p>Er zijn nog geen vragen beantwoord.</p>
+  @endif
+
+  {{-- Vraagformulier --}}
+  <h2>Stel een nieuwe vraag</h2>
 
   <form action="{{ route('faq.store') }}" method="POST">
     @csrf

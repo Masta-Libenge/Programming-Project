@@ -105,8 +105,8 @@
     </div>
     <div class="nav-right">
         <a href="#">Planning</a>
-        <a href="#">About Us</a>
-        <a href="#">FAQ</a>
+        <a href="{{ route('about') }}">About&nbsp;Us</a>
+<a href="{{ route('faq') }}">FAQ</a>
         <a href="#">Contact</a>
         <a href="{{ route('bedrijf.dashboard') }}">Dashboard</a>
     </div>

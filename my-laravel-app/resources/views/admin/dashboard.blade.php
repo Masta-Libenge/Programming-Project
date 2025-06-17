@@ -74,6 +74,12 @@
             color: #991b1b;
         }
 
+        textarea {
+            width: 100%;
+            min-height: 60px;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 768px) {
             table, thead, tbody, th, td, tr {
                 display: block;
@@ -100,80 +106,161 @@
 </head>
 <body>
 
-    <h1>Admin Dashboard</h1>
+<h1>Admin Dashboard</h1>
 
-    {{-- Flash messages --}}
-    @if(session('success'))
-        <div class="message success">{{ session('success') }}</div>
-    @endif
+{{-- Flash messages --}}
+@if(session('success'))
+    <div class="message success">{{ session('success') }}</div>
+@endif
 
-    @if(session('error'))
-        <div class="message error">{{ session('error') }}</div>
-    @endif
+@if(session('error'))
+    <div class="message error">{{ session('error') }}</div>
+@endif
 
-    <section>
-        <h2>Gebruikers ({{ $users->count() }})</h2>
-        <table>
-            <thead>
+{{-- Studenten --}}
+<section>
+    <h2>Studenten ({{ $students->count() }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($students as $user)
                 <tr>
-                    <th>Naam</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                    <th>Actie</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $user)
-                    <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->type }}</td>
-                        <td>
-                            @if(auth()->id() !== $user->id)
-                                <form method="POST" action="{{ route('admin.user.destroy', $user->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?')">Verwijder</button>
-                                </form>
-                            @else
-                                <span style="color: gray;">(jezelf)</span>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </section>
-
-    <section>
-        <h2>Vacatures ({{ $vacatures->count() }})</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Titel</th>
-                    <th>Beschrijving</th>
-                    <th>Type</th>
-                    <th>Actie</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($vacatures as $vacature)
-                    <tr>
-                        <td>{{ $vacature->title }}</td>
-                        <td>{{ Str::limit($vacature->desc, 50) }}</td>
-                        <td>{{ $vacature->type }}</td>
-                        <td>
-                            <form method="POST" action="{{ route('admin.vacature.destroy', $vacature->id) }}">
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->type }}</td>
+                    <td>
+                        @if(auth()->id() !== $user->id)
+                            <form method="POST" action="{{ route('admin.user.destroy', $user->id) }}">
                                 @csrf
                                 @method('DELETE')
-                                <button onclick="return confirm('Vacature verwijderen?')">Verwijder</button>
+                                <button onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?')">Verwijder</button>
                             </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </section>
+                        @else
+                            <span style="color: gray;">(jezelf)</span>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</section>
+
+{{-- Bedrijven --}}
+<section>
+    <h2>Bedrijven ({{ $bedrijven->count() }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($bedrijven as $user)
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->type }}</td>
+                    <td>
+                        @if(auth()->id() !== $user->id)
+                            <form method="POST" action="{{ route('admin.user.destroy', $user->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?')">Verwijder</button>
+                            </form>
+                        @else
+                            <span style="color: gray;">(jezelf)</span>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</section>
+
+{{-- Vacatures --}}
+<section>
+    <h2>Vacatures ({{ $vacatures->count() }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Beschrijving</th>
+                <th>Type</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($vacatures as $vacature)
+                <tr>
+                    <td>{{ $vacature->title }}</td>
+                    <td>{{ Str::limit($vacature->desc, 50) }}</td>
+                    <td>{{ $vacature->type }}</td>
+                    <td>
+                        <form method="POST" action="{{ route('admin.vacature.destroy', $vacature->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Vacature verwijderen?')">Verwijder</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</section>
+
+{{-- FAQ vragen --}}
+<section>
+    <h2>FAQ-vragen ({{ $faqs->count() }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Gebruiker</th>
+                <th>Onderwerp</th>
+                <th>Vraag</th>
+                <th>Antwoord</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($faqs as $faq)
+                <tr>
+                    <td>{{ $faq->user->name }}</td>
+                    <td>{{ $faq->subject }}</td>
+                    <td>{{ $faq->question }}</td>
+                    <td>
+                        @if($faq->answer)
+                            {{ $faq->answer }}
+                        @else
+                            <form method="POST" action="{{ route('admin.faq.answer', $faq->id) }}">
+                                @csrf
+                                <textarea name="answer" placeholder="Typ een antwoord..." required></textarea>
+                                <button type="submit">Opslaan</button>
+                            </form>
+                        @endif
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ route('admin.faq.toggle', $faq->id) }}">
+                            @csrf
+                            <button type="submit">
+                                {{ $faq->gepubliceerd ? 'Verberg' : 'Publiceer' }}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</section>
 
 </body>
 </html>

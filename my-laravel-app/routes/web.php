@@ -142,3 +142,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
     Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
 });
+
+Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
+Route::post('/admin/faq/{id}/toggle', [AdminController::class, 'toggleFaq'])->name('admin.faq.toggle');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq');
