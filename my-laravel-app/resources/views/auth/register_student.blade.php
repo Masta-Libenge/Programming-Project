@@ -180,12 +180,19 @@
   <form method="POST" action="{{ url('/register/student') }}">
     @csrf
 
-    <label for="name">Naam</label>
-    <input type="text" name="name" id="name" required>
+    <!-- ✅ Changed: Voornaam -->
+    <label for="voornaam">Voornaam</label>
+    <input type="text" name="voornaam" id="voornaam" required>
 
+    <!-- ✅ Changed: Achternaam -->
+    <label for="achternaam">Achternaam</label>
+    <input type="text" name="achternaam" id="achternaam" required>
+
+    <!-- ✅ Email remains the same -->
     <label for="email">E-mailadres</label>
     <input type="email" name="email" id="email" required>
 
+    <!-- ✅ Password -->
     <label for="password">Wachtwoord</label>
     <input type="password" name="password" id="password" required>
 

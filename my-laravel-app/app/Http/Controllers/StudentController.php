@@ -12,10 +12,10 @@ class StudentController extends Controller
      */
     public function dashboard()
     {
-        // Haal alle vacatures op
-        $vacatures = Vacature::all();
+        // Haal alle vacatures op, inclusief gekoppelde gebruiker (bedrijf)
+        $vacatures = Vacature::with('user')->latest()->get();
 
-        // Geef ze door aan de view
+        // Geef de vacatures door aan de view
         return view('student.dashboard', compact('vacatures'));
     }
 }

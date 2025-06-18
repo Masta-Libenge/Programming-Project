@@ -1,156 +1,166 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8"> <!-- Set character encoding -->
-  <title>Student Dashboard – CareerLaunch</title> <!-- Page title -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive meta -->
-  <!-- Inter font from Google Fonts -->
+  <meta charset="UTF-8">
+  <title>Student Dashboard – CareerLaunch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
-    /* CSS Variables for consistent colors & radius */
     :root {
-      --primary: #1E40AF; /* Main blue */
-      --bg: #1E40AF;      /* Page background */
-      --card-bg: #ffffff; /* Card background */
-      --text: #0f172a;    /* Dark text */
-      --muted: #64748b;   /* Muted text */
-      --radius: 16px;     /* Border radius */
+      --primary: #1E40AF;
+      --bg: #1E40AF;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --radius: 16px;
     }
 
-    /* Reset & box model fix */
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Page base styling */
     body {
-      background-color: var(--bg); /* Blue background */
-      font-family: 'Inter', sans-serif; /* Font */
-      color: var(--text); /* Default text color */
+      background-color: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
     }
 
-    /* Navbar styling */
     .navbar {
-      position: sticky; /* Stick to top when scrolling */
+      position: sticky;
       top: 0;
       width: 100%;
-      background-color: var(--primary); /* Blue navbar */
-      padding: 1rem 6%; /* Inner spacing */
-      z-index: 999; /* On top of other content */
+      background-color: var(--primary);
+      padding: 1rem 6%;
+      z-index: 999;
     }
 
-    /* Navbar content container */
     .nav-container {
-      display: flex; /* Flex layout */
-      justify-content: space-between; /* Space between logo & links */
-      align-items: center; /* Center vertically */
-      max-width: 1200px; /* Limit width */
-      margin: 0 auto; /* Center horizontally */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    /* Logo styling */
     .logo {
-      font-size: 1.4rem; /* Bigger text */
-      font-weight: 800;  /* Bold */
-      color: white;      /* White text */
-      text-decoration: none; /* Remove underline for link */
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
     }
 
-    /* Navigation links styling */
     .nav-links a {
-      margin-left: 2rem; /* Space between links */
-      text-decoration: none; /* No underline */
-      color: white; /* White text */
-      font-weight: 600; /* Bold */
-      transition: color 0.3s ease; /* Smooth hover effect */
+      margin-left: 2rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
 
-    /* Hover effect for nav links */
     .nav-links a:hover {
-      color: #000000; /* Change to black on hover */
+      color: #000000;
     }
 
-    /* Responsive: stack links vertically on small screens */
     @media (max-width: 768px) {
       .nav-container {
-        flex-direction: column; /* Stack logo & links vertically */
-        align-items: flex-start; /* Align left */
+        flex-direction: column;
+        align-items: flex-start;
       }
 
       .nav-links {
-        margin-top: 1rem; /* Space above links */
+        margin-top: 1rem;
         display: flex;
-        flex-direction: column; /* Stack links vertically */
+        flex-direction: column;
         width: 100%;
-        gap: 1rem; /* Space between links */
+        gap: 1rem;
       }
 
       .nav-links a {
-        margin-left: 0; /* Remove left margin on small screens */
+        margin-left: 0;
       }
     }
 
-    /* Dashboard wrapper styling */
     .dashboard-wrapper {
-      max-width: 960px; /* Limit content width */
-      margin: 4rem auto; /* Center & add top margin */
-      padding: 0 1.5rem; /* Horizontal padding */
+      max-width: 960px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 2rem; /* Space between sections */
-      color: white; /* White text inside dashboard area */
+      gap: 2rem;
+      color: white;
     }
 
-    /* Dashboard header styling */
     .dashboard-header h1 {
-      font-size: 2.2rem; /* Large heading */
-      font-weight: 800; /* Bold */
+      font-size: 2.2rem;
+      font-weight: 800;
     }
 
     .dashboard-header h1 span {
-      background-color: white; /* White highlight */
-      color: var(--primary); /* Blue text inside highlight */
-      padding: 0.2rem 0.6rem; /* Inner spacing */
-      border-radius: 10px; /* Rounded highlight */
+      background-color: white;
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 10px;
     }
 
-    /* Card styling for sections like vacatures */
     .card {
-      background-color: var(--card-bg); /* White background */
-      border-radius: var(--radius); /* Rounded corners */
-      padding: 2rem; /* Inner padding */
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Subtle shadow */
-      color: var(--text); /* Dark text inside card */
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      color: var(--text);
     }
 
     .card h2 {
-      font-size: 1.4rem; /* Card title size */
-      font-weight: 700; /* Bold */
-      color: var(--primary); /* Blue title */
-      margin-bottom: 1rem; /* Space below title */
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
     }
 
-    /* Individual vacature styling */
-    .vacature {
-      border-bottom: 1px solid #e2e8f0; /* Divider between vacatures */
-      padding: 1rem 0; /* Vertical spacing */
+    .vacature-card {
+      background-color: var(--card-bg);
+      border-left: 6px solid var(--primary);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s ease;
     }
 
-    .vacature:last-child {
-      border-bottom: none; /* No divider for last one */
+    .vacature-card:hover {
+      transform: scale(1.02);
     }
 
     .vacature-title {
-      font-weight: 700; /* Bold title */
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
     }
 
     .vacature-meta {
-      color: var(--muted); /* Muted text for meta info */
-      font-size: 0.9rem; /* Smaller text */
-      margin-top: 0.2rem; /* Space above meta */
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .vacature-desc {
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .apply-button {
+      margin-top: 1rem;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     .no-vacatures {
-      color: var(--muted); /* Muted text for empty state */
+      color: var(--muted);
     }
   </style>
 </head>
@@ -159,7 +169,6 @@
   <!-- ✅ Navbar -->
   <header class="navbar">
     <div class="nav-container">
-      <!-- ✅ Logo: NOW A LINK that auto-routes to the correct dashboard -->
       @auth
         @if (auth()->user()->type === 'student')
           <a href="{{ route('student.dashboard') }}" class="logo">CareerLaunch</a>
@@ -172,7 +181,6 @@
         <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
       @endauth
 
-      <!-- ✅ Navigation links -->
       <nav class="nav-links">
         <a href="#">Planning</a>
         <a href="{{ route('about') }}">About Us</a>
@@ -186,24 +194,29 @@
   <!-- ✅ Dashboard content -->
   <div class="dashboard-wrapper">
     <div class="dashboard-header">
-      <h1>Welkom terug, <span>{{ Auth::user()->name }}</span> 👋</h1> <!-- Show logged in user's name -->
+      <h1>Welkom terug, <span>{{ Auth::user()->name }}</span> 👋</h1>
     </div>
 
     <div class="card">
       <h2>Nieuwste vacatures</h2>
 
-      <!-- ✅ Show vacatures if any exist -->
       @if($vacatures->count())
         @foreach($vacatures as $vacature)
-          <div class="vacature">
-            <div class="vacature-title">{{ $vacature->titel }}</div> <!-- Vacature title -->
+          <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
+            <div class="vacature-title">{{ $vacature->title }}</div>
             <div class="vacature-meta">
-              {{ $vacature->bedrijf->name ?? 'Onbekend bedrijf' }} – {{ $vacature->created_at->diffForHumans() }} <!-- Company name & posted time -->
+              {{ $vacature->user->name ?? 'Onbekend bedrijf' }} – {{ $vacature->created_at->diffForHumans() }}
             </div>
+            <div class="vacature-desc">{{ $vacature->desc }}</div>
+
+            <!-- ✅ Apply-knop -->
+            <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
+              @csrf
+              <button type="submit" class="apply-button">Apply</button>
+            </form>
           </div>
         @endforeach
       @else
-        <!-- ✅ Fallback if no vacatures -->
         <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
       @endif
     </div>

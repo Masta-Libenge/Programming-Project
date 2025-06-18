@@ -51,4 +51,12 @@ class User extends Authenticatable
     return $this->hasOne(Profile::class);
 }
 
+
+public function appliedVacatures()
+{
+    return $this->belongsToMany(Vacature::class, 'vacature_student', 'student_id', 'vacature_id');
+}
+
+
+
 }

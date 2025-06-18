@@ -41,4 +41,13 @@ class VacatureController extends Controller
             ->route('bedrijf.dashboard')
             ->with('success', 'Vacature succesvol toegevoegd.');
     }
+public function apply($id)
+{
+    // Bijv. opslaan in pivot-tabel (als je een many-to-many gebruikt)
+    // Auth::user()->appliedVacatures()->attach($id);
+
+    return back()->with('success', 'Je hebt succesvol gesolliciteerd!');
+}
+
+
 }

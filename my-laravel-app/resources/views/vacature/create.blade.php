@@ -120,21 +120,7 @@
     </form>
   </div>
 
-  @if(isset($vacatures) && $vacatures->count())
-  <div class="card-list">
-    <h2>Nieuwste vacatures</h2>
-    @foreach($vacatures as $vacature)
-      <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
-        <h3>{{ $vacature->title }}</h3>
-        <p>{{ Str::limit($vacature->desc, 100) }}</p>
-        <div class="vacature-footer">
-          <span>{{ $vacature->type }}</span>
-          <span>{{ $vacature->created_at->diffForHumans() }}</span>
-        </div>
-      </div>
-    @endforeach
-  </div>
-  @endif
+ 
 
 </body>
 </html>

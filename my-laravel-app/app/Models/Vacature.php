@@ -9,5 +9,17 @@ class Vacature extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'desc', 'type', 'color'];
+    protected $fillable = ['title', 'desc', 'type', 'color', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function applicants()
+{
+    return $this->belongsToMany(User::class, 'vacature_student', 'vacature_id', 'student_id');
+}
+
+
 }
