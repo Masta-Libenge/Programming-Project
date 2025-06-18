@@ -1,105 +1,182 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* --- variabelen & basis --- */
-        :root {
-            --primary: #2980b9;
-            --light-bg: #e6f0ff;
-            --text-dark: #2c3e50;
-            --white: #ffffff;
-            --muted: #64748b;
-        }
+  <meta charset="UTF-8">
+  <title>Student Dashboard – CareerLaunch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1E40AF;
+      --bg: #1E40AF;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --radius: 16px;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            background: var(--light-bg);
-            font-family: 'Segoe UI', sans-serif;
-            color: var(--text-dark);
-            padding-top: 70px;      /* ruimte voor navbar */
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    body {
+      background-color: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
 
-        /* --- NAVBAR --- */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: var(--white);
-            box-shadow: 0 4px 10px rgba(0,0,0,.05);
-            padding: 1rem 2rem;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        nav .nav-left a { font-size: 1.3rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-        nav .nav-right a { margin-left: 1.5rem; color: var(--muted); font-weight: 500; text-decoration: none; }
-        nav .nav-right a:hover { color: var(--primary); text-decoration: underline; }
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: var(--primary);
+      padding: 1rem 6%;
+      z-index: 999;
+    }
 
-        /* --- DASHBOARD BOX --- */
-        .dashboard-box {
-            background: #f0f7ff;
-            border-radius: 25px;
-            box-shadow: 6px 6px 12px #cbdbe8, -6px -6px 12px #ffffff;
-            padding: 30px 20px;
-            width: 90%; max-width: 420px; text-align: center;
-        }
-        h1 { font-size: 1.6rem; margin-bottom: 10px; }
-        p  { font-size: 1rem; color: #34495e; margin-bottom: 20px; }
-        .btn {
-            display: inline-block; margin: 5px;
-            background: #e0f0ff; border: none; border-radius: 12px;
-            padding: 12px 25px; font-weight: bold; color: var(--text-dark);
-            box-shadow: 4px 4px 8px #cbdbe8, -4px -4px 8px #ffffff;
-            cursor: pointer; transition: .2s ease;
-        }
-        .btn:hover { background: #d6e8f5; }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-        /* --- MODAL --- */
-        .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-               background:rgba(224,240,255,.85);z-index:999;}
-        .modal-content{
-            position:relative;background:#f0f7ff;border-radius:20px;
-            box-shadow:9px 9px 16px #cbdbe8,-9px -9px 16px #ffffff;
-            padding:30px 40px;text-align:center;animation:fadeIn .4s ease;
-        }
-        .close-btn{position:absolute;top:10px;right:15px;font-size:20px;font-weight:bold;
-                   background:none;border:none;color:#2c3e50;cursor:pointer;}
-        @keyframes fadeIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
-    </style>
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    .nav-links a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #000000;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+      }
+
+      .nav-links a {
+        margin-left: 0;
+      }
+    }
+
+    .dashboard-wrapper {
+      max-width: 960px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      color: white;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+    }
+
+    .dashboard-header h1 span {
+      background-color: white;
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 10px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      color: var(--text);
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .vacature {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 0;
+    }
+
+    .vacature:last-child {
+      border-bottom: none;
+    }
+
+    .vacature-title {
+      font-weight: 700;
+    }
+
+    .vacature-meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    .no-vacatures {
+      color: var(--muted);
+    }
+  </style>
 </head>
 <body>
 
-<!-- ✅ NAVBAR -->
-<nav>
-    <div class="nav-left">
-        <a href="{{ route('student.dashboard') }}">CareerLaunch</a>
-    </div>
-    <div class="nav-right">
+  <!-- ✅ Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">CareerLaunch</div>
+      <nav class="nav-links">
         <a href="#">Planning</a>
-<a href="{{ route('about') }}">About&nbsp;Us</a>        
-<a href="{{ route('faq') }}">FAQ</a>
+        <a href="{{ route('about') }}">About Us</a>
+        <a href="{{ route('faq') }}">FAQ</a>
         <a href="#">Contact</a>
         <a href="{{ route('student.profile.show') }}">Profiel</a>
+      </nav>
     </div>
-</nav>
+  </header>
 
-<!-- ✅ MODAL -->
-<div id="welcomeModal" class="modal">
-    <div class="modal-content">
-        <button class="close-btn"
-                onclick="document.getElementById('welcomeModal').style.display='none'">×</button>
-        <h2>Welkom, {{ Auth::user()->name }}</h2>
-        <p>Je bent ingelogd als student</p>
+  <!-- ✅ Dashboard -->
+  <div class="dashboard-wrapper">
+    <div class="dashboard-header">
+      <h1>Welkom terug, <span>{{ Auth::user()->name }}</span> 👋</h1>
     </div>
-</div>
 
-@section('content')
-    <!-- Add any content for this section -->
-@endsection
+    <div class="card">
+      <h2>Nieuwste vacatures</h2>
+
+      @if($vacatures->count())
+        @foreach($vacatures as $vacature)
+          <div class="vacature">
+            <div class="vacature-title">{{ $vacature->titel }}</div>
+            <div class="vacature-meta">
+              {{ $vacature->bedrijf->name ?? 'Onbekend bedrijf' }} – {{ $vacature->created_at->diffForHumans() }}
+            </div>
+          </div>
+        @endforeach
+      @else
+        <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
+      @endif
+    </div>
+  </div>
 
 </body>
 </html>

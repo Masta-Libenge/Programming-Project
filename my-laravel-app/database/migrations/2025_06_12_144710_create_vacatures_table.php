@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('vacatures', function (Blueprint $table) {
             $table->id();
-            $table->string('title');                    // titel vacature
-            $table->text('desc');                       // beschrijving
-            $table->string('type');                     // stage / werknemer
-            $table->string('color')->default('#ffffff'); // kaartkleur
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // ✅ bedrijf dat deze vacature aanmaakt
+            $table->string('title');                                          // titel van vacature
+            $table->text('desc');                                             // beschrijving
+            $table->string('type');                                           // stage of werknemer
+            $table->string('color')->default('#ffffff');                     // kleur van kaart
+            $table->timestamps();                                            // created_at / updated_at
         });
     }
 

@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-orange: #1E40AF;
+      --bg-blue: #1E40AF;
       --text-white: #ffffff;
       --btn-white: #ffffff;
       --btn-text: #1C1C1C;
@@ -23,7 +23,7 @@
     html, body {
       height: 100%;
       font-family: 'Inter', sans-serif;
-      background-color: var(--bg-orange);
+      background-color: var(--bg-blue);
       color: var(--text-white);
       scroll-behavior: smooth;
     }
@@ -33,7 +33,7 @@
       position: sticky;
       top: 0;
       width: 100%;
-      background-color: var(--bg-orange);
+      background-color: var(--bg-blue);
       padding: 1rem 6%;
       z-index: 999;
     }

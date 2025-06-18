@@ -186,7 +186,7 @@
     <a href="{{ route('faq') }}">FAQ</a>
     <a href="#">Contact</a>
     <a href="{{ route('student.dashboard') }}">Dashboard</a>
-  </div>
+  </div> 
 </nav>
 
 <!-- ✅ Inhoud -->
