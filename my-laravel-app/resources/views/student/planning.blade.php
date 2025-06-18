@@ -5,12 +5,12 @@
 @section('content')
 <style>
     .planning-container {
-        max-width: 900px;
+        max-width: 815px; /* Increased from 700px to make it approximately 3cm wider */
         margin: 3rem auto;
-        padding: 2rem;
-        background: #e0e5ec;
+        padding: 2rem 1.5rem;
+        background: #ffffff;
         border-radius: 20px;
-        box-shadow: inset 8px 8px 16px #babecc, inset -8px -8px 16px #ffffff;
+        box-sizing: border-box;
     }
 
     .planning-title {
@@ -23,7 +23,7 @@
 
     .planning-grid {
         display: grid;
-        grid-template-columns: 100px 1fr;
+        grid-template-columns: max-content 1fr;
         row-gap: 1rem;
         column-gap: 1rem;
         align-items: center;
@@ -33,16 +33,21 @@
         text-align: right;
         font-weight: 500;
         color: #1E40AF;
+        padding-right: 0.5rem;
     }
 
     .planning-block {
         height: 32px;
         border-radius: 8px;
-        padding-left: 1rem;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
         color: white;
         font-size: 0.9rem;
+        padding: 0 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .none { background-color: #94a3b8; }
@@ -51,7 +56,7 @@
 </style>
 
 <div class="planning-container">
-    <div class="planning-title">Maandagplanning</div>
+    <div class="planning-title">Planning</div>
     <div class="planning-grid">
         @foreach([
             ['09:00', 'none', 'Geen activiteit'],
