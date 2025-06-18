@@ -5,69 +5,98 @@
   <title>FAQ – CareerLaunch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
-      --bg-blue: #1E40AF;
+      --primary: #1E40AF;
+      --bg: #1E40AF;
       --white: #ffffff;
       --text: #0f172a;
       --muted: #64748b;
       --green: #065f46;
       --green-bg: #d1fae5;
-      --radius: 12px;
+      --radius: 16px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
 
     body {
       font-family: 'Inter', sans-serif;
-      background-color: var(--bg-blue);
-      color: var(--white);
-      min-height: 100vh;
-      padding-top: 80px;
+      background-color: var(--bg);
+      color: var(--text);
     }
 
-    nav {
-      background: var(--bg-blue);
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
+    /* ✅ Navbar same as Dashboard */
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: var(--primary);
+      padding: 1rem 6%;
+      z-index: 999;
+    }
+
+    .nav-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 6%;
-      /* box-shadow: 0 4px 10px rgba(0,0,0,0.1); */ /* Ombre supprimée */
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    nav .logo {
+    .logo {
       font-size: 1.4rem;
       font-weight: 800;
       color: var(--white);
       text-decoration: none;
     }
 
-    nav .nav-links a {
+    .nav-links a {
       margin-left: 2rem;
-      color: var(--white);
       text-decoration: none;
+      color: var(--white);
       font-weight: 600;
+      transition: color 0.3s ease;
     }
 
-    nav .nav-links a:hover {
+    .nav-links a:hover {
       color: #dbeafe;
     }
 
-    .faq-container {
-      max-width: 750px;
-      margin: 2rem auto;
-      background-color: var(--white);
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+      }
+
+      .nav-links a {
+        margin-left: 0;
+      }
+    }
+
+    /* ✅ Container same spacing as Dashboard content */
+    .faq-wrapper {
+      max-width: 960px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
       color: var(--text);
-      padding: 2rem;
+    }
+
+    .faq-container {
+      background-color: var(--white);
       border-radius: var(--radius);
+      padding: 2rem;
       box-shadow: 0 12px 30px rgba(0,0,0,0.08);
     }
 
@@ -87,7 +116,7 @@
 
     .faq-card {
       background-color: #f1f5f9;
-      border-radius: 12px;
+      border-radius: var(--radius);
       padding: 1.5rem;
       margin-bottom: 1.5rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -135,7 +164,7 @@
 
     button {
       margin-top: 2rem;
-      background-color: var(--bg-blue);
+      background-color: var(--primary);
       color: var(--white);
       padding: 0.75rem 1.5rem;
       border: none;
@@ -158,75 +187,71 @@
       margin-bottom: 1.5rem;
       text-align: center;
     }
-
-    @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        margin-top: 1rem;
-      }
-
-      .nav-links a {
-        display: block;
-        margin: 0.5rem 0;
-      }
-    }
   </style>
 </head>
 <body>
-<!-- Navbar -->
-<nav>
-  <a href="
+
+<!-- ✅ Matching Navbar -->
+<header class="navbar">
+  <div class="nav-container">
     @auth
-      {{ auth()->user()->type === 'student' ? route('student.dashboard') : (auth()->user()->type === 'bedrijf' ? route('bedrijf.dashboard') : url('/')) }}
+      @if (auth()->user()->type === 'student')
+        <a href="{{ route('student.dashboard') }}" class="logo">CareerLaunch</a>
+      @elseif (auth()->user()->type === 'bedrijf')
+        <a href="{{ route('bedrijf.dashboard') }}" class="logo">CareerLaunch</a>
+      @else
+        <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
+      @endif
     @else
-      {{ url('/') }}
+      <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
     @endauth
-  " class="logo">CareerLaunch</a>
 
-  <div class="nav-links">
-    <a href="{{ route('about') }}">About Us</a>
-    <a href="{{ route('faq') }}">FAQ</a>
-    <a href="/contact">Contact</a>
+    <nav class="nav-links">
+      <a href="#">Planning</a>
+      <a href="{{ route('about') }}">About Us</a>
+      <a href="{{ route('faq') }}">FAQ</a>
+      <a href="#">Contact</a>
+      <a href="{{ route('student.profile.show') }}">Profiel</a>
+    </nav>
   </div>
-</nav>
+</header>
 
-<div class="faq-container">
-  <h1>Veelgestelde Vragen</h1>
+<!-- ✅ FAQ matches Dashboard spacing -->
+<div class="faq-wrapper">
+  <div class="faq-container">
+    <h1>Veelgestelde Vragen</h1>
 
-  @if (session('success'))
-    <div class="success">{{ session('success') }}</div>
-  @endif
+    @if (session('success'))
+      <div class="success">{{ session('success') }}</div>
+    @endif
 
-  @if ($faqs->count())
-    @foreach ($faqs as $faq)
-      <div class="faq-card">
-        <h3 class="faq-title">{{ $faq->subject }}</h3>
-        <p class="faq-question"><strong>Vraag:</strong> {{ $faq->question }}</p>
-        <div class="faq-answer">
-          <strong>Antwoord:</strong>
-          <p>{{ $faq->answer }}</p>
+    @if ($faqs->count())
+      @foreach ($faqs as $faq)
+        <div class="faq-card">
+          <h3 class="faq-title">{{ $faq->subject }}</h3>
+          <p class="faq-question"><strong>Vraag:</strong> {{ $faq->question }}</p>
+          <div class="faq-answer">
+            <strong>Antwoord:</strong>
+            <p>{{ $faq->answer }}</p>
+          </div>
         </div>
-      </div>
-    @endforeach
-  @else
-    <p>Er zijn nog geen vragen beantwoord.</p>
-  @endif
+      @endforeach
+    @else
+      <p>Er zijn nog geen vragen beantwoord.</p>
+    @endif
 
-  <h2>Stel een nieuwe vraag</h2>
-  <form action="{{ route('faq.store') }}" method="POST">
-    @csrf
-    <label for="subject">Onderwerp</label>
-    <input type="text" id="subject" name="subject" required>
+    <h2>Stel een nieuwe vraag</h2>
+    <form action="{{ route('faq.store') }}" method="POST">
+      @csrf
+      <label for="subject">Onderwerp</label>
+      <input type="text" id="subject" name="subject" required>
 
-    <label for="question">Vraag</label>
-    <textarea id="question" name="question" rows="5" required></textarea>
+      <label for="question">Vraag</label>
+      <textarea id="question" name="question" rows="5" required></textarea>
 
-    <button type="submit">Verstuur mijn vraag</button>
-  </form>
+      <button type="submit">Verstuur mijn vraag</button>
+    </form>
+  </div>
 </div>
 
 </body>

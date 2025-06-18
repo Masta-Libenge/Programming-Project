@@ -43,11 +43,24 @@ class VacatureController extends Controller
     }
 public function apply($id)
 {
-    // Bijv. opslaan in pivot-tabel (als je een many-to-many gebruikt)
-    // Auth::user()->appliedVacatures()->attach($id);
+    $user = Auth::user();
+
+    // Zorg dat enkel studenten kunnen solliciteren
+    if (!$user || $user->type !== 'student') {
+        return back()->with('error', 'Alleen studenten kunnen solliciteren.');
+    }
+
+    // Check of de student al gesolliciteerd heeft voor deze vacature
+    if ($user->appliedVacatures()->where('vacature_id', $id)->exists()) {
+        return back()->with('error', 'Je hebt al gesolliciteerd.');
+    }
+
+    // Voeg sollicitatie toe aan de pivot-tabel
+    $user->appliedVacatures()->attach($id);
 
     return back()->with('success', 'Je hebt succesvol gesolliciteerd!');
 }
+
 
 
 }
