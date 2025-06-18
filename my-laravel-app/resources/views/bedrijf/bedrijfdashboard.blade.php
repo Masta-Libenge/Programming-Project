@@ -16,170 +16,82 @@
       --muted: #64748b;
       --radius: 16px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg);
       font-family: 'Inter', sans-serif;
       color: var(--text);
     }
-
     .navbar {
-      position: sticky;
-      top: 0;
-      width: 100%;
+      position: sticky; top: 0; width: 100%;
       background-color: var(--primary);
-      padding: 1rem 6%;
-      z-index: 999;
+      padding: 1rem 6%; z-index: 999;
     }
-
     .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px; margin: 0 auto;
     }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: white;
-    }
-
+    .logo { font-size: 1.4rem; font-weight: 800; color: white; }
     .nav-links a {
-      margin-left: 2rem;
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-      transition: color 0.3s ease;
+      margin-left: 2rem; text-decoration: none; color: white;
+      font-weight: 600; transition: color 0.3s ease;
     }
-
-    .nav-links a:hover {
-      color: #000000;
-    }
-
+    .nav-links a:hover { color: #000000; }
     @media (max-width: 768px) {
-      .nav-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
+      .nav-container { flex-direction: column; align-items: flex-start; }
       .nav-links {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 1rem;
+        margin-top: 1rem; display: flex;
+        flex-direction: column; width: 100%; gap: 1rem;
       }
-
-      .nav-links a {
-        margin-left: 0;
-      }
+      .nav-links a { margin-left: 0; }
     }
-
     .dashboard-content {
-      max-width: 960px;
-      margin: 3rem auto;
-      padding: 0 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
+      max-width: 960px; margin: 3rem auto;
+      padding: 0 1.5rem; display: flex; flex-direction: column; gap: 2rem;
     }
-
     .topbar h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: white;
+      font-size: 2.2rem; font-weight: 800; color: white;
     }
-
     .topbar h1 span {
-      background-color: white;
-      color: var(--primary);
-      padding: 0.2rem 0.6rem;
-      border-radius: 10px;
+      background-color: white; color: var(--primary);
+      padding: 0.2rem 0.6rem; border-radius: 10px;
     }
-
     .logout {
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-      border: 1px solid white;
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius);
-      transition: background-color 0.2s ease;
+      text-decoration: none; color: white; font-weight: 600;
+      border: 1px solid white; padding: 0.5rem 1rem;
+      border-radius: var(--radius); transition: background-color 0.2s ease;
     }
-
-    .logout:hover {
-      background-color: white;
-      color: var(--primary);
-    }
-
+    .logout:hover { background-color: white; color: var(--primary); }
     .success {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      background-color: var(--success-bg);
-      color: var(--success-text);
+      display: flex; align-items: center; gap: 0.75rem;
+      background-color: var(--success-bg); color: var(--success-text);
       border-left: 4px solid var(--primary);
-      padding: 1rem 1.2rem;
-      border-radius: var(--radius);
+      padding: 1rem 1.2rem; border-radius: var(--radius);
       font-size: 0.95rem;
     }
-
     .action-bar {
-      display: flex;
-      justify-content: flex-end;
+      display: flex; justify-content: flex-end;
     }
-
     .create-button {
-      background-color: white;
-      color: var(--primary);
-      padding: 0.8rem 1.4rem;
-      border: none;
-      border-radius: var(--radius);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      background-color: white; color: var(--primary);
+      padding: 0.8rem 1.4rem; border: none;
+      border-radius: var(--radius); font-weight: 600;
+      cursor: pointer; transition: background-color 0.3s ease;
     }
-
-    .create-button:hover {
-      background-color: #000;
-      color: white;
-    }
-
+    .create-button:hover { background-color: #000; color: white; }
     .vacature-card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      padding: 2rem;
+      background-color: var(--card-bg); border-radius: var(--radius);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); padding: 2rem;
     }
-
     .vacature-card h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: var(--primary);
+      font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 1rem; color: var(--primary);
     }
-
     .student {
-      padding: 1rem 0;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 0.95rem;
+      padding: 1rem 0; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem;
     }
-
-    .student:last-child {
-      border-bottom: none;
-    }
-
-    .student-muted {
-      color: var(--muted);
-    }
+    .student:last-child { border-bottom: none; }
+    .student-muted { color: var(--muted); }
   </style>
 </head>
 <body>
@@ -215,7 +127,6 @@
       </a>
     </div>
 
-    <!-- ✅ Vacature overzicht met sollicitanten -->
     @forelse($vacatures as $vacature)
       <div class="vacature-card">
         <h2>{{ $vacature->title }}</h2>

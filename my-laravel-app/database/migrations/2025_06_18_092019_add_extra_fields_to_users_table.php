@@ -6,28 +6,37 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-                    $table->string('voornaam')->nullable();
-        $table->string('achternaam')->nullable();
-        $table->string('opleiding')->nullable();
-        $table->string('jaar')->nullable();
-        $table->string('profile_picture')->nullable();
+            if (!Schema::hasColumn('users', 'voornaam')) {
+                $table->string('voornaam')->nullable();
+            }
+            if (!Schema::hasColumn('users', 'achternaam')) {
+                $table->string('achternaam')->nullable();
+            }
+            if (!Schema::hasColumn('users', 'opleiding')) {
+                $table->string('opleiding')->nullable();
+            }
+            if (!Schema::hasColumn('users', 'jaar')) {
+                $table->string('jaar')->nullable();
+            }
+            if (!Schema::hasColumn('users', 'profile_picture')) {
+                $table->string('profile_picture')->nullable();
+            }
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-public function down(): void
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn(['voornaam', 'achternaam', 'opleiding', 'jaar', 'profile_picture']);
-    });
-}
-
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn([
+                'voornaam', 
+                'achternaam', 
+                'opleiding', 
+                'jaar', 
+                'profile_picture'
+            ]);
+        });
+    }
 };
