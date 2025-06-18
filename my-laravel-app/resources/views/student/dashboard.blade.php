@@ -3,6 +3,8 @@
 @section('title', 'Student Dashboard – CareerLaunch')
 
 @section('content')
+<x-navbar />
+
 <style>
     :root {
       --primary: #1E40AF;
