@@ -40,7 +40,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 6%;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      /* box-shadow: 0 4px 10px rgba(0,0,0,0.1); */ /* Ombre supprimée */
     }
 
     nav .logo {
@@ -177,7 +177,7 @@
   </style>
 </head>
 <body>
-<!-- ✅ Navbar with smart dynamic logo -->
+<!-- Navbar -->
 <nav>
   <a href="
     @auth
@@ -190,22 +190,17 @@
   <div class="nav-links">
     <a href="{{ route('about') }}">About Us</a>
     <a href="{{ route('faq') }}">FAQ</a>
-    <a href="#">Contact</a>
+    <a href="/contact">Contact</a>
   </div>
 </nav>
 
-<!-- ❌ Removed back button -->
-
-<!-- ✅ FAQ container -->
 <div class="faq-container">
   <h1>Veelgestelde Vragen</h1>
 
-  {{-- ✅ Success message --}}
   @if (session('success'))
     <div class="success">{{ session('success') }}</div>
   @endif
 
-  {{-- ✅ Display published FAQs --}}
   @if ($faqs->count())
     @foreach ($faqs as $faq)
       <div class="faq-card">

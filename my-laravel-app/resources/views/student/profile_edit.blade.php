@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Student Profiel Bewerken</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,18 +16,9 @@
 </head>
 <body class="bg-[#1E40AF] min-h-screen pt-20">
 
-    <!-- ✅ NAVBAR -->
-    <nav class="bg-white shadow-md px-6 py-4 fixed top-0 left-0 right-0 z-50 flex justify-between items-center">
-        <a href="{{ route('student.dashboard') }}" class="text-xl font-bold text-[#1E40AF]">CareerLaunch</a>
-        <div class="space-x-4 text-sm font-medium text-gray-600">
-            <a href="#" class="hover:text-[#1E40AF]">Planning</a>
-<a href="{{ route('about') }}">About Us</a>            <a href="#" class="hover:text-[#1E40AF]">FAQ</a>
-            <a href="#" class="hover:text-[#1E40AF]">Contact</a>
-            <a href="{{ route('student.profile.show') }}" class="hover:text-[#1E40AF]">Profiel</a>
-        </div>
-    </nav>
+    @include('components.navbar')
 
-    <!-- ✅ FORM -->
+    <!-- FORMULAIRE -->
     <div class="flex items-center justify-center px-4">
         <div class="bg-[#e0e5ec] rounded-3xl shadow-xl w-full max-w-2xl p-8 sm:p-10 mt-6">
 

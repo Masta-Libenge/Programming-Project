@@ -12,6 +12,8 @@
     }
 </script>
 
+<x-navbar />
+
 <div class="flex items-center justify-center px-4">
     <div class="bg-[#e0e5ec] rounded-3xl shadow-xl w-full max-w-2xl p-8 sm:p-10 mt-6">
         <form action="#" method="POST" enctype="multipart/form-data">
