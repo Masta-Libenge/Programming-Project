@@ -109,7 +109,7 @@
             font-size: 0.95rem; /* Slightly smaller than regular p */
         }
 
-        /* ✅ Back button styling (copied exactly from register page) */
+        /* ✅ Back button styling (same as other pages) */
         .back-button {
             display: inline-block; /* Make it a block-level link */
             margin: 1rem 1.5rem; /* Space around the button */
@@ -131,14 +131,24 @@
 </head>
 <body>
 
-<!-- ✅ NAVBAR -->
+<!-- ✅ NAVBAR with dynamic logo -->
 <nav>
-    <!-- Left side: Logo link -->
+    <!-- ✅ Left side: Dynamic logo link -->
     <div class="nav-left">
-        <a href="{{ route('bedrijf.dashboard') }}">CareerLaunch</a> <!-- Logo link to dashboard -->
+        @auth
+            @if (auth()->user()->type === 'student')
+                <a href="{{ route('student.dashboard') }}">CareerLaunch</a> <!-- If student, go to student dashboard -->
+            @elseif (auth()->user()->type === 'bedrijf')
+                <a href="{{ route('bedrijf.dashboard') }}">CareerLaunch</a> <!-- If bedrijf, go to bedrijf dashboard -->
+            @else
+                <a href="{{ url('/') }}">CareerLaunch</a> <!-- Fallback for other types -->
+            @endif
+        @else
+            <a href="{{ url('/') }}">CareerLaunch</a> <!-- If not logged in, link to home -->
+        @endauth
     </div>
 
-    <!-- Right side: Navigation links -->
+    <!-- ✅ Right side: Navigation links -->
     <div class="nav-right">
         <a href="#">Planning</a> <!-- Example link -->
         <a href="{{ route('about') }}">About&nbsp;Us</a> <!-- About link -->
@@ -148,7 +158,7 @@
 </nav>
 
 <!-- ✅ BACK BUTTON (same style & placement as in register page) -->
-<a href="{{ url('/') }}" class="back-button">← Terug</a> <!-- Back button that goes to homepage -->
+<a href="{{ url('/') }}" class="back-button">← Terug</a> <!-- Back button to homepage -->
 
 <!-- ✅ PAGE CONTENT -->
 <div class="container">
@@ -158,7 +168,7 @@
         Via stages, vacatures en directe communicatie helpen we jong talent om hun professionele pad te vinden.
     </p>
 
-    <!-- Features section with 3 feature cards -->
+    <!-- ✅ Features section with 3 feature cards -->
     <div class="features">
         <div class="feature">
             <h3>🎯 Missie</h3> <!-- Feature title -->
