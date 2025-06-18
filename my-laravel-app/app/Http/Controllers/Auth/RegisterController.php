@@ -16,17 +16,19 @@ class RegisterController extends Controller
         return view('auth.register_student');
     }
 
-    // Handle student registration logic
+    // ✅ Handle student registration logic (updated to use voornaam & achternaam)
     public function studentRegister(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'voornaam' => 'required|string|max:255',
+            'achternaam' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
 
         $student = User::create([
-            'name' => $request->name,
+            'voornaam' => $request->voornaam,
+            'achternaam' => $request->achternaam,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'type' => 'student',
@@ -46,7 +48,7 @@ class RegisterController extends Controller
         return view('auth.register_bedrijf');
     }
 
-    // Handle company registration logic
+    // ✅ Company registration stays the same
     public function bedrijfRegister(Request $request)
     {
         $request->validate([
@@ -62,7 +64,6 @@ class RegisterController extends Controller
             'type' => 'bedrijf',
         ]);
 
-        // ✅ Create an empty profile for the company
         $bedrijf->profile()->create([]);
 
         Auth::login($bedrijf);
