@@ -216,15 +216,15 @@
 
   <section class="grid-section">
     <div class="card">
-      <h3>🎯 Missie</h3>
+      <h3> Missie</h3>
       <p>Een brug bouwen tussen onderwijs en werkveld met transparantie, snelheid en gebruiksvriendelijke tools.</p>
     </div>
     <div class="card">
-      <h3>🚀 Visie</h3>
+      <h3> Visie</h3>
       <p>Wij geloven in een inclusieve arbeidsmarkt waar elke student de kans krijgt om zich professioneel te ontplooien.</p>
     </div>
     <div class="card">
-      <h3>🔐 Veiligheid</h3>
+      <h3> Veiligheid</h3>
       <p>Jouw gegevens zijn veilig bij ons: we controleren profielen en gebruiken versleutelde opslag.</p>
     </div>
   </section>
