@@ -18,7 +18,7 @@
     html, body {
       height: 100%;
       font-family: 'Inter', sans-serif;
-      background-color: var(--bg-blue);
+      background-color: var(--bg-blue);  
       color: var(--text-dark);
       scroll-behavior: smooth;
     }
