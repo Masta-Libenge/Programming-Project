@@ -16,8 +16,12 @@ use App\Http\Controllers\BedrijfController;
 | Public Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn () => view('auth.home'));
+
+// ✅ Public home page — NOW WITH NAME!
+Route::get('/', fn () => view('auth.home'))->name('home');
+
 Route::get('/login', fn () => redirect('/login/student'))->name('login');
+
 Route::get('/about', fn () => view('about'))->name('about');
 
 /*
@@ -25,6 +29,7 @@ Route::get('/about', fn () => view('about'))->name('about');
 | Login Routes
 |--------------------------------------------------------------------------
 */
+
 Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
 Route::get('/login/bedrijf', [LoginController::class, 'showBedrijfLoginForm'])->name('login.bedrijf');
 Route::post('/login/student', [LoginController::class, 'studentLogin']);
@@ -35,6 +40,7 @@ Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin']);
 | Register Routes
 |--------------------------------------------------------------------------
 */
+
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
 Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegisterForm'])->name('register.bedrijf');
 Route::post('/register/student', [RegisterController::class, 'studentRegister']);
@@ -45,11 +51,13 @@ Route::post('/register/bedrijf', [RegisterController::class, 'bedrijfRegister'])
 | Logout Route
 |--------------------------------------------------------------------------
 */
+
+// ✅ Correct logout: clears session + redirects to named home page
 Route::post('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
-    return redirect('/');
+    return redirect()->route('home');
 })->name('logout');
 
 /*
@@ -57,6 +65,7 @@ Route::post('/logout', function () {
 | Authenticated Routes
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth'])->group(function () {
     // Student
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
