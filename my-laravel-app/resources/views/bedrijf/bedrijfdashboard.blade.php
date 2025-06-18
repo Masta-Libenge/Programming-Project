@@ -29,7 +29,6 @@
       color: var(--text);
     }
 
-    /* ✅ Navbar */
     .navbar {
       position: sticky;
       top: 0;
@@ -84,7 +83,6 @@
       }
     }
 
-    /* ✅ Dashboard layout */
     .dashboard-content {
       max-width: 960px;
       margin: 3rem auto;
@@ -92,13 +90,6 @@
       display: flex;
       flex-direction: column;
       gap: 2rem;
-    }
-
-    .topbar {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
     }
 
     .topbar h1 {
@@ -162,14 +153,14 @@
       color: white;
     }
 
-    .students {
+    .vacature-card {
       background-color: var(--card-bg);
       border-radius: var(--radius);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
       padding: 2rem;
     }
 
-    .students h2 {
+    .vacature-card h2 {
       font-size: 1.3rem;
       font-weight: 700;
       margin-bottom: 1rem;
@@ -193,19 +184,17 @@
 </head>
 <body>
 
-  <!-- ✅ Navbar -->
   <header class="navbar">
     <div class="nav-container">
       <div class="logo">CareerLaunch</div>
       <nav class="nav-links">
-        <a href="{{ route('about') }}">About Us</a>  
+        <a href="{{ route('about') }}">About Us</a>
         <a href="{{ route('faq') }}">FAQ</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- ✅ Dashboard content -->
   <div class="dashboard-content">
     <div class="topbar">
       <h1>Welkom terug, <span>{{ auth()->user()->name }}</span> 👋</h1>
@@ -226,16 +215,31 @@
       </a>
     </div>
 
-    <div class="students">
-      <h2>Ingeschreven studenten</h2>
-      @forelse($students as $student)
-        <div class="student">
-          👤 {{ $student->name }} – {{ $student->email }}
-        </div>
-      @empty
-        <p class="student-muted">Er zijn nog geen studenten beschikbaar.</p>
-      @endforelse
-    </div>
+    <!-- ✅ Vacature overzicht met sollicitanten -->
+    @forelse($vacatures as $vacature)
+      <div class="vacature-card">
+        <h2>{{ $vacature->title }}</h2>
+        <p style="margin-bottom: 1rem;">{{ $vacature->desc }}</p>
+
+        @if($vacature->applicants->count())
+          <h3 style="margin-bottom: 0.5rem;">Sollicitanten:</h3>
+          @foreach($vacature->applicants as $student)
+            <div class="student">
+              👤 {{ $student->name }} – {{ $student->email }}
+              @if($student->profile)
+                <br><span class="student-muted">Opleiding: {{ $student->profile->opleiding ?? 'n.v.t.' }}</span>
+              @endif
+            </div>
+          @endforeach
+        @else
+          <p class="student-muted">Nog geen sollicitanten.</p>
+        @endif
+      </div>
+    @empty
+      <div class="vacature-card">
+        <p class="student-muted">Je hebt nog geen vacatures aangemaakt.</p>
+      </div>
+    @endforelse
   </div>
 
 </body>

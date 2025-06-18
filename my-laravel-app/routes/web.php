@@ -9,11 +9,20 @@ use App\Http\Controllers\VacatureController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
-use App\Models\User;
+use App\Http\Controllers\BedrijfController;
 
 /*
 |--------------------------------------------------------------------------
-| Auth: Login Routes
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn () => view('auth.home'));
+Route::get('/login', fn () => redirect('/login/student'))->name('login');
+Route::get('/about', fn () => view('about'))->name('about');
+
+/*
+|--------------------------------------------------------------------------
+| Login Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
@@ -23,35 +32,13 @@ Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin']);
 
 /*
 |--------------------------------------------------------------------------
-| Auth: Register Routes
+| Register Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
 Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegisterForm'])->name('register.bedrijf');
 Route::post('/register/student', [RegisterController::class, 'studentRegister']);
 Route::post('/register/bedrijf', [RegisterController::class, 'bedrijfRegister']);
-
-/*
-|--------------------------------------------------------------------------
-| Testroute
-|--------------------------------------------------------------------------
-*/
-Route::get('/register_student', function () {
-    return view('auth.register_student');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Public Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/', function () {
-    return view('auth.home');
-});
-
-Route::get('/login', function () {
-    return redirect('/login/student');
-})->name('login');
 
 /*
 |--------------------------------------------------------------------------
@@ -67,58 +54,38 @@ Route::post('/logout', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Debug Route
-|--------------------------------------------------------------------------
-*/
-Route::get('/debug', function () {
-    return 'Middleware is bypassed';
-});
-
-/*
-|--------------------------------------------------------------------------
-| Routes for authenticated users only
+| Authenticated Routes
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-
+    // Student
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
+    Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
+    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+    Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
 
-    Route::get('/bedrijf/dashboard', function () {
-        $students = User::where('type', 'student')->get();
-        return view('bedrijf.bedrijfdashboard', compact('students'));
-    })->name('bedrijf.dashboard');
+    // Bedrijf
+    Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
 
+    // Vacatures
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
+    Route::post('/vacature/{id}/apply', [VacatureController::class, 'apply'])->name('vacature.apply');
 
-    Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
-    Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
-    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
-    Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
-
+    // Admin
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 
-    Route::post('/student/profile/update', [ProfileController::class, 'update'])->name('student.profile.update');
+    // Planning
+    Route::get('/planning', fn () => view('student.planning'))->name('planning');
 
-    // ✅ Planning page
-    Route::get('/planning', function () {
-        return view('student.planning');
-    })->name('planning');
-});
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-Route::middleware('auth')->group(function () {
+    // FAQ
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
     Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
+    Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
+    Route::post('/admin/faq/{id}/toggle', [AdminController::class, 'toggleFaq'])->name('admin.faq.toggle');
 });
-
-Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
-Route::post('/admin/faq/{id}/toggle', [AdminController::class, 'toggleFaq'])->name('admin.faq.toggle');
-Route::get('/faq', [FaqController::class, 'index'])->name('faq');
