@@ -177,26 +177,21 @@
   </style>
 </head>
 <body>
-
-<!-- ✅ Navbar with dynamic logo -->
+<!-- ✅ Navbar with smart dynamic logo -->
 <nav>
-  @auth
-    @if (auth()->user()->type === 'student')
-      <a href="{{ route('student.dashboard') }}" class="logo">CareerLaunch</a>
-    @elseif (auth()->user()->type === 'bedrijf')
-      <a href="{{ route('bedrijf.dashboard') }}" class="logo">CareerLaunch</a>
+  <a href="
+    @auth
+      {{ auth()->user()->type === 'student' ? route('student.dashboard') : (auth()->user()->type === 'bedrijf' ? route('bedrijf.dashboard') : url('/')) }}
     @else
-      <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
-    @endif
-  @else
-    <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
-  @endauth
+      {{ url('/') }}
+    @endauth
+  " class="logo">CareerLaunch</a>
 
   <div class="nav-links">
     <a href="{{ route('about') }}">About Us</a>
     <a href="{{ route('faq') }}">FAQ</a>
     <a href="#">Contact</a>
-  </div> 
+  </div>
 </nav>
 
 <!-- ❌ Removed back button -->

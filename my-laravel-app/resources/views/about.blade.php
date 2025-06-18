@@ -102,20 +102,16 @@
 
 <!-- ✅ NAVBAR with dynamic logo -->
 <nav>
-    <!-- ✅ Left side: Dynamic logo link -->
-    <div class="nav-left">
+<!-- ✅ Left side: Dynamic logo link -->
+<div class="nav-left">
+    <a href="
         @auth
-            @if (auth()->user()->type === 'student')
-                <a href="{{ route('student.dashboard') }}">CareerLaunch</a>
-            @elseif (auth()->user()->type === 'bedrijf')
-                <a href="{{ route('bedrijf.dashboard') }}">CareerLaunch</a>
-            @else
-                <a href="{{ url('/') }}">CareerLaunch</a>
-            @endif
+            {{ auth()->user()->type === 'student' ? route('student.dashboard') : (auth()->user()->type === 'bedrijf' ? route('bedrijf.dashboard') : url('/')) }}
         @else
-            <a href="{{ url('/') }}">CareerLaunch</a>
+            {{ url('/') }}
         @endauth
-    </div>
+    ">CareerLaunch</a>
+</div>
 
     <!-- ✅ Right side: Navigation links -->
     <div class="nav-right">
