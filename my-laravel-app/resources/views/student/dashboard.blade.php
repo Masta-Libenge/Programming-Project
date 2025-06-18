@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <title>Student Dashboard – CareerLaunch</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+@extends('layouts.base')
 
-  <style>
+@section('title', 'Student Dashboard – CareerLaunch')
+
+@section('content')
+<style>
     :root {
       --primary: #1E40AF;
       --bg: #1E40AF;
@@ -22,61 +19,6 @@
       background-color: var(--bg);
       font-family: 'Inter', sans-serif;
       color: var(--text);
-    }
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      background-color: var(--primary);
-      padding: 1rem 6%;
-      z-index: 999;
-    }
-
-    .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: white;
-      text-decoration: none;
-    }
-
-    .nav-links a {
-      margin-left: 2rem;
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: #000000;
-    }
-
-    @media (max-width: 768px) {
-      .nav-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 1rem;
-      }
-
-      .nav-links a {
-        margin-left: 0;
-      }
     }
 
     .dashboard-wrapper {
@@ -162,65 +104,34 @@
     .no-vacatures {
       color: var(--muted);
     }
-  </style>
-</head>
-<body>
+</style>
 
-  <!-- ✅ Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      @auth
-        @if (auth()->user()->type === 'student')
-          <a href="{{ route('student.dashboard') }}" class="logo">CareerLaunch</a>
-        @elseif (auth()->user()->type === 'bedrijf')
-          <a href="{{ route('bedrijf.dashboard') }}" class="logo">CareerLaunch</a>
-        @else
-          <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
-        @endif
-      @else
-        <a href="{{ url('/') }}" class="logo">CareerLaunch</a>
-      @endauth
-
-      <nav class="nav-links">
-        <a href="#">Planning</a>
-        <a href="{{ route('about') }}">About Us</a>
-        <a href="{{ route('faq') }}">FAQ</a>
-        <a href="#">Contact</a>
-        <a href="{{ route('student.profile.show') }}">Profiel</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ✅ Dashboard content -->
-  <div class="dashboard-wrapper">
-    <div class="dashboard-header">
-      <h1>Welkom terug, <span>{{ Auth::user()->name }}</span> 👋</h1>
-    </div>
-
-    <div class="card">
-      <h2>Nieuwste vacatures</h2>
-
-      @if($vacatures->count())
-        @foreach($vacatures as $vacature)
-          <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
-            <div class="vacature-title">{{ $vacature->title }}</div>
-            <div class="vacature-meta">
-              {{ $vacature->user->name ?? 'Onbekend bedrijf' }} – {{ $vacature->created_at->diffForHumans() }}
-            </div>
-            <div class="vacature-desc">{{ $vacature->desc }}</div>
-
-            <!-- ✅ Apply-knop -->
-            <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
-              @csrf
-              <button type="submit" class="apply-button">Apply</button>
-            </form>
-          </div>
-        @endforeach
-      @else
-        <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
-      @endif
-    </div>
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <h1>Welkom terug, <span>{{ Auth::user()->name }}</span> 👋</h1>
   </div>
 
-</body>
-</html>
+  <div class="card">
+    <h2>Nieuwste vacatures</h2>
+
+    @if($vacatures->count())
+      @foreach($vacatures as $vacature)
+        <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
+          <div class="vacature-title">{{ $vacature->title }}</div>
+          <div class="vacature-meta">
+            {{ $vacature->user->name ?? 'Onbekend bedrijf' }} – {{ $vacature->created_at->diffForHumans() }}
+          </div>
+          <div class="vacature-desc">{{ $vacature->desc }}</div>
+
+          <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
+            @csrf
+            <button type="submit" class="apply-button">Apply</button>
+          </form>
+        </div>
+      @endforeach
+    @else
+      <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
+    @endif
+  </div>
+</div>
+@endsection
