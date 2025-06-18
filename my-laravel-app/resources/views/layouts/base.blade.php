@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -75,11 +74,11 @@
         <div class="nav-container">
             <div class="logo">CareerLaunch</div>
             <nav class="nav-links">
-                <a href="#">Planning</a>
-                <a href="{{ route('about') }}">About Us</a>
-                <a href="{{ route('faq') }}">FAQ</a>
+                <a href="{{ route('planning') }}">Planning</a>
+                <a href="#">About Us</a>
+                <a href="#">FAQ</a>
                 <a href="#">Contact</a>
-                <a href="{{ route('student.profile.show') }}">Profiel</a>
+                <a href="#">Profiel</a>
             </nav>
         </div>
     </header>

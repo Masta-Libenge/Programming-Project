@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VacatureController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FaqController;
 use App\Models\User;
 
 /*
@@ -80,11 +81,6 @@ Route::get('/debug', function () {
 */
 Route::middleware(['auth'])->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Dashboard Routes
-    |--------------------------------------------------------------------------
-    */
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
 
     Route::get('/bedrijf/dashboard', function () {
@@ -92,51 +88,31 @@ Route::middleware(['auth'])->group(function () {
         return view('bedrijf.bedrijfdashboard', compact('students'));
     })->name('bedrijf.dashboard');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Vacature Routes
-    |--------------------------------------------------------------------------
-    */
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
-
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Profile Routes
-    |--------------------------------------------------------------------------
-    */
     Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
     Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
-
     Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
     Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Admin Routes
-    |--------------------------------------------------------------------------
-    */
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Student Profiel Update Extra
-    |--------------------------------------------------------------------------
-    */
-    Route::post('/student/profile/update', [ProfileController::class, 'update'])
-        ->name('student.profile.update');
+    Route::post('/student/profile/update', [ProfileController::class, 'update'])->name('student.profile.update');
+
+    // ✅ Planning page
+    Route::get('/planning', function () {
+        return view('student.planning');
+    })->name('planning');
 });
 
 Route::get('/about', function () {
     return view('about');
 })->name('about');
-
-use App\Http\Controllers\FaqController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
