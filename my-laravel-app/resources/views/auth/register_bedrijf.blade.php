@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Registreren als bedrijf – CareerLaunch</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"> <!-- Define the character encoding -->
+    <title>Registreren als bedrijf – CareerLaunch</title> <!-- Page title -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make page responsive -->
 
     <style>
         :root {
-            --accent: #1e40af;
-            --bg: #f1f5f9;
-            --text: #0f172a;
-            --muted: #64748b;
-            --radius: 18px;
+            --accent: #1e40af; /* Main blue color */
+            --bg: #f1f5f9;     /* Light background */
+            --text: #0f172a;   /* Dark text */
+            --muted: #64748b;  /* Muted text */
+            --radius: 18px;    /* Rounded corners */
         }
 
         * {
@@ -99,6 +99,7 @@
             font-size: 0.95rem;
         }
 
+        /* ✅ Back button styling (matches other pages) */
         .back-button {
             display: inline-block;
             margin-bottom: 1.2rem;
@@ -120,13 +121,13 @@
 <body>
 
 <div class="form-container">
-    {{-- 🔙 Back to homepage --}}
-    <a href="{{ url('/login/bedrijf') }}" class="back-button">← Terug</a>
+    <!-- ✅ Back button: now goes to the *previous page* dynamically -->
+    <a href="{{ url()->previous() }}" class="back-button">← Terug</a>
 
     <h1>Registreer je bedrijf</h1>
     <p>Vul de onderstaande gegevens in om te starten</p>
 
-    {{-- ✅ Show all validation errors if any --}}
+    <!-- ✅ Show all validation errors if any -->
     @if ($errors->any())
         <div class="error-message">
             <ul style="margin: 0; padding-left: 1rem;">
@@ -137,7 +138,7 @@
         </div>
     @endif
 
-    {{-- 🧾 Registration form --}}
+    <!-- ✅ Registration form -->
     <form method="POST" action="{{ url('/register/bedrijf') }}">
         @csrf
 

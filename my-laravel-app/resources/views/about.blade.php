@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Over Ons - CareerLaunch</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"> <!-- Define the character encoding -->
+    <title>Over Ons - CareerLaunch</title> <!-- Page title shown in browser tab -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make page responsive -->
+
     <style>
+        /* Define CSS variables for easy color and radius reuse */
         :root {
-            --bg: #f8fafc;
-            --white: #ffffff;
-            --accent: #1e3a8a;
-            --muted: #64748b;
-            --radius: 16px;
+            --bg: #f8fafc; /* Light background color */
+            --white: #ffffff; /* Pure white */
+            --accent: #1e3a8a; /* Main accent color (dark blue) */
+            --muted: #64748b; /* Muted text color (greyish blue) */
+            --radius: 16px; /* Standard border radius for rounded corners */
         }
 
         body {
@@ -18,7 +20,7 @@
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
             color: var(--accent);
-            padding-top: 80px;
+            padding-top: 80px; /* Space for the fixed navbar */
         }
 
         nav {
@@ -98,21 +100,31 @@
 </head>
 <body>
 
-<!-- ✅ NAVBAR -->
+<!-- ✅ NAVBAR with dynamic logo -->
 <nav>
-    <div class="nav-left">
-        <a href="{{ route('bedrijf.dashboard') }}">CareerLaunch</a>
-    </div>
+<!-- ✅ Left side: Dynamic logo link -->
+<div class="nav-left">
+    <a href="
+        @auth
+            {{ auth()->user()->type === 'student' ? route('student.dashboard') : (auth()->user()->type === 'bedrijf' ? route('bedrijf.dashboard') : url('/')) }}
+        @else
+            {{ url('/') }}
+        @endauth
+    ">CareerLaunch</a>
+</div>
+
+    <!-- ✅ Right side: Navigation links -->
     <div class="nav-right">
         <a href="#">Planning</a>
         <a href="{{ route('about') }}">About&nbsp;Us</a>
-<a href="{{ route('faq') }}">FAQ</a>
+        <a href="{{ route('faq') }}">FAQ</a>
         <a href="#">Contact</a>
-        <a href="{{ route('bedrijf.dashboard') }}">Dashboard</a>
     </div>
 </nav>
 
-<!-- ✅ INHOUD -->
+<!-- ❌ REMOVED the back button here -->
+
+<!-- ✅ PAGE CONTENT -->
 <div class="container">
     <h1>Over CareerLaunch</h1>
     <p>

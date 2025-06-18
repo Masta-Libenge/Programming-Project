@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Registreren als student – CareerLaunch</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"> <!-- Character encoding -->
+    <title>Registreren als student – CareerLaunch</title> <!-- Page title -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
 
     <style>
         :root {
-            --accent: #1e40af;
-            --bg: #f1f5f9;
-            --text: #0f172a;
-            --muted: #64748b;
-            --radius: 18px;
+            --accent: #1e40af; /* Main blue */
+            --bg: #f1f5f9;     /* Light background */
+            --text: #0f172a;   /* Dark text */
+            --muted: #64748b;  /* Muted text */
+            --radius: 18px;    /* Rounded corners */
         }
 
         * {
@@ -99,6 +99,7 @@
             font-size: 0.95rem;
         }
 
+        /* ✅ Back button styling same as other pages */
         .back-button {
             display: inline-block;
             margin-bottom: 1.2rem;
@@ -120,13 +121,13 @@
 <body>
 
 <div class="form-container">
-    {{-- 🔙 Back to homepage --}}
-    <a href="{{ url('/login/student') }}" class="back-button">← Terug</a>
+    <!-- ✅ Back button: now dynamically goes to previous page -->
+    <a href="{{ url()->previous() }}" class="back-button">← Terug</a>
 
     <h1>Student registratie</h1>
     <p>Maak een studentenaccount aan om te starten</p>
 
-    {{-- ✅ Show validation errors if they exist --}}
+    <!-- ✅ Show validation errors if they exist -->
     @php
         $allErrors = $errors->all();
     @endphp
@@ -141,6 +142,7 @@
         </div>
     @endif
 
+    <!-- ✅ Registration form -->
     <form method="POST" action="{{ url('/register/student') }}">
         @csrf
 

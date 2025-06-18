@@ -5,6 +5,7 @@
   <title>FAQ – CareerLaunch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --bg-blue: #1E40AF;
@@ -33,9 +34,7 @@
     nav {
       background: var(--bg-blue);
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 1000;
       display: flex;
       justify-content: space-between;
@@ -48,6 +47,7 @@
       font-size: 1.4rem;
       font-weight: 800;
       color: var(--white);
+      text-decoration: none;
     }
 
     nav .nav-links a {
@@ -177,28 +177,35 @@
   </style>
 </head>
 <body>
-
-<!-- ✅ Navbar -->
+<!-- ✅ Navbar with smart dynamic logo -->
 <nav>
-  <div class="logo">CareerLaunch</div>
+  <a href="
+    @auth
+      {{ auth()->user()->type === 'student' ? route('student.dashboard') : (auth()->user()->type === 'bedrijf' ? route('bedrijf.dashboard') : url('/')) }}
+    @else
+      {{ url('/') }}
+    @endauth
+  " class="logo">CareerLaunch</a>
+
   <div class="nav-links">
     <a href="{{ route('about') }}">About Us</a>
     <a href="{{ route('faq') }}">FAQ</a>
     <a href="#">Contact</a>
-    <a href="{{ route('student.dashboard') }}">Dashboard</a>
-  </div> 
+  </div>
 </nav>
 
-<!-- ✅ Inhoud -->
+<!-- ❌ Removed back button -->
+
+<!-- ✅ FAQ container -->
 <div class="faq-container">
   <h1>Veelgestelde Vragen</h1>
 
-  {{-- Succesbericht --}}
+  {{-- ✅ Success message --}}
   @if (session('success'))
     <div class="success">{{ session('success') }}</div>
   @endif
 
-  {{-- Gepubliceerde FAQ's --}}
+  {{-- ✅ Display published FAQs --}}
   @if ($faqs->count())
     @foreach ($faqs as $faq)
       <div class="faq-card">
@@ -214,12 +221,9 @@
     <p>Er zijn nog geen vragen beantwoord.</p>
   @endif
 
-  {{-- Vraagformulier --}}
   <h2>Stel een nieuwe vraag</h2>
-
   <form action="{{ route('faq.store') }}" method="POST">
     @csrf
-
     <label for="subject">Onderwerp</label>
     <input type="text" id="subject" name="subject" required>
 
