@@ -8,62 +8,95 @@
 
   <style>
     :root {
-      --primary: #1E40AF;
-      --bg: #1E40AF;
-      --card-bg: #ffffff;
-      --text: #0f172a;
+      --bg-blue: #1E40AF;
+      --text-white: #ffffff;
+      --text-dark: #0f172a;
       --muted: #64748b;
       --radius: 16px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
       font-family: 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem;
-      color: var(--text);
+      background-color: var(--bg-blue);
+      color: var(--text-dark);
+      scroll-behavior: smooth;
     }
-
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: var(--bg-blue);
+      padding: 1rem 6%;
+      z-index: 999;
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .nav-links a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: #000000;
+    }
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+      }
+      .nav-links a {
+        margin-left: 0;
+      }
+    }
     .login-container {
-      background: var(--card-bg);
+      background: white;
       border-radius: var(--radius);
       padding: 3rem 2rem;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
       width: 100%;
       max-width: 460px;
+      margin: 0 auto;
+      margin-top: 1rem; /* réduit la marge haute */
     }
-
     h1 {
       font-size: 2.2rem;
       font-weight: 800;
       text-align: center;
-      color: var(--primary);
+      color: var(--bg-blue);
       margin-bottom: 0.5rem;
     }
-
     p {
       font-size: 1rem;
       text-align: center;
       color: var(--muted);
       margin-bottom: 2rem;
     }
-
     label {
       font-weight: 600;
       display: block;
       margin-bottom: 0.4rem;
       margin-top: 1.2rem;
     }
-
     input[type="email"],
     input[type="password"] {
       width: 100%;
@@ -73,7 +106,6 @@
       border-radius: var(--radius);
       background-color: #f9fafb;
     }
-
     button {
       width: 100%;
       margin-top: 2rem;
@@ -82,108 +114,73 @@
       font-weight: 600;
       border: none;
       border-radius: var(--radius);
-      background-color: var(--primary);
+      background-color: var(--bg-blue);
       color: white;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
     button:hover {
       background-color: #172B87;
     }
-
-    .register-link {
-      display: block;
-      text-align: center;
-      margin-top: 1.6rem;
-      color: var(--primary);
-      font-size: 0.95rem;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .register-link:hover {
-      text-decoration: underline;
-    }
-
     .back-button {
       display: inline-block;
       margin-bottom: 1rem;
-      color: var(--primary);
+      color: var(--bg-blue);
       font-size: 0.95rem;
       text-decoration: none;
-      border: 1px solid var(--primary);
+      border: 1px solid var(--bg-blue);
       padding: 0.5rem 1rem;
       border-radius: var(--radius);
       transition: background-color 0.2s ease, color 0.2s ease;
     }
-
     .back-button:hover {
-      background-color: var(--primary);
+      background-color: var(--bg-blue);
       color: white;
     }
-
-    .error-message {
-      background-color: #fee2e2;
-      color: #b91c1c;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius);
-      margin-bottom: 1rem;
+    .register-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.6rem;
+      color: var(--bg-blue);
       font-size: 0.95rem;
+      text-decoration: none;
+      font-weight: 600;
     }
-
-    .error-message ul {
-      margin: 0;
-      padding-left: 1rem;
+    .register-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <a href="{{ url()->previous() }}" class="back-button">← Terug</a>
-
-    <h1>Student login</h1>
-    <p>Log in om toegang te krijgen tot jouw persoonlijke dashboard</p>
-
-    @if ($errors->has('login'))
-      <div class="error-message" style="text-align: center;">
-        {{ $errors->first('login') }}
-      </div>
-    @endif
-
-    @php
-      $allErrors = $errors->all();
-      $loginError = $errors->first('login');
-      $otherErrors = array_filter($allErrors, fn($e) => $e !== $loginError);
-    @endphp
-
-    @if (count($otherErrors) > 0)
-      <div class="error-message">
-        <ul>
-          @foreach ($otherErrors as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-
-    <form method="POST" action="{{ url('/login/student') }}">
-      @csrf
-
-      <label for="email">E-mailadres</label>
-      <input type="email" name="email" id="email" required>
-
-      <label for="password">Wachtwoord</label>
-      <input type="password" name="password" id="password" required>
-
-      <button type="submit">Inloggen</button>
-    </form>
-
-    <a href="{{ url('/register_student') }}" class="register-link">
-      Nog geen account? Registreer hier
-    </a>
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">CareerLaunch</div>
+    <nav class="nav-links">
+      <a href="{{ route('about') }}">About Us</a>  
+      <a href="{{ route('faq') }}">FAQ</a>     
+      <a href="#contact">Contact</a>
+    </nav>
   </div>
+</header>
+
+<div class="login-container">
+  <a href="{{ url()->previous() }}" class="back-button">← Terug</a>
+
+  <h1>Student login</h1>
+  <p>Log in om toegang te krijgen tot jouw persoonlijke dashboard</p>
+
+  <form method="POST" action="{{ url('/login/student') }}">
+    @csrf
+    <label for="email">E-mailadres</label>
+    <input type="email" name="email" id="email" required>
+    <label for="password">Wachtwoord</label>
+    <input type="password" name="password" id="password" required>
+    <button type="submit">Inloggen</button>
+  </form>
+
+  <a href="{{ url('/register_student') }}" class="register-link">Nog geen account? Registreer hier</a>
+</div>
 
 </body>
 </html>
