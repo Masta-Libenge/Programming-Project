@@ -21,6 +21,7 @@
             font-family: 'Inter', sans-serif;
             color: var(--text);
         }
+        
         .navbar {
             position: sticky;
             top: 0;
@@ -70,18 +71,6 @@
     </style>
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-container">
-            <div class="logo">CareerLaunch</div>
-            <nav class="nav-links">
-                <a href="{{ route('planning') }}">Planning</a>
-                <a href="#">About Us</a>
-                <a href="#">FAQ</a>
-                <a href="#">Contact</a>
-                <a href="#">Profiel</a>
-            </nav>
-        </div>
-    </header>
 
     @yield('content')
 

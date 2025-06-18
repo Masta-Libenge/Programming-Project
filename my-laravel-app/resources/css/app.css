@@ -83,7 +83,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: #000000;
+    color: #000000 !important;
 }
 
 @media (max-width: 768px) {

@@ -3,9 +3,11 @@
 @section('title', 'Planning')
 
 @section('content')
+<x-navbar />
+
 <style>
     .planning-container {
-        max-width: 815px; /* Increased from 700px to make it approximately 3cm wider */
+        max-width: 815px;
         margin: 3rem auto;
         padding: 2rem 1.5rem;
         background: #ffffff;

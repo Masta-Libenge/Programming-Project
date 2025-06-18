@@ -3,6 +3,8 @@
 @section('title', 'Student Profiel')
 
 @section('content')
+<x-navbar />
+
 <script>
     function toggleEdit() {
         // Toggle to edit mode
@@ -20,8 +22,6 @@
         document.getElementById('editActions').classList.add('hidden');
     }
 </script>
-
-<x-navbar />
 
 <div class="flex items-center justify-center px-4">
     <div class="bg-[#e0e5ec] rounded-3xl shadow-xl w-full max-w-2xl p-8 sm:p-10 mt-6">
@@ -83,7 +83,6 @@
                             value="{{ $user->voornaam }}">
                     </div>
 
-                    <!-- Achternaam -->
                     <div class="bg-white rounded-xl shadow-inner px-4 py-2 text-center text-gray-700">
                         <label class="block text-sm text-[#1E40AF] mb-1">Achternaam</label>
                         <span class="view-mode">{{ $user->achternaam ?? 'Nog niet ingevuld' }}</span>
@@ -92,7 +91,6 @@
                             value="{{ $user->achternaam }}">
                     </div>
 
-                    <!-- E-mailadres -->
                     <div class="col-span-1 sm:col-span-2 bg-white rounded-xl shadow-inner px-4 py-2 text-center text-gray-700">
                         <label class="block text-sm text-[#1E40AF] mb-1">E-mailadres</label>
                         <span class="view-mode">{{ $user->email }}</span>
@@ -103,11 +101,9 @@
                 </div>
             </div>
 
-            <!-- ✅ Hogeschool -->
             <div class="mb-6">
                 <h2 class="text-lg font-semibold text-[#1E40AF] text-center mb-3">Hogeschool</h2>
                 <div class="space-y-4">
-                    <!-- Opleiding -->
                     <div class="bg-white rounded-xl shadow-inner px-4 py-2 text-center text-gray-700">
                         <label class="block text-sm text-[#1E40AF] mb-1">Opleiding</label>
                         <span class="view-mode">{{ $user->opleiding ?? 'Nog niet ingevuld' }}</span>
@@ -116,7 +112,6 @@
                             value="{{ $user->opleiding }}">
                     </div>
 
-                    <!-- Jaar -->
                     <div class="bg-white rounded-xl shadow-inner px-4 py-2 text-center text-gray-700">
                         <label class="block text-sm text-[#1E40AF] mb-1">Jaar</label>
                         <span class="view-mode">{{ $user->jaar ?? 'Nog niet ingevuld' }}</span>
