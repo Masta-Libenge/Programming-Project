@@ -98,3 +98,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
     Route::post('/admin/faq/{id}/toggle', [AdminController::class, 'toggleFaq'])->name('admin.faq.toggle');
 });
+
+Route::get('/vacature/{id}', [VacatureController::class, 'show'])->name('vacature.show');
+
+Route::post('/vacature/{id}/unapply', [VacatureController::class, 'unapply'])->name('vacature.unapply');

@@ -21,26 +21,47 @@ class VacatureController extends Controller
      * Sla een nieuwe vacature op.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'desc'  => 'required|string',
-            'type'  => 'required|in:Stage,Werknemer',
-            'color' => 'required|string'
-        ]);
+{
+    $request->validate([
+        'title'         => 'required|string|max:255',
+        'desc'          => 'required|string',
+        'type'          => 'required|in:Stage,Werknemer,Freelance',
+        'color'         => 'required|string',
+        'sector'        => 'nullable|string|max:255',
+        'location'      => 'nullable|string|max:255',
+        'experience'    => 'nullable|string|max:255',
+        'salary'        => 'nullable|string|max:255',
+        'deadline'      => 'nullable|date',
+        'contract_duur' => 'nullable|string|max:255',
+        'contract_type' => 'nullable|string|max:255',
+        'werkrooster'   => 'nullable|string|max:255',
+        'studies'       => 'nullable|string|max:255',
+        'talenkennis'   => 'nullable|string|max:255',
+    ]);
 
-        Vacature::create([
-            'title'    => $request->title,
-            'desc'     => $request->desc,
-            'type'     => $request->type,
-            'color'    => $request->color,
-            'user_id'  => Auth::id(), // koppeling met bedrijf
-        ]);
+    Vacature::create([
+        'title'         => $request->title,
+        'desc'          => $request->desc,
+        'type'          => $request->type,
+        'color'         => $request->color,
+        'sector'        => $request->sector,
+        'location'      => $request->location,
+        'experience'    => $request->experience,
+        'salary'        => $request->salary,
+        'deadline'      => $request->deadline,
+        'contract_duur' => $request->contract_duur,
+        'contract_type' => $request->contract_type,
+        'werkrooster'   => $request->werkrooster,
+        'studies'       => $request->studies,
+        'talenkennis'   => $request->talenkennis,
+        'user_id'       => Auth::id(),
+    ]);
 
-        return redirect()
-            ->route('bedrijf.dashboard')
-            ->with('success', 'Vacature succesvol toegevoegd.');
-    }
+    return redirect()
+        ->route('bedrijf.dashboard')
+        ->with('success', 'Vacature succesvol toegevoegd.');
+}
+
 public function apply($id)
 {
     $user = Auth::user();
@@ -59,6 +80,21 @@ public function apply($id)
     $user->appliedVacatures()->attach($id);
 
     return back()->with('success', 'Je hebt succesvol gesolliciteerd!');
+}
+
+public function unapply($id)
+{
+    $user = auth()->user();
+    $user->appliedVacatures()->detach($id);
+
+    return redirect()->back()->with('success', 'Je sollicitatie werd ingetrokken.');
+}
+
+
+public function show($id)
+{
+    $vacature = Vacature::with('user')->findOrFail($id);
+    return view('vacature.show', compact('vacature'));
 }
 
 

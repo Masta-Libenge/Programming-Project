@@ -1,10 +1,10 @@
-@extends('layouts.app') {{-- als je layout gebruikt, anders weglaten --}}
+@extends('layouts.app')
 
 <!DOCTYPE html>
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Vacature Aanmaken - CareerLaunch</title>
+  <title>Vacature Aanmaken – CareerLaunch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -28,7 +28,7 @@
       padding: 2rem;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto 4rem auto;
     }
 
@@ -57,35 +57,6 @@
       border-radius: var(--radius);
       cursor: pointer;
     }
-
-    /* ✅ Vacature Cards */
-    .card-list {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .vacature-card {
-      background: white;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      border-left: 5px solid var(--primary);
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-    }
-
-    .vacature-card h3 {
-      margin-bottom: 0.5rem;
-    }
-
-    .vacature-footer {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 0.5rem;
-    }
-
-    .vacature-footer span {
-      margin-right: 1rem;
-    }
   </style>
 </head>
 <body>
@@ -100,13 +71,35 @@
       <input type="text" name="title" required>
 
       <label for="desc">Beschrijving</label>
-      <textarea name="desc" rows="5" required></textarea>
+      <textarea name="desc" rows="6" required></textarea>
 
-      <label for="type">Contracttype</label>
-      <select name="type" required>
-        <option value="Stage">Stage</option>
-        <option value="Werknemer">Werknemer</option>
+      <label for="sector">Sector</label>
+      <select name="sector" required>
+        <option value="Tech">Tech</option>
+        <option value="Medicine">Medicine</option>
+        <option value="Finance">Finance</option>
+        <option value="Onderwijs">Onderwijs</option>
+        <option value="Overheid">Overheid</option>
+        <option value="Retail">Retail</option>
       </select>
+
+      <label for="location">Locatie</label>
+      <input type="text" name="location" placeholder="bv. Brussel, Gent, Remote" required>
+
+      <label for="contract_duur">Contractduur</label>
+      <input type="text" name="contract_duur" placeholder="bv. Tijdelijk job (optie vast)">
+
+      <label for="contract_type">Contractvorm</label>
+      <input type="text" name="contract_type" placeholder="bv. Voltijds of Deeltijds">
+
+      <label for="werkrooster">Werkrooster</label>
+      <input type="text" name="werkrooster" placeholder="bv. Dagwerk, Weekend">
+
+      <label for="studies">Vereiste studies</label>
+      <input type="text" name="studies" placeholder="bv. Geen specifieke studiereis">
+
+      <label for="talenkennis">Talenkennis</label>
+      <input type="text" name="talenkennis" placeholder="bv. Nederlands (Zeer goed), Frans (Basis)">
 
       <label for="color">Kaartkleur</label>
       <select name="color" required>
@@ -119,8 +112,6 @@
       <button type="submit">Vacature Toevoegen</button>
     </form>
   </div>
-
- 
 
 </body>
 </html>

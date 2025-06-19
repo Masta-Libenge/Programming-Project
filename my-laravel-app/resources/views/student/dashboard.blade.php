@@ -7,133 +7,179 @@
 
 <style>
     :root {
-      --primary: #1E40AF;
-      --bg: #1E40AF;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --radius: 16px;
+        --primary: #1E40AF;
+        --bg: #1E40AF;
+        --card-bg: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --radius: 16px;
+        --badge-bg: #f1f5f9;
+        --badge-text: #1e293b;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background-color: var(--bg);
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
+        background-color: var(--bg);
+        font-family: 'Inter', sans-serif;
+        color: var(--text);
+        padding-top: 80px;
     }
 
     .dashboard-wrapper {
-      max-width: 960px;
-      margin: 4rem auto;
-      padding: 0 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      color: white;
+        max-width: 960px;
+        margin: 4rem auto;
+        padding: 0 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
     }
 
     .dashboard-header h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: white;
     }
 
     .dashboard-header h1 span {
-      background-color: white;
-      color: var(--primary);
-      padding: 0.2rem 0.6rem;
-      border-radius: 10px;
+        background-color: white;
+        color: var(--primary);
+        padding: 0.2rem 0.6rem;
+        border-radius: 10px;
     }
 
     .card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      color: var(--text);
+        background-color: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 2rem;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     .card h2 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 1rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1rem;
     }
 
     .vacature-card {
-      background-color: var(--card-bg);
-      border-left: 6px solid var(--primary);
-      border-radius: var(--radius);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      transition: transform 0.2s ease;
+        background-color: var(--card-bg);
+        border-left: 5px solid var(--primary);
+        border-radius: var(--radius);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        transition: transform 0.2s ease;
     }
 
     .vacature-card:hover {
-      transform: scale(1.02);
+        transform: scale(1.01);
     }
 
     .vacature-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+        color: var(--primary);
     }
 
     .vacature-meta {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+    }
+
+    .badge {
+        background-color: var(--badge-bg);
+        color: var(--badge-text);
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        font-weight: 500;
     }
 
     .vacature-desc {
-      color: var(--text);
-      font-size: 1rem;
+        font-size: 0.95rem;
+        margin-top: 1rem;
     }
 
     .apply-button {
-      margin-top: 1rem;
-      background-color: var(--primary);
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
+        margin-top: 1rem;
+        background-color: var(--primary);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .apply-button[disabled] {
+        background-color: #9ca3af;
+        cursor: not-allowed;
     }
 
     .no-vacatures {
-      color: var(--muted);
+        color: var(--muted);
+        font-style: italic;
     }
 </style>
 
 <div class="dashboard-wrapper">
-  <div class="dashboard-header">
-    <h1>Welkom terug, <span>{{ Auth::user()->name }}</span> 👋</h1>
-  </div>
+    <div class="dashboard-header">
+        <h1>Welkom terug, <span>{{ Auth::user()->name }}</span></h1>
+    </div>
 
-  <div class="card">
-    <h2>Nieuwste vacatures</h2>
+    <div class="card">
+        <h2>Nieuwste vacatures</h2>
 
-    @if($vacatures->count())
-      @foreach($vacatures as $vacature)
-        <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
-          <div class="vacature-title">{{ $vacature->title }}</div>
-          <div class="vacature-meta">
-            {{ $vacature->user->name ?? 'Onbekend bedrijf' }} – {{ $vacature->created_at->diffForHumans() }}
-          </div>
-          <div class="vacature-desc">{{ $vacature->desc }}</div>
+        @if($vacatures->count())
+            @foreach($vacatures as $vacature)
+<a href="{{ route('vacature.show', $vacature->id) }}" style="text-decoration: none; color: inherit;">
+    <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
+        <div class="vacature-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <div class="vacature-title">{{ $vacature->title }}</div>
+                <p class="vacature-bedrijf"><strong>{{ $vacature->user->name ?? 'Onbekend bedrijf' }}</strong></p>
+                <span class="vacature-datum">Gepubliceerd op {{ $vacature->created_at->format('d-m-Y') }}</span>
+            </div>
+            <div style="margin-left: auto;">
+               @if(auth()->user()->appliedVacatures->contains($vacature->id))
+    <form method="POST" action="{{ route('vacature.unapply', $vacature->id) }}">
+        @csrf
+        <button type="submit" class="apply-button" style="background-color: #dc2626;">Uitschrijven</button>
+    </form>
+@else
+    <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
+        @csrf
+        <button type="submit" class="apply-button">Solliciteer</button>
+    </form>
+@endif
 
-          <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
-            @csrf
-            <button type="submit" class="apply-button">Apply</button>
-          </form>
+            </div>
         </div>
-      @endforeach
-    @else
-      <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
-    @endif
-  </div>
+
+        <div class="vacature-meta" style="margin-top: 1rem;">
+            <span class="badge">{{ $vacature->location ?? 'Geen locatie' }}</span>
+            <span class="badge">{{ $vacature->sector ?? 'Geen sector' }}</span>
+            <span class="badge">{{ $vacature->type }}</span>
+            <span class="badge">{{ $vacature->experience ?? 'Geen ervaring vereist' }}</span>
+            <span class="badge">{{ $vacature->salary ?? 'Geen verloning vermeld' }}</span>
+            <span class="badge">
+                {{ $vacature->deadline ? \Carbon\Carbon::parse($vacature->deadline)->format('d-m-Y') : 'Geen deadline' }}
+            </span>
+        </div>
+
+        <div class="vacature-desc">
+            {{ Str::limit($vacature->desc, 180) }}
+        </div>
+    </div>
+</a>
+@endforeach
+
+        @else
+            <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
+        @endif
+    </div>
 </div>
 @endsection

@@ -9,7 +9,24 @@ class Vacature extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'desc', 'type', 'color', 'user_id'];
+    protected $fillable = [
+    'title',
+    'desc',
+    'type',
+    'sector',
+    'location',
+    'experience',
+    'salary',
+    'deadline',
+    'color',
+    'contract_duur',
+    'contract_type',
+    'werkrooster',
+    'studies',
+    'talenkennis',
+    'user_id',
+];
+
 
     public function user()
     {
