@@ -21,12 +21,13 @@
         background-color: var(--bg);
         font-family: 'Inter', sans-serif;
         color: var(--text);
-        padding-top: 80px;
+        margin: 0;
+        padding: 0;
     }
 
     .dashboard-wrapper {
         max-width: 960px;
-        margin: 4rem auto;
+        margin: 2rem auto;
         padding: 0 1.5rem;
         display: flex;
         flex-direction: column;
@@ -44,6 +45,32 @@
         color: var(--primary);
         padding: 0.2rem 0.6rem;
         border-radius: 10px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .action-buttons button {
+        background-color: white;
+        color: var(--primary);
+        border-radius: 16px;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .action-divider {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.2rem;
     }
 
     .card {
@@ -123,6 +150,11 @@
         color: var(--muted);
         font-style: italic;
     }
+
+    ul.bedrijf-list {
+        padding-left: 1rem;
+        list-style-type: disc;
+    }
 </style>
 
 <div class="dashboard-wrapper">
@@ -130,56 +162,88 @@
         <h1>Welkom terug, <span>{{ Auth::user()->name }}</span></h1>
     </div>
 
-    <div class="card">
-        <h2>Nieuwste vacatures</h2>
+    <div class="action-buttons">
+        <button type="button" id="showSpeedDateBtn">Speed Date</button>
+        <div class="action-divider">/</div>
+        <button type="button" id="showVacatureBtn">vacature</button>
+    </div>
 
+    <div id="speedDateCard" class="card" style="display: none;">
+        <h2>Bedrijven voor Speed Date</h2>
+        @if($bedrijven->count())
+            <ul class="bedrijf-list">
+                @foreach($bedrijven as $bedrijf)
+                    <li><strong>{{ $bedrijf->name }}</strong> – {{ $bedrijf->email }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p class="no-vacatures">Er zijn nog geen bedrijven ingeschreven voor de speed date.</p>
+        @endif
+    </div>
+
+    <div id="vacatureCard" class="card" style="display: none;">
+        <h2>Nieuwste vacatures</h2>
         @if($vacatures->count())
             @foreach($vacatures as $vacature)
-<a href="{{ route('vacature.show', $vacature->id) }}" style="text-decoration: none; color: inherit;">
-    <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
-        <div class="vacature-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div>
-                <div class="vacature-title">{{ $vacature->title }}</div>
-                <p class="vacature-bedrijf"><strong>{{ $vacature->user->name ?? 'Onbekend bedrijf' }}</strong></p>
-                <span class="vacature-datum">Gepubliceerd op {{ $vacature->created_at->format('d-m-Y') }}</span>
-            </div>
-            <div style="margin-left: auto;">
-               @if(auth()->user()->appliedVacatures->contains($vacature->id))
-    <form method="POST" action="{{ route('vacature.unapply', $vacature->id) }}">
-        @csrf
-        <button type="submit" class="apply-button" style="background-color: #dc2626;">Uitschrijven</button>
-    </form>
-@else
-    <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
-        @csrf
-        <button type="submit" class="apply-button">Solliciteer</button>
-    </form>
-@endif
-
-            </div>
-        </div>
-
-        <div class="vacature-meta" style="margin-top: 1rem;">
-            <span class="badge">{{ $vacature->location ?? 'Geen locatie' }}</span>
-            <span class="badge">{{ $vacature->sector ?? 'Geen sector' }}</span>
-            <span class="badge">{{ $vacature->type }}</span>
-            <span class="badge">{{ $vacature->experience ?? 'Geen ervaring vereist' }}</span>
-            <span class="badge">{{ $vacature->salary ?? 'Geen verloning vermeld' }}</span>
-            <span class="badge">
-                {{ $vacature->deadline ? \Carbon\Carbon::parse($vacature->deadline)->format('d-m-Y') : 'Geen deadline' }}
-            </span>
-        </div>
-
-        <div class="vacature-desc">
-            {{ Str::limit($vacature->desc, 180) }}
-        </div>
-    </div>
-</a>
-@endforeach
-
+                <a href="{{ route('vacature.show', $vacature->id) }}" style="text-decoration: none; color: inherit;">
+                    <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
+                        <div class="vacature-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div class="vacature-title">{{ $vacature->title }}</div>
+                                <p class="vacature-bedrijf"><strong>{{ $vacature->user->name ?? 'Onbekend bedrijf' }}</strong></p>
+                                <span class="vacature-datum">Gepubliceerd op {{ $vacature->created_at->format('d-m-Y') }}</span>
+                            </div>
+                            <div style="margin-left: auto;">
+                                @if(auth()->user()->appliedVacatures->contains($vacature->id))
+                                    <form method="POST" action="{{ route('vacature.unapply', $vacature->id) }}">
+                                        @csrf
+                                        <button type="submit" class="apply-button" style="background-color: #dc2626;">Uitschrijven</button>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('vacature.apply', $vacature->id) }}">
+                                        @csrf
+                                        <button type="submit" class="apply-button">Solliciteer</button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="vacature-meta" style="margin-top: 1rem;">
+                            <span class="badge">{{ $vacature->location ?? 'Geen locatie' }}</span>
+                            <span class="badge">{{ $vacature->sector ?? 'Geen sector' }}</span>
+                            <span class="badge">{{ $vacature->type }}</span>
+                            <span class="badge">{{ $vacature->experience ?? 'Geen ervaring vereist' }}</span>
+                            <span class="badge">{{ $vacature->salary ?? 'Geen verloning vermeld' }}</span>
+                            <span class="badge">
+                                {{ $vacature->deadline ? \Carbon\Carbon::parse($vacature->deadline)->format('d-m-Y') : 'Geen deadline' }}
+                            </span>
+                        </div>
+                        <div class="vacature-desc">
+                            {{ Str::limit($vacature->desc, 180) }}
+                        </div>
+                    </div>
+                </a>
+            @endforeach
         @else
             <p class="no-vacatures">Er zijn momenteel geen vacatures beschikbaar.</p>
         @endif
     </div>
 </div>
+
+<script>
+    const vacatureBtn = document.getElementById('showVacatureBtn');
+    const speedDateBtn = document.getElementById('showSpeedDateBtn');
+
+    const vacatureCard = document.getElementById('vacatureCard');
+    const speedDateCard = document.getElementById('speedDateCard');
+
+    vacatureBtn.addEventListener('click', function () {
+        vacatureCard.style.display = 'block';
+        speedDateCard.style.display = 'none';
+    });
+
+    speedDateBtn.addEventListener('click', function () {
+        speedDateCard.style.display = 'block';
+        vacatureCard.style.display = 'none';
+    });
+</script>
 @endsection

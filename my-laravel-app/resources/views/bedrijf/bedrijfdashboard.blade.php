@@ -69,6 +69,18 @@
       padding: 1rem 1.2rem; border-radius: var(--radius);
       font-size: 0.95rem;
     }
+    .action-buttons {
+      display: flex; gap: 1rem; justify-content: flex-start; margin-top: 0.5rem;
+    }
+    .action-buttons button {
+      background-color: white; color: var(--primary);
+      border-radius: var(--radius); border: none;
+      padding: 0.5rem 1rem; font-weight: 700; cursor: pointer;
+    }
+    .action-divider {
+      display: flex; align-items: center;
+      color: white; font-weight: 700; font-size: 1.2rem;
+    }
     .action-bar {
       display: flex; justify-content: flex-end;
     }
@@ -96,37 +108,40 @@
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="logo">CareerLaunch</div>
-      <nav class="nav-links">
-        <a href="{{ route('about') }}">About Us</a>
-        <a href="{{ route('faq') }}">FAQ</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">CareerLaunch</div>
+    <nav class="nav-links">
+      <a href="{{ route('about') }}">About Us</a>
+      <a href="{{ route('faq') }}">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="dashboard-content">
-    <div class="topbar">
-      <h1>Welkom terug, <span>{{ auth()->user()->name }}</span> 👋</h1>
-      <a href="{{ route('logout') }}" class="logout"
-         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        Uitloggen
-      </a>
-      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
-    </div>
+<div class="dashboard-content">
+  <div class="topbar">
+    <h1>Welkom terug, <span>{{ auth()->user()->name }}</span> 👋</h1>
+    <a href="{{ route('logout') }}" class="logout"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      Uitloggen
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
+  </div>
 
-    @if (session('success'))
-      <div class="success">✔️ {{ session('success') }}</div>
-    @endif
+  <div class="action-buttons">
+    <button type="button" id="bedrijfSpeedDateBtn">Speed Date</button>
+    <div class="action-divider">/</div>
+    <button type="button" id="bedrijfVacatureBtn">vacature</button>
+  </div>
 
-    <div class="action-bar">
-      <a href="{{ route('vacature.create') }}">
-        <button class="create-button">+ Vacature aanmaken</button>
-      </a>
-    </div>
+  <div id="bedrijfVacatureActionBar" class="action-bar" style="display: none;">
+    <a href="{{ route('vacature.create') }}">
+      <button class="create-button">+ Vacature aanmaken</button>
+    </a>
+  </div>
 
+  <div id="bedrijfVacatureList" style="display: none;">
     @forelse($vacatures as $vacature)
       <div class="vacature-card">
         <h2>{{ $vacature->title }}</h2>
@@ -152,6 +167,35 @@
       </div>
     @endforelse
   </div>
+
+  <div id="bedrijfSpeedDateSection" style="display: none;">
+    <div class="vacature-card">
+      <h2>Speed Date overzicht</h2>
+      <p class="student-muted">Nog geen speed date sessies beschikbaar.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const vacatureBtn = document.getElementById('bedrijfVacatureBtn');
+  const speedDateBtn = document.getElementById('bedrijfSpeedDateBtn');
+
+  const vacatureList = document.getElementById('bedrijfVacatureList');
+  const speedDateSection = document.getElementById('bedrijfSpeedDateSection');
+  const vacatureActionBar = document.getElementById('bedrijfVacatureActionBar');
+
+  vacatureBtn.addEventListener('click', function () {
+    vacatureList.style.display = 'block';
+    vacatureActionBar.style.display = 'flex';
+    speedDateSection.style.display = 'none';
+  });
+
+  speedDateBtn.addEventListener('click', function () {
+    speedDateSection.style.display = 'block';
+    vacatureList.style.display = 'none';
+    vacatureActionBar.style.display = 'none';
+  });
+</script>
 
 </body>
 </html>

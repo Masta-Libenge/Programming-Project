@@ -4,18 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vacature;
+use App\Models\User;
 
 class StudentController extends Controller
 {
-    /**
-     * Toon het dashboard voor studenten.
-     */
     public function dashboard()
     {
-        // Haal alle vacatures op, inclusief gekoppelde gebruiker (bedrijf)
         $vacatures = Vacature::with('user')->latest()->get();
+        $bedrijven = User::where('role', 'bedrijf')->get();
 
-        // Geef de vacatures door aan de view
-        return view('student.dashboard', compact('vacatures'));
+        return view('student.dashboard', compact('vacatures', 'bedrijven'));
     }
 }
