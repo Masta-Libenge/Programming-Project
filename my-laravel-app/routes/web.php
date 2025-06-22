@@ -95,6 +95,9 @@ Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function 
 // 🏢 Alleen bedrijven
 Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function () {
     Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
+    Route::post('/vacature/{vacatureId}/accept/{studentId}', [VacatureController::class, 'accept'])->name('vacature.accept');
+Route::post('/vacature/{vacatureId}/decline/{studentId}', [VacatureController::class, 'decline'])->name('vacature.decline');
+
 });
 
 // 🛡️ Alleen admin
