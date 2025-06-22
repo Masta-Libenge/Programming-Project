@@ -12,6 +12,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\BedrijfController;
 use App\Http\Middleware\TypeMiddleware;
 
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +61,6 @@ Route::post('/logout', function () {
 Route::middleware(['auth'])->group(function () {
     // 📚 Vacatures
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
-    Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
     Route::get('/vacature/{id}', [VacatureController::class, 'show'])->name('vacature.show');
@@ -68,14 +68,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/vacature/{id}/unapply', [VacatureController::class, 'unapply'])->name('vacature.unapply');
 
     // 📅 Planning
-    Route::get('/planning', fn () => view('student.planning'))->name('planning');
+    Route::get('/planning', [StudentController::class, 'planning'])->name('planning');
 
     // ❓ FAQ
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
     Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
-    Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
-    Route::post('/admin/faq/{id}/toggle', [AdminController::class, 'toggleFaq'])->name('admin.faq.toggle');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Public vacature routes (non-auth)
+|--------------------------------------------------------------------------
+*/
 
 /*
 |--------------------------------------------------------------------------
