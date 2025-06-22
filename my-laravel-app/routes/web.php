@@ -12,6 +12,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\BedrijfController;
 use App\Http\Middleware\TypeMiddleware;
 
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -19,26 +20,19 @@ use App\Http\Middleware\TypeMiddleware;
 */
 
 Route::get('/', fn () => view('auth.home'))->name('home');
-Route::get('/login', fn () => redirect('/login/student'))->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/about', fn () => view('about'))->name('about');
 
 /*
 |--------------------------------------------------------------------------
-| Login Routes
+| Login + Register Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
-Route::get('/login/bedrijf', [LoginController::class, 'showBedrijfLoginForm'])->name('login.bedrijf');
-Route::post('/login/student', [LoginController::class, 'studentLogin']);
-Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin']);
+// Login (één formulier voor student en bedrijf)
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
-/*
-|--------------------------------------------------------------------------
-| Register Routes
-|--------------------------------------------------------------------------
-*/
-
+// Registratie (aparte formulieren)
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
 Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegisterForm'])->name('register.bedrijf');
 Route::post('/register/student', [RegisterController::class, 'studentRegister']);
@@ -46,7 +40,7 @@ Route::post('/register/bedrijf', [RegisterController::class, 'bedrijfRegister'])
 
 /*
 |--------------------------------------------------------------------------
-| Logout Route
+| Logout
 |--------------------------------------------------------------------------
 */
 
@@ -59,13 +53,12 @@ Route::post('/logout', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes
+| Algemene Ingelogde Routes
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth'])->group(function () {
-
-    // 📚 Vacatures (toegankelijk voor beide)
+    // 📚 Vacatures
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacatures/create', [VacatureController::class, 'create'])->name('vacatures.create');
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
@@ -74,10 +67,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/vacature/{id}/apply', [VacatureController::class, 'apply'])->name('vacature.apply');
     Route::post('/vacature/{id}/unapply', [VacatureController::class, 'unapply'])->name('vacature.unapply');
 
-    // 📅 Planning (optioneel voor studenten)
+    // 📅 Planning
     Route::get('/planning', fn () => view('student.planning'))->name('planning');
 
-    // ❓ FAQ (open voor iedereen ingelogd)
+    // ❓ FAQ
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
     Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
     Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
@@ -90,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-// 👨‍🎓 Student-only routes
+// 👨‍🎓 Alleen studenten
 Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
@@ -99,14 +92,18 @@ Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function 
     Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
 });
 
-// 🏢 Bedrijf-only routes
+// 🏢 Alleen bedrijven
 Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function () {
     Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
 });
 
-// 🛡️ Admin-only routes
+// 🛡️ Alleen admin
 Route::middleware(['auth', TypeMiddleware::class . ':admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
     Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
 });
+
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
