@@ -24,29 +24,31 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        // ✅ Validate all editable fields
+        // ✅ Validate all editable fields (now includes 'vaardigheden')
         $validated = $request->validate([
             'voornaam' => 'nullable|string|max:255',
             'achternaam' => 'nullable|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'opleiding' => 'nullable|string|max:255',
             'jaar' => 'nullable|string|max:255',
+            'vaardigheden' => 'nullable|string|max:500', // ✅ NEW!
             'description' => 'nullable|string|max:500',
             'card_color' => 'nullable|string|max:20',
             'profile_picture' => 'nullable|image|max:2048',
         ]);
 
-        // ✅ Update basic fields
+        // ✅ Update base user fields
         $user->voornaam = $validated['voornaam'] ?? $user->voornaam;
         $user->achternaam = $validated['achternaam'] ?? $user->achternaam;
         $user->email = $validated['email'];
         $user->opleiding = $validated['opleiding'] ?? $user->opleiding;
         $user->jaar = $validated['jaar'] ?? $user->jaar;
+        $user->vaardigheden = $validated['vaardigheden'] ?? $user->vaardigheden; // ✅ NEW!
 
-        // ✅ Always sync full `name` to voornaam + achternaam
+        // ✅ Keep name in sync
         $user->name = trim(($user->voornaam ?? '') . ' ' . ($user->achternaam ?? ''));
 
-        // ✅ Handle profile picture upload if needed
+        // ✅ Handle picture
         if ($request->hasFile('profile_picture')) {
             $path = $request->file('profile_picture')->store('public/profile_pictures');
             $user->profile_picture = Storage::url($path);
@@ -54,13 +56,13 @@ class ProfileController extends Controller
 
         $user->save();
 
-        // ✅ Make sure the user has a linked profile row
+        // ✅ Ensure linked profile exists
         if (!$user->profile) {
             $user->profile()->create([]);
             $user->load('profile');
         }
 
-        // ✅ Update profile-specific fields
+        // ✅ Update profile-specific data
         $user->profile->update([
             'description' => $validated['description'] ?? $user->profile->description,
             'card_color' => $validated['card_color'] ?? $user->profile->card_color,
@@ -70,7 +72,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * 📸 Upload a new profile picture separately (optional, not used in your inline edit now).
+     * 📸 Upload new profile photo separately (optional).
      */
     public function uploadProfilePicture(Request $request)
     {
@@ -95,8 +97,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * 🚫 Not needed anymore — the inline edit toggle replaces this.
-     * Keeping for reference, but unused:
+     * 🚫 Legacy edit page (unused).
      */
     public function edit()
     {

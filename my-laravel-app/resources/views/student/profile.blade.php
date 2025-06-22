@@ -122,7 +122,7 @@
                 </div>
             </div>
 
-<!-- ✅ Vaardigheden section (same style as Hogeschool) -->
+<!-- ✅ Vaardigheden section (matches Hogeschool) -->
 <div class="mb-6">
     <h2 class="text-lg font-semibold text-[#1E40AF] text-center mb-3">Vaardigheden</h2>
     <div class="space-y-4">
@@ -135,6 +135,7 @@
         </div>
     </div>
 </div>
+
 
         <!-- ✅ LOGOUT FORM OUTSIDE PROFILE FORM -->
         <form action="{{ route('logout') }}" method="POST" class="mt-4">
