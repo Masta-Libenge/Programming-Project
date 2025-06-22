@@ -122,14 +122,19 @@
                 </div>
             </div>
 
-            <!-- ✅ Skills section -->
-            <div>
-                <h2 class="text-lg font-semibold text-[#1E40AF] mb-3">Vaardigheden</h2>
-                <div class="flex flex-wrap gap-2">
-                    <p class="text-gray-500">Geen vaardigheden toegevoegd.</p>
-                </div>
-            </div>
-        </form>
+<!-- ✅ Vaardigheden section (same style as Hogeschool) -->
+<div class="mb-6">
+    <h2 class="text-lg font-semibold text-[#1E40AF] text-center mb-3">Vaardigheden</h2>
+    <div class="space-y-4">
+        <div class="bg-white rounded-xl shadow-inner px-4 py-2 text-center text-gray-700">
+            <label class="block text-sm text-[#1E40AF] mb-1">Vaardigheden</label>
+            <span class="view-mode">{{ $user->vaardigheden ?? 'Nog niet ingevuld' }}</span>
+            <input type="text" name="vaardigheden" placeholder="Bijv. PHP, Laravel, CSS"
+                class="hidden edit-mode w-full text-center bg-transparent outline-none"
+                value="{{ $user->vaardigheden }}">
+        </div>
+    </div>
+</div>
 
         <!-- ✅ LOGOUT FORM OUTSIDE PROFILE FORM -->
         <form action="{{ route('logout') }}" method="POST" class="mt-4">
