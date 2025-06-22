@@ -103,6 +103,10 @@
       padding: 1rem 0; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem;
     }
     .student:last-child { border-bottom: none; }
+    .student a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
     .student-muted { color: var(--muted); }
   </style>
 </head>
@@ -132,7 +136,7 @@
   <div class="action-buttons">
     <button type="button" id="bedrijfSpeedDateBtn">Speed Date</button>
     <div class="action-divider">/</div>
-    <button type="button" id="bedrijfVacatureBtn">vacature</button>
+    <button type="button" id="bedrijfVacatureBtn">Vacature</button>
   </div>
 
   <div id="bedrijfVacatureActionBar" class="action-bar" style="display: none;">
@@ -149,31 +153,30 @@
 
         @if($vacature->applicants->count())
           <h3 style="margin-bottom: 0.5rem;">Sollicitanten:</h3>
-@foreach($vacature->applicants as $student)
-  <div class="student">
-    👤 {{ $student->name }} – {{ $student->email }}
-    @if($student->profile)
-      <br><span class="student-muted">Opleiding: {{ $student->profile->opleiding ?? 'n.v.t.' }}</span>
-    @endif
+          @foreach($vacature->applicants as $student)
+          <div class="student">
+            👤 <a href="{{ route('bedrijf.student.profile', $student->id) }}">{{ $student->name }}</a> – {{ $student->email }}
+            @if($student->profile)
+              <br><span class="student-muted">Opleiding: {{ $student->profile->opleiding ?? 'n.v.t.' }}</span>
+            @endif
 
-    <!-- ✅ Accept Button -->
-    <form action="{{ route('vacature.accept', [$vacature->id, $student->id]) }}" method="POST" style="display:inline;">
-      @csrf
-      <button type="submit" style="background: #22c55e; color: white; border: none; padding: 0.3rem 0.7rem; border-radius: 8px; margin-left: 1rem;  cursor: pointer;">
-        ✔️ Accepteer
-      </button>
-    </form>
+            <!-- Accept Button -->
+            <form action="{{ route('vacature.accept', [$vacature->id, $student->id]) }}" method="POST" style="display:inline;">
+              @csrf
+              <button type="submit" style="background: #22c55e; color: white; border: none; padding: 0.3rem 0.7rem; border-radius: 8px; margin-left: 1rem; cursor: pointer;">
+                ✔️ Accepteer
+              </button>
+            </form>
 
-    <!-- ✅ Decline Button -->
-    <form action="{{ route('vacature.decline', [$vacature->id, $student->id]) }}" method="POST" style="display:inline;">
-      @csrf
-      <button type="submit" style="background: #ef4444; color: white; border: none; padding: 0.3rem 0.7rem; border-radius: 8px; margin-left: 0.5rem;  cursor: pointer;">
-        ❌ Weiger
-      </button>
-    </form>
-  </div>
-@endforeach
-
+            <!-- Decline Button -->
+            <form action="{{ route('vacature.decline', [$vacature->id, $student->id]) }}" method="POST" style="display:inline;">
+              @csrf
+              <button type="submit" style="background: #ef4444; color: white; border: none; padding: 0.3rem 0.7rem; border-radius: 8px; margin-left: 0.5rem; cursor: pointer;">
+                ❌ Weiger
+              </button>
+            </form>
+          </div>
+          @endforeach
         @else
           <p class="student-muted">Nog geen sollicitanten.</p>
         @endif
