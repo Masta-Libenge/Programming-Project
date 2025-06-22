@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,6 @@ use App\Http\Middleware\TypeMiddleware;
 | Public Routes
 |--------------------------------------------------------------------------
 */
-
 Route::get('/', fn () => view('auth.home'))->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/about', fn () => view('about'))->name('about');
@@ -28,7 +28,6 @@ Route::get('/about', fn () => view('about'))->name('about');
 | Login & Register
 |--------------------------------------------------------------------------
 */
-
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
 Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegisterForm'])->name('register.bedrijf');
@@ -42,7 +41,6 @@ Route::post('/register', [RegisterController::class, 'register']);
 | Logout
 |--------------------------------------------------------------------------
 */
-
 Route::post('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
@@ -52,12 +50,10 @@ Route::post('/logout', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes
+| Authenticated Routes (Common)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth'])->group(function () {
-    // Vacatures
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
@@ -65,11 +61,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/vacature/{id}/apply', [VacatureController::class, 'apply'])->name('vacature.apply');
     Route::post('/vacature/{id}/unapply', [VacatureController::class, 'unapply'])->name('vacature.unapply');
 
-    // Reservation
+    // Réservations
     Route::post('/reserveren', [ReservationController::class, 'store'])->name('reservation.store');
-    Route::delete('/reserveren/annuleer', [ReservationController::class, 'destroy'])->name('reservation.destroy');
+    Route::delete('/student/afspraak/{id}', [ReservationController::class, 'destroy'])->name('reservation.destroy');
 
-    // Planning
+    // Planning commun
     Route::get('/planning', [StudentController::class, 'planning'])->name('planning');
 
     // FAQ
@@ -82,14 +78,12 @@ Route::middleware(['auth'])->group(function () {
 | Student Routes
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
     Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
     Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
     Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
-
     Route::get('/student/afspraken/{bedrijfId}', [StudentController::class, 'showAfspraken'])->name('student.afspraken');
 });
 
@@ -98,15 +92,12 @@ Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function 
 | Bedrijf Routes
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function () {
     Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
     Route::get('/bedrijf/planning', [BedrijfController::class, 'showPlanning'])->name('bedrijf.planning');
     Route::get('/bedrijf/afspraken', [BedrijfController::class, 'afspraken'])->name('bedrijf.afspraken');
-
     Route::post('/vacature/{vacatureId}/accept/{studentId}', [VacatureController::class, 'accept'])->name('vacature.accept');
     Route::post('/vacature/{vacatureId}/decline/{studentId}', [VacatureController::class, 'decline'])->name('vacature.decline');
-
     Route::get('/bedrijf/student/{id}', [ProfileController::class, 'showForBedrijf'])->name('bedrijf.student.profile');
 });
 
@@ -115,7 +106,6 @@ Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function 
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth', TypeMiddleware::class . ':admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');

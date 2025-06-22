@@ -5,6 +5,8 @@
 @section('content')
 <x-navbar />
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <style>
     :root {
         --primary: #1E40AF;
@@ -74,10 +76,26 @@
         color: white;
         font-size: 0.9rem;
         transition: background-color 0.2s;
+        position: relative;
+        cursor: pointer;
     }
 
     .reserved {
         background-color: #16a34a !important;
+    }
+
+    .cancel-btn {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #ef4444;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        color: white;
+        cursor: pointer;
     }
 
     .pause-row {
@@ -97,6 +115,7 @@
         $start = \Carbon\Carbon::createFromTime(9, 0);
         $end = \Carbon\Carbon::createFromTime(17, 0);
         $date = now()->toDateString();
+        $bedrijfId = request()->route('bedrijfId') ?? 1;
     @endphp
 
     @while ($start < $end)
@@ -121,13 +140,19 @@
                             ->first();
 
                         $class = 'minute-block';
+                        $hasReservation = false;
                         if ($reservation) {
                             $class .= ' reserved';
+                            $hasReservation = true;
                         }
                     @endphp
 
-                    <div class="{{ $class }}">
+                    <div class="{{ $class }}" id="block-{{ $minuteBlock->format('Hi') }}">
                         {{ $minuteBlock->format('H:i') }}
+                        @if ($hasReservation)
+                            <button class="cancel-btn"
+                                onclick="cancelReservation('{{ $reservation->id }}', 'block-{{ $minuteBlock->format('Hi') }}')">×</button>
+                        @endif
                     </div>
                 @endfor
             </div>
@@ -136,4 +161,73 @@
         @php $start->addHour(); @endphp
     @endwhile
 </div>
+
+<script>
+    function cancelReservation(reservationId, blockId) {
+        if (!confirm("Weet je zeker dat je dit tijdslot wilt annuleren?")) return;
+
+        fetch(`/student/afspraak/${reservationId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Fout bij annuleren");
+            return res.json();
+        })
+        .then(data => {
+            const block = document.getElementById(blockId);
+            if (block) {
+                block.classList.remove('reserved');
+                const btn = block.querySelector('.cancel-btn');
+                if (btn) btn.remove();
+            }
+        })
+        .catch((err) => {
+            alert(err.message || 'Fout bij verbinding met de server.');
+        });
+    }
+
+    document.querySelectorAll('.minute-block:not(.reserved)').forEach(block => {
+        block.addEventListener('click', function () {
+            const tijd = this.textContent.trim();
+            const bedrijfId = {{ $bedrijfId }};
+            const date = "{{ now()->toDateString() }}";
+            const [h, m] = tijd.split(":");
+            const end = new Date();
+            end.setHours(h);
+            end.setMinutes(parseInt(m) + 5);
+            const endTime = end.toTimeString().substring(0, 5);
+
+            if (!confirm(`Wil je het tijdslot ${tijd} reserveren?`)) return;
+
+            fetch("{{ route('reservation.store') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    bedrijf_id: bedrijfId,
+                    date: date,
+                    start_time: tijd,
+                    end_time: endTime
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message) {
+                    this.classList.add('reserved');
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.error || 'Er is een fout opgetreden.');
+                }
+            })
+            .catch(err => alert(err.message || 'Fout bij reserveren.'));
+        });
+    });
+</script>
 @endsection
