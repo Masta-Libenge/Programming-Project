@@ -101,6 +101,13 @@ Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function 
     Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
     Route::post('/vacature/{vacatureId}/accept/{studentId}', [VacatureController::class, 'accept'])->name('vacature.accept');
 Route::post('/vacature/{vacatureId}/decline/{studentId}', [VacatureController::class, 'decline'])->name('vacature.decline');
+Route::get('/bedrijf/student/{id}', [ProfileController::class, 'showForBedrijf'])
+    ->name('bedrijf.student.profile');
+    Route::get('/bedrijf/student/{id}', [ProfileController::class, 'showForBedrijf'])
+    ->name('bedrijf.student.profile')
+    ->middleware(['auth', TypeMiddleware::class . ':bedrijf']);
+
+
 
 });
 

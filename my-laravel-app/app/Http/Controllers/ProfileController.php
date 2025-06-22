@@ -107,4 +107,16 @@ class ProfileController extends Controller
         $user = Auth::user();
         return view('student.profile_edit', compact('user'));
     }
+   public function showForBedrijf($id)
+{
+    $student = \App\Models\User::with('profile')->findOrFail($id);
+
+    if ($student->type !== 'student') {
+        abort(404);
+    }
+
+    return view('bedrijf.student_profile', compact('student'));
+}
+
+
 }
