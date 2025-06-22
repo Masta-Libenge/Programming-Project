@@ -164,8 +164,6 @@
 
 <script>
     function cancelReservation(reservationId, blockId) {
-        if (!confirm("Weet je zeker dat je dit tijdslot wilt annuleren?")) return;
-
         fetch(`/student/afspraak/${reservationId}`, {
             method: 'DELETE',
             headers: {
@@ -201,8 +199,6 @@
             end.setMinutes(parseInt(m) + 5);
             const endTime = end.toTimeString().substring(0, 5);
 
-            if (!confirm(`Wil je het tijdslot ${tijd} reserveren?`)) return;
-
             fetch("{{ route('reservation.store') }}", {
                 method: 'POST',
                 headers: {
@@ -220,7 +216,6 @@
             .then(data => {
                 if (data.message) {
                     this.classList.add('reserved');
-                    alert(data.message);
                     location.reload();
                 } else {
                     alert(data.error || 'Er is een fout opgetreden.');
