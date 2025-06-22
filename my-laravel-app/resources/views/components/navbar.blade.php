@@ -1,10 +1,14 @@
 @php
     $homeRoute = url('/');
+    $profileRoute = '#'; // Valeur par défaut
+
     if(auth()->check()) {
         if(auth()->user()->type === 'student') {
             $homeRoute = route('student.dashboard');
+            $profileRoute = route('student.profile.show');
         } elseif(auth()->user()->type === 'bedrijf') {
             $homeRoute = route('bedrijf.dashboard');
+            $profileRoute = '#'; // À remplacer si un profil entreprise existe
         }
     }
 @endphp
@@ -21,7 +25,7 @@
       <a href="{{ route('faq') }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">FAQ</a>
       <a href="#" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Contact</a>
       @auth
-        <a href="{{ route('student.profile.show') }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Profiel</a>
+        <a href="{{ $profileRoute }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Profiel</a>
       @endauth
     </div>
   </div>

@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Planning')
+@section('title', 'Jouw Speeddate Afspraken')
 
 @section('content')
 <x-navbar />
@@ -50,41 +50,38 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        cursor: default;
     }
 
-    .none {
+    .free {
         background-color: #94a3b8;
     }
 
     .reserved {
-        background-color: #16a34a !important;
+        background-color: #16a34a;
     }
 </style>
 
 @php
     use Carbon\Carbon;
+
     $tijdstippen = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 @endphp
 
 <div class="planning-container">
-    <div class="planning-title">Planning</div>
+    <div class="planning-title">Jouw Speeddate Afspraken Vandaag</div>
     <div class="planning-grid">
         @foreach ($tijdstippen as $time)
             <div class="planning-time">{{ $time }}</div>
             @php
-                $group = $reservations[$time] ?? collect();
+                $match = $reservations->first(function($r) use ($time) {
+                    return Carbon::parse($r->start_time)->format('H:00') === $time;
+                });
             @endphp
-
-            <div class="planning-block {{ $group->isNotEmpty() ? 'reserved' : 'none' }}">
-                @if ($group->isNotEmpty())
-                    @foreach ($group as $r)
-                        <div style="margin-right: 8px;">
-                            Je hebt een speeddate met {{ $r->bedrijf->name ?? 'onbekend bedrijf' }} om {{ Carbon::parse($r->start_time)->format('H:i') }}.
-                        </div>
-                    @endforeach
+            <div class="planning-block {{ $match ? 'reserved' : 'free' }}">
+                @if ($match && $match->student)
+                    Gesprek met {{ $match->student->name }} om {{ Carbon::parse($match->start_time)->format('H:i') }}
                 @else
-                    Geen activiteit
+                    Geen afspraak
                 @endif
             </div>
         @endforeach

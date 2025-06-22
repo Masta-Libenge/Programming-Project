@@ -87,6 +87,39 @@
         margin-bottom: 1rem;
     }
 
+    .bedrijf-link {
+        text-decoration: none;
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease;
+    }
+
+    .bedrijf-link:hover {
+        transform: scale(1.02);
+    }
+
+    .bedrijf-name {
+        font-size: 1.1rem;
+        color: #1E40AF;
+        font-weight: 700;
+    }
+
+    .bedrijf-email {
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .arrow {
+        color: #1E40AF;
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
     .vacature-card {
         background-color: var(--card-bg);
         border-left: 5px solid var(--primary);
@@ -150,32 +183,33 @@
         color: var(--muted);
         font-style: italic;
     }
-
-    ul.bedrijf-list {
-        padding-left: 1rem;
-        list-style-type: disc;
-    }
 </style>
 
 <div class="dashboard-wrapper">
     <div class="dashboard-header">
-        <h1>Welkom terug, <span>{{ Auth::user()->name }}</span></h1>
+        <h1>Welkom terug, <span>{{ auth()->user()->name }}</span></h1>
     </div>
 
     <div class="action-buttons">
         <button type="button" id="showSpeedDateBtn">Speed Date</button>
         <div class="action-divider">/</div>
-        <button type="button" id="showVacatureBtn">vacature</button>
+        <button type="button" id="showVacatureBtn">Vacature</button>
     </div>
 
     <div id="speedDateCard" class="card" style="display: none;">
         <h2>Bedrijven voor Speed Date</h2>
         @if($bedrijven->count())
-            <ul class="bedrijf-list">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
                 @foreach($bedrijven as $bedrijf)
-                    <li><strong>{{ $bedrijf->name }}</strong> – {{ $bedrijf->email }}</li>
+                    <a href="{{ route('bedrijf.planning') }}" class="bedrijf-link">
+                        <div>
+                            <div class="bedrijf-name">{{ $bedrijf->name }}</div>
+                            <div class="bedrijf-email">{{ $bedrijf->email }}</div>
+                        </div>
+                        <div class="arrow">&rarr;</div>
+                    </a>
                 @endforeach
-            </ul>
+            </div>
         @else
             <p class="no-vacatures">Er zijn nog geen bedrijven ingeschreven voor de speed date.</p>
         @endif
@@ -186,11 +220,13 @@
         @if($vacatures->count())
             @foreach($vacatures as $vacature)
                 <a href="{{ route('vacature.show', $vacature->id) }}" style="text-decoration: none; color: inherit;">
-                    <div class="vacature-card" style="border-left-color: {{ $vacature->color }}">
+                    <div class="vacature-card" style="border-left-color: {{ $vacature->color ?? '#1E40AF' }}">
                         <div class="vacature-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <div class="vacature-title">{{ $vacature->title }}</div>
-                                <p class="vacature-bedrijf"><strong>{{ $vacature->user->name ?? 'Onbekend bedrijf' }}</strong></p>
+                                <p class="vacature-bedrijf">
+                                    <strong>{{ $vacature->user->name ?? 'Onbekend bedrijf' }}</strong>
+                                </p>
                                 <span class="vacature-datum">Gepubliceerd op {{ $vacature->created_at->format('d-m-Y') }}</span>
                             </div>
                             <div style="margin-left: auto;">
@@ -207,7 +243,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="vacature-meta" style="margin-top: 1rem;">
+                        <div class="vacature-meta">
                             <span class="badge">{{ $vacature->location ?? 'Geen locatie' }}</span>
                             <span class="badge">{{ $vacature->sector ?? 'Geen sector' }}</span>
                             <span class="badge">{{ $vacature->type }}</span>
@@ -218,7 +254,7 @@
                             </span>
                         </div>
                         <div class="vacature-desc">
-                            {{ Str::limit($vacature->desc, 180) }}
+                            {{ \Illuminate\Support\Str::limit($vacature->desc, 180) }}
                         </div>
                     </div>
                 </a>
@@ -230,20 +266,14 @@
 </div>
 
 <script>
-    const vacatureBtn = document.getElementById('showVacatureBtn');
-    const speedDateBtn = document.getElementById('showSpeedDateBtn');
-
-    const vacatureCard = document.getElementById('vacatureCard');
-    const speedDateCard = document.getElementById('speedDateCard');
-
-    vacatureBtn.addEventListener('click', function () {
-        vacatureCard.style.display = 'block';
-        speedDateCard.style.display = 'none';
+    document.getElementById('showVacatureBtn').addEventListener('click', () => {
+        document.getElementById('vacatureCard').style.display = 'block';
+        document.getElementById('speedDateCard').style.display = 'none';
     });
 
-    speedDateBtn.addEventListener('click', function () {
-        speedDateCard.style.display = 'block';
-        vacatureCard.style.display = 'none';
+    document.getElementById('showSpeedDateBtn').addEventListener('click', () => {
+        document.getElementById('speedDateCard').style.display = 'block';
+        document.getElementById('vacatureCard').style.display = 'none';
     });
 </script>
 @endsection
