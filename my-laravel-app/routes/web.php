@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\BedrijfController;
+use App\Http\Middleware\TypeMiddleware;
+
 use App\Http\Controllers\ReservationController;
 
 /*
@@ -19,26 +21,19 @@ use App\Http\Controllers\ReservationController;
 */
 
 Route::get('/', fn () => view('auth.home'))->name('home');
-Route::get('/login', fn () => redirect('/login/student'))->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/about', fn () => view('about'))->name('about');
 
 /*
 |--------------------------------------------------------------------------
-| Login Routes
+| Login + Register Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login/student', [LoginController::class, 'showStudentLoginForm'])->name('login.student');
-Route::get('/login/bedrijf', [LoginController::class, 'showBedrijfLoginForm'])->name('login.bedrijf');
-Route::post('/login/student', [LoginController::class, 'studentLogin']);
-Route::post('/login/bedrijf', [LoginController::class, 'bedrijfLogin']);
+// Login (één formulier voor student en bedrijf)
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
-/*
-|--------------------------------------------------------------------------
-| Register Routes
-|--------------------------------------------------------------------------
-*/
-
+// Registratie (aparte formulieren)
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
 Route::get('/register/bedrijf', [RegisterController::class, 'showBedrijfRegisterForm'])->name('register.bedrijf');
 Route::post('/register/student', [RegisterController::class, 'studentRegister']);
@@ -46,7 +41,7 @@ Route::post('/register/bedrijf', [RegisterController::class, 'bedrijfRegister'])
 
 /*
 |--------------------------------------------------------------------------
-| Logout Route
+| Logout
 |--------------------------------------------------------------------------
 */
 
@@ -59,44 +54,23 @@ Route::post('/logout', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes
+| Algemene Ingelogde Routes
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth'])->group(function () {
-    // Student
-    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
-    Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
-    Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
-    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
-    Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
-
-    // Bedrijf
-    Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
-    Route::get('/bedrijf/planning', [BedrijfController::class, 'showPlanning'])->name('bedrijf.planning');
-    Route::get('/bedrijf/afspraken', [BedrijfController::class, 'afspraken'])->name('bedrijf.afspraken');
-
-    // Reservation
-    Route::post('/reserveren', [ReservationController::class, 'store'])->name('reservation.store');
-
-    // Vacatures
+    // 📚 Vacatures
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
+    Route::get('/vacature/{id}', [VacatureController::class, 'show'])->name('vacature.show');
     Route::post('/vacature/{id}/apply', [VacatureController::class, 'apply'])->name('vacature.apply');
     Route::post('/vacature/{id}/unapply', [VacatureController::class, 'unapply'])->name('vacature.unapply');
 
-    // Admin
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
-    Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
-    Route::post('/admin/faq/{id}/answer', [AdminController::class, 'answerFaq'])->name('admin.faq.answer');
-    Route::post('/admin/faq/{id}/toggle', [AdminController::class, 'toggleFaq'])->name('admin.faq.toggle');
-
-    // Planning
+    // 📅 Planning
     Route::get('/planning', [StudentController::class, 'planning'])->name('planning');
 
-    // FAQ
+    // ❓ FAQ
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
     Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
 });
@@ -107,4 +81,36 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/vacature/{id}', [VacatureController::class, 'show'])->name('vacature.show');
+/*
+|--------------------------------------------------------------------------
+| Role-Based Routes
+|--------------------------------------------------------------------------
+*/
+
+// 👨‍🎓 Alleen studenten
+Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function () {
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
+    Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
+    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+    Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
+});
+
+// 🏢 Alleen bedrijven
+Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function () {
+    Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
+    Route::post('/vacature/{vacatureId}/accept/{studentId}', [VacatureController::class, 'accept'])->name('vacature.accept');
+Route::post('/vacature/{vacatureId}/decline/{studentId}', [VacatureController::class, 'decline'])->name('vacature.decline');
+
+});
+
+// 🛡️ Alleen admin
+Route::middleware(['auth', TypeMiddleware::class . ':admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.destroy');
+    Route::delete('/admin/vacature/{id}', [AdminController::class, 'destroyVacature'])->name('admin.vacature.destroy');
+});
+
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Vacature;
+use App\Mail\ApplicationAccepted;
+use Illuminate\Support\Facades\Mail;
 
 class VacatureController extends Controller
 {
@@ -95,6 +97,45 @@ public function show($id)
 {
     $vacature = Vacature::with('user')->findOrFail($id);
     return view('vacature.show', compact('vacature'));
+}
+
+/**
+ * ✔️ Accept an applicant for a vacature.
+ */
+public function accept($vacatureId, $studentId)
+{
+    $vacature = Vacature::findOrFail($vacatureId);
+
+    // Check if the logged-in bedrijf owns this vacature
+    if ($vacature->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    // Optional: add 'status' column to pivot or skip it and just send mail
+    // Here: we just send mail & don't update a column if you don't have it
+    $student = \App\Models\User::findOrFail($studentId);
+
+    // Send email to student
+    Mail::to($student->email)->send(new ApplicationAccepted($vacature));
+
+    return back()->with('success', 'Sollicitatie geaccepteerd & mail verzonden.');
+}
+
+/**
+ * ✔️ Decline an applicant for a vacature.
+ */
+public function decline($vacatureId, $studentId)
+{
+    $vacature = Vacature::findOrFail($vacatureId);
+
+    if ($vacature->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    // Just detach the student if you want
+    $vacature->applicants()->detach($studentId);
+
+    return back()->with('success', 'Sollicitatie geweigerd.');
 }
 
 

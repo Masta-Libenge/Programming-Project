@@ -28,7 +28,6 @@
       scroll-behavior: smooth;
     }
 
-    /* Navbar */
     .navbar {
       position: sticky;
       top: 0;
@@ -83,7 +82,6 @@
       }
     }
 
-    /* Hero Section */
     .main-section {
       display: flex;
       flex-direction: row;
@@ -135,7 +133,6 @@
       color: #ffffff;
     }
 
-    /* iPhone Mockup */
     .phone-wrapper {
       display: flex;
       justify-content: center;
@@ -175,8 +172,7 @@
       height: 20px;
     }
 
-    .volume-up,
-    .volume-down {
+    .volume-up, .volume-down {
       height: 40px;
     }
 
@@ -319,9 +315,8 @@
     <div class="nav-container">
       <div class="logo">CareerLaunch</div>
       <nav class="nav-links">
-<a href="{{ route('about') }}">About Us</a>  
-<a href="{{ route('faq') }}">FAQ</a>     
-
+        <a href="{{ route('about') }}">About Us</a>
+        <a href="{{ route('faq') }}">FAQ</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -331,10 +326,9 @@
   <section class="main-section">
     <div class="text-content">
       <h1>Start je carrière met één klik</h1>
-      <p>CareerLaunch helpt studenten en bedrijven elkaar snel te vinden. Kies je rol en ontdek nieuwe opportuniteiten.</p>
+      <p>CareerLaunch helpt studenten en bedrijven elkaar snel te vinden. Log in en ontdek nieuwe opportuniteiten.</p>
       <div class="cta-buttons">
-        <a href="{{ route('login.student') }}">Ik ben student</a>
-        <a href="{{ route('login.bedrijf') }}">Ik ben bedrijf</a>
+        <a href="{{ route('login') }}">Log in</a>
       </div>
     </div>
 
@@ -361,7 +355,6 @@
     </div>
   </section>
 
-  <!-- Placeholder secties -->
   <section id="about"></section>
   <section id="faq"></section>
   <section id="contact"></section>

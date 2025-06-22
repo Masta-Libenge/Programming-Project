@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class ProfileController extends Controller
 {
     /**
-     * 🧭 Show the student's profile page (view + inline edit toggle).
+     * 🧭 Show the student's profile page.
      */
     public function show()
     {
@@ -18,59 +18,65 @@ class ProfileController extends Controller
     }
 
     /**
-     * 📝 Update the student's profile info.
+     * 📝 Update the student's profile info including profile picture.
      */
     public function update(Request $request)
     {
         $user = Auth::user();
 
-        // ✅ Validate all editable fields
+        // ✅ Validate all fields
         $validated = $request->validate([
             'voornaam' => 'nullable|string|max:255',
             'achternaam' => 'nullable|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'opleiding' => 'nullable|string|max:255',
             'jaar' => 'nullable|string|max:255',
+            'vaardigheden' => 'nullable|string|max:500',
             'description' => 'nullable|string|max:500',
             'card_color' => 'nullable|string|max:20',
             'profile_picture' => 'nullable|image|max:2048',
         ]);
 
-        // ✅ Update basic fields
+        // ✅ Update user basic fields
         $user->voornaam = $validated['voornaam'] ?? $user->voornaam;
         $user->achternaam = $validated['achternaam'] ?? $user->achternaam;
         $user->email = $validated['email'];
         $user->opleiding = $validated['opleiding'] ?? $user->opleiding;
         $user->jaar = $validated['jaar'] ?? $user->jaar;
-
-        // ✅ Always sync full `name` to voornaam + achternaam
+        $user->vaardigheden = $validated['vaardigheden'] ?? $user->vaardigheden;
         $user->name = trim(($user->voornaam ?? '') . ' ' . ($user->achternaam ?? ''));
 
-        // ✅ Handle profile picture upload if needed
+        // ✅ Correctly handle profile picture
         if ($request->hasFile('profile_picture')) {
-            $path = $request->file('profile_picture')->store('public/profile_pictures');
-            $user->profile_picture = Storage::url($path);
+            // Delete old if exists
+            if ($user->profile_picture && Storage::exists(str_replace('storage/', 'public/', $user->profile_picture))) {
+                Storage::delete(str_replace('storage/', 'public/', $user->profile_picture));
+            }
+
+            // Store new
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = 'storage/' . $path;
         }
 
         $user->save();
 
-        // ✅ Make sure the user has a linked profile row
+        // ✅ Ensure profile table exists
         if (!$user->profile) {
             $user->profile()->create([]);
             $user->load('profile');
         }
 
-        // ✅ Update profile-specific fields
+        // ✅ Update profile row
         $user->profile->update([
             'description' => $validated['description'] ?? $user->profile->description,
             'card_color' => $validated['card_color'] ?? $user->profile->card_color,
         ]);
 
-        return redirect()->back()->with('success', 'Profiel bijgewerkt!');
+        return back()->with('success', 'Profiel bijgewerkt!');
     }
 
     /**
-     * 📸 Upload a new profile picture separately (optional, not used in your inline edit now).
+     * 📸 Optional: separate uploader if needed.
      */
     public function uploadProfilePicture(Request $request)
     {
@@ -80,23 +86,21 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        if (!$user->profile) {
-            $user->profile()->create([]);
-            $user->load('profile');
+        // Delete old if exists
+        if ($user->profile_picture && Storage::exists(str_replace('storage/', 'public/', $user->profile_picture))) {
+            Storage::delete(str_replace('storage/', 'public/', $user->profile_picture));
         }
 
-        $path = $request->file('profile_picture')->store('public/profile_pictures');
+        // Store new
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $user->profile_picture = 'storage/' . $path;
+        $user->save();
 
-        $user->profile->update([
-            'photo_path' => $path,
-        ]);
-
-        return redirect()->back()->with('success', 'Profielfoto geüpload!');
+        return back()->with('success', 'Profielfoto geüpload!');
     }
 
     /**
-     * 🚫 Not needed anymore — the inline edit toggle replaces this.
-     * Keeping for reference, but unused:
+     * 🚫 Legacy.
      */
     public function edit()
     {

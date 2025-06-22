@@ -4,14 +4,67 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
     /**
-     * 👩‍🎓 Show the student registration form.
+     * 🔁 Toon het algemene registratieformulier (1 formulier met type dropdown)
+     */
+    public function showRegistrationForm()
+    {
+        return view('auth.register'); // registreer met keuze student/bedrijf
+    }
+
+    /**
+     * 🧠 Verwerk het algemene registratieformulier
+     */
+    public function register(Request $request)
+    {
+        // ✅ Validatie
+        $request->validate([
+            'type' => 'required|in:student,bedrijf',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            // extra velden per type
+            'voornaam'     => 'required_if:type,student|string|max:255',
+            'achternaam'   => 'required_if:type,student|string|max:255',
+            'company_name' => 'required_if:type,bedrijf|string|max:255',
+        ]);
+
+        // ✅ Gebruiker aanmaken afhankelijk van type
+        if ($request->type === 'student') {
+            $user = User::create([
+                'voornaam' => $request->voornaam,
+                'achternaam' => $request->achternaam,
+                'name' => $request->voornaam . ' ' . $request->achternaam,
+                'email' => $request->email,
+                'type' => 'student',
+                'password' => Hash::make($request->password),
+            ]);
+        } else {
+            $user = User::create([
+                'name' => $request->company_name,
+                'email' => $request->email,
+                'type' => 'bedrijf',
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        // ✅ Leeg profiel aanmaken
+        $user->profile()->create([]);
+
+        // ✅ Login + redirect
+        Auth::login($user);
+        return $user->type === 'student'
+            ? redirect()->route('student.dashboard')
+            : redirect()->route('bedrijf.dashboard');
+    }
+
+    /**
+     * 👩‍🎓 Optioneel: apart student registratieformulier
      */
     public function showStudentRegisterForm()
     {
@@ -19,45 +72,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * ✅ Handle student registration logic
-     * 
-     * NOTE:
-     * - We now store 'voornaam' and 'achternaam' separately.
-     * - We also create a combined 'name' field to satisfy the database
-     *   and keep compatibility with parts of Laravel that expect 'name'.
-     */
-    public function studentRegister(Request $request)
-    {
-        // ✅ Validate input
-        $request->validate([
-            'voornaam' => 'required|string|max:255',
-            'achternaam' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
-
-        // ✅ Create the student
-        $student = User::create([
-            'voornaam' => $request->voornaam,                    // store first name
-            'achternaam' => $request->achternaam,                // store last name
-            'name' => $request->voornaam . ' ' . $request->achternaam, // fallback full name
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type' => 'student',                                 // explicitly mark as student
-        ]);
-
-        // ✅ Create an empty profile linked to this user
-        $student->profile()->create([]);
-
-        // ✅ Log the student in immediately
-        Auth::login($student);
-
-        // ✅ Redirect to student dashboard
-        return redirect('/student/dashboard');
-    }
-
-    /**
-     * 🏢 Show the company (bedrijf) registration form.
+     * 👨‍💼 Optioneel: apart bedrijf registratieformulier
      */
     public function showBedrijfRegisterForm()
     {
@@ -65,35 +80,51 @@ class RegisterController extends Controller
     }
 
     /**
-     * ✅ Handle company registration logic.
-     * 
-     * NOTE:
-     * - Companies just have 'name', no voornaam/achternaam needed.
+     * 👩‍🎓 Student registratie apart
+     */
+    public function studentRegister(Request $request)
+    {
+        $request->validate([
+            'voornaam' => 'required|string|max:255',
+            'achternaam' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $student = User::create([
+            'voornaam' => $request->voornaam,
+            'achternaam' => $request->achternaam,
+            'name' => $request->voornaam . ' ' . $request->achternaam,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'student',
+        ]);
+
+        $student->profile()->create([]);
+        Auth::login($student);
+        return redirect('/student/dashboard');
+    }
+
+    /**
+     * 🏢 Bedrijf registratie apart
      */
     public function bedrijfRegister(Request $request)
     {
-        // ✅ Validate input
         $request->validate([
             'company_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
 
-        // ✅ Create the company user
         $bedrijf = User::create([
-            'name' => $request->company_name,                    // company name goes in 'name'
+            'name' => $request->company_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => 'bedrijf',                                 // explicitly mark as company
+            'type' => 'bedrijf',
         ]);
 
-        // ✅ Create empty profile for the company too
         $bedrijf->profile()->create([]);
-
-        // ✅ Log the company in immediately
         Auth::login($bedrijf);
-
-        // ✅ Redirect to company dashboard
         return redirect()->route('bedrijf.dashboard');
     }
 }
