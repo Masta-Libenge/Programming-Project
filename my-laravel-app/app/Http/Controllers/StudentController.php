@@ -11,7 +11,7 @@ class StudentController extends Controller
     public function dashboard()
     {
         $vacatures = Vacature::with('user')->latest()->get();
-        $bedrijven = User::where('role', 'bedrijf')->get();
+        $bedrijven = User::where('type', 'bedrijf')->get();
 
         return view('student.dashboard', compact('vacatures', 'bedrijven'));
     }
