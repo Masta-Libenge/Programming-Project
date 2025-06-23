@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VacatureController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\BedrijfController;
@@ -14,9 +15,9 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Middleware\TypeMiddleware;
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Public Routes
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::get('/', fn () => view('auth.home'))->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -27,9 +28,9 @@ Route::post('/contact', function () {
 })->name('contact.submit');
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Login & Register
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
@@ -40,9 +41,9 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Logout
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::post('/logout', function () {
     Auth::logout();
@@ -52,9 +53,9 @@ Route::post('/logout', function () {
 })->name('logout');
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Authenticated Routes (Common)
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
     // Vacature
@@ -78,23 +79,23 @@ Route::middleware(['auth'])->group(function () {
 });
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Student Routes
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
-    Route::get('/student/profile', [ProfileController::class, 'show'])->name('student.profile.show');
-    Route::get('/student/profile/edit', [ProfileController::class, 'edit'])->name('student.profile');
-    Route::post('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
-    Route::post('/student/profile/upload-picture', [ProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
+    Route::get('/student/profile', [StudentProfileController::class, 'show'])->name('student.profile.show');
+    Route::get('/student/profile/edit', [StudentProfileController::class, 'edit'])->name('student.profile');
+    Route::post('/student/profile', [StudentProfileController::class, 'update'])->name('student.profile.update');
+    Route::post('/student/profile/upload-picture', [StudentProfileController::class, 'uploadProfilePicture'])->name('student.profile.upload-picture');
     Route::get('/student/afspraken/{bedrijfId}', [StudentController::class, 'showAfspraken'])->name('student.afspraken');
 });
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Bedrijf Routes
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function () {
     Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
@@ -104,17 +105,14 @@ Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function 
     Route::post('/vacature/{vacatureId}/decline/{studentId}', [VacatureController::class, 'decline'])->name('vacature.decline');
     Route::get('/bedrijf/student/{id}', [ProfileController::class, 'showForBedrijf'])->name('bedrijf.student.profile');
 
-    // Route GET pour afficher le profil entreprise
     Route::get('/bedrijf/profiel', [BedrijfController::class, 'show'])->name('bedrijf.profile.show');
-
-    // Route POST pour mettre à jour le profil entreprise
     Route::post('/bedrijf/profiel', [BedrijfController::class, 'update'])->name('bedrijf.profile.update');
 });
 
 /*
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 | Admin Routes
-|--------------------------------------------------------------------------|
+|--------------------------------------------------------------------------
 */
 Route::middleware(['auth', TypeMiddleware::class . ':admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
