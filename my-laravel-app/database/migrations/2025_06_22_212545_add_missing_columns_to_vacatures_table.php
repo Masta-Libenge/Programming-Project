@@ -4,41 +4,38 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class AddMissingColumnsToVacaturesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-   public function up(): void
-{
-    Schema::table('vacatures', function (Blueprint $table) {
-        $table->string('sector')->nullable();
-        $table->string('experience')->nullable();
-        $table->string('salary')->nullable();
-        $table->date('deadline')->nullable();
-        $table->string('contract_duur')->nullable();
-        $table->string('contract_type')->nullable();
-        $table->string('werkrooster')->nullable();
-        $table->string('studies')->nullable();
-        $table->string('talenkennis')->nullable();
-    });
-}
+    public function up()
+    {
+        Schema::table('vacatures', function (Blueprint $table) {
+            if (!Schema::hasColumn('vacatures', 'sector')) {
+                $table->string('sector')->nullable();
+            }
+            if (!Schema::hasColumn('vacatures', 'experience')) {
+                $table->string('experience')->nullable();
+            }
+            if (!Schema::hasColumn('vacatures', 'salary')) {
+                $table->string('salary')->nullable();
+            }
+            // Ajoutez ici les autres colonnes que vous voulez ajouter,
+            // chacune protégée avec un if (!Schema::hasColumn(...))
+        });
+    }
 
-public function down(): void
-{
-    Schema::table('vacatures', function (Blueprint $table) {
-        $table->dropColumn([
-            'sector',
-            'experience',
-            'salary',
-            'deadline',
-            'contract_duur',
-            'contract_type',
-            'werkrooster',
-            'studies',
-            'talenkennis',
-        ]);
-    });
+    public function down()
+    {
+        Schema::table('vacatures', function (Blueprint $table) {
+            if (Schema::hasColumn('vacatures', 'sector')) {
+                $table->dropColumn('sector');
+            }
+            if (Schema::hasColumn('vacatures', 'experience')) {
+                $table->dropColumn('experience');
+            }
+            if (Schema::hasColumn('vacatures', 'salary')) {
+                $table->dropColumn('salary');
+            }
+            // Idem pour les autres colonnes
+        });
+    }
 }
-
-};
