@@ -137,7 +137,7 @@
         <button type="button" id="showVacatureBtn">Vacature</button>
     </div>
 
-    <div id="speedDateCard" class="card" style="display: none;">
+    <div id="speedDateCard" class="card">
         <h2>Bedrijven voor Speed Date</h2>
         @if($bedrijven->count())
             <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -171,6 +171,10 @@
     document.getElementById('showSpeedDateBtn').addEventListener('click', () => {
         document.getElementById('speedDateCard').style.display = 'block';
         document.getElementById('vacatureCard').style.display = 'none';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('showSpeedDateBtn').click();
     });
 </script>
 @endsection

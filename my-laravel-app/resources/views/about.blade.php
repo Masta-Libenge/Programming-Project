@@ -24,17 +24,19 @@
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--white);
-      padding-top: 80px;
     }
 
     .navbar {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       width: 100%;
-      background: transparent;
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       padding: 1rem 6%;
       z-index: 999;
-      backdrop-filter: blur(8px);
     }
 
     .nav-container {
@@ -57,9 +59,22 @@
 
     .nav-links a:hover { opacity: 0.8; }
 
+    .back-button {
+      margin-top: 90px;
+      margin-left: 6%;
+      display: inline-block;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
     .hero {
       text-align: center;
-      padding: 5rem 1.5rem;
+      padding: 3rem 1.5rem 5rem 1.5rem;
       max-width: 900px;
       margin: 0 auto;
     }
@@ -90,11 +105,7 @@
       color: var(--text-dark);
       border-radius: var(--radius);
       padding: 2rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease;
     }
-
-    .card:hover { transform: translateY(-5px); }
 
     .card h3 {
       font-size: 1.3rem;
@@ -156,7 +167,6 @@
       padding: 2rem;
       max-width: 500px;
       margin: 4rem auto;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     }
 
     .pricing-section h2 {
@@ -203,11 +213,12 @@
       <div class="logo">CareerLaunch</div>
       <nav class="nav-links">
         <a href="{{ route('about') }}">About Us</a>
-        <a href="{{ route('faq') }}">FAQ</a>
-        <a href="#contact">Contact</a>
+        <a href="{{ route('contact') }}">Contact</a>
       </nav>
     </div>
   </header>
+
+  <a href="{{ url()->previous() }}" class="back-button">← Terug</a>
 
   <section class="hero">
     <h1>Over CareerLaunch</h1>
@@ -216,15 +227,15 @@
 
   <section class="grid-section">
     <div class="card">
-      <h3> Missie</h3>
+      <h3>Missie</h3>
       <p>Een brug bouwen tussen onderwijs en werkveld met transparantie, snelheid en gebruiksvriendelijke tools.</p>
     </div>
     <div class="card">
-      <h3> Visie</h3>
+      <h3>Visie</h3>
       <p>Wij geloven in een inclusieve arbeidsmarkt waar elke student de kans krijgt om zich professioneel te ontplooien.</p>
     </div>
     <div class="card">
-      <h3> Veiligheid</h3>
+      <h3>Veiligheid</h3>
       <p>Jouw gegevens zijn veilig bij ons: we controleren profielen en gebruiken versleutelde opslag.</p>
     </div>
   </section>
@@ -232,19 +243,35 @@
   <section class="zaalplan-wrapper">
     <div class="aula">
       <h3>AULA1</h3>
-      <div class="stand-grid"> <div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div></div>
+      <div class="stand-grid">
+        <div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div>
+        <div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div>
+        <div class="stand blue"></div><div class="stand blue"></div><div class="stand blue"></div>
+      </div>
     </div>
     <div class="aula">
       <h3>AULA2</h3>
-      <div class="stand-grid"> <div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div></div>
+      <div class="stand-grid">
+        <div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div>
+        <div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div>
+        <div class="stand gray"></div><div class="stand gray"></div><div class="stand gray"></div>
+      </div>
     </div>
     <div class="aula">
       <h3>AULA3</h3>
-      <div class="stand-grid"> <div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div></div>
+      <div class="stand-grid">
+        <div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div>
+        <div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div>
+        <div class="stand amber"></div><div class="stand amber"></div><div class="stand amber"></div>
+      </div>
     </div>
     <div class="aula">
       <h3>AULA4</h3>
-      <div class="stand-grid"> <div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div></div>
+      <div class="stand-grid">
+        <div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div>
+        <div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div>
+        <div class="stand brown"></div><div class="stand brown"></div><div class="stand brown"></div>
+      </div>
     </div>
   </section>
 
@@ -256,8 +283,8 @@
       </thead>
       <tbody>
         <tr class="gold"><td>🟧 Golden</td><td>3m x 2m</td><td>€750</td></tr>
-        <tr class="silver"><td>🩶 Silver</td><td>2m x 2m</td><td>€500</td></tr>
-        <tr class="bronze"><td>🟫 Bronze</td><td>2m x 2m</td><td>€200</td></tr>
+        <tr class="silver"><td>⬜ Silver</td><td>2m x 2m</td><td>€500</td></tr>
+        <tr class="bronze"><td>🟫 Bronze</td><td>1.5m x 1.5m</td><td>€200</td></tr>
         <tr class="startup"><td>🟦 Start-up</td><td>2m x 2m</td><td>€150</td></tr>
       </tbody>
     </table>

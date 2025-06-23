@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -15,18 +14,22 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Middleware\TypeMiddleware;
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Public Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::get('/', fn () => view('auth.home'))->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/about', fn () => view('about'))->name('about');
+Route::get('/contact', fn () => view('contact'))->name('contact');
+Route::post('/contact', function () {
+    return back()->with('success', 'Je bericht is verzonden!');
+})->name('contact.submit');
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Login & Register
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/register/student', [RegisterController::class, 'showStudentRegisterForm'])->name('register.student');
@@ -37,9 +40,9 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Logout
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::post('/logout', function () {
     Auth::logout();
@@ -49,11 +52,12 @@ Route::post('/logout', function () {
 })->name('logout');
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Authenticated Routes (Common)
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::middleware(['auth'])->group(function () {
+    // Vacature
     Route::get('/vacatures', [VacatureController::class, 'index'])->name('vacatures.index');
     Route::get('/vacature/aanmaken', [VacatureController::class, 'create'])->name('vacature.create');
     Route::post('/vacature/opslaan', [VacatureController::class, 'store'])->name('vacature.store');
@@ -74,9 +78,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Student Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
@@ -88,9 +92,9 @@ Route::middleware(['auth', TypeMiddleware::class . ':student'])->group(function 
 });
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Bedrijf Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function () {
     Route::get('/bedrijf/dashboard', [BedrijfController::class, 'dashboard'])->name('bedrijf.dashboard');
@@ -99,12 +103,18 @@ Route::middleware(['auth', TypeMiddleware::class . ':bedrijf'])->group(function 
     Route::post('/vacature/{vacatureId}/accept/{studentId}', [VacatureController::class, 'accept'])->name('vacature.accept');
     Route::post('/vacature/{vacatureId}/decline/{studentId}', [VacatureController::class, 'decline'])->name('vacature.decline');
     Route::get('/bedrijf/student/{id}', [ProfileController::class, 'showForBedrijf'])->name('bedrijf.student.profile');
+
+    // Route GET pour afficher le profil entreprise
+    Route::get('/bedrijf/profiel', [BedrijfController::class, 'show'])->name('bedrijf.profile.show');
+
+    // Route POST pour mettre à jour le profil entreprise
+    Route::post('/bedrijf/profiel', [BedrijfController::class, 'update'])->name('bedrijf.profile.update');
 });
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Admin Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 Route::middleware(['auth', TypeMiddleware::class . ':admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');

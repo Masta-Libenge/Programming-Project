@@ -11,6 +11,9 @@ use Carbon\Carbon;
 
 class BedrijfController extends Controller
 {
+    /**
+     * Toon het dashboard van het bedrijf met zijn vacatures.
+     */
     public function dashboard()
     {
         $vacatures = Vacature::with(['applicants.profile'])
@@ -21,6 +24,37 @@ class BedrijfController extends Controller
         return view('bedrijf.bedrijfdashboard', compact('vacatures'));
     }
 
+    /**
+     * Toon het profiel van het ingelogde bedrijf.
+     */
+    public function show()
+    {
+        $user = Auth::user(); // Ingelogde bedrijf gebruiker
+        return view('bedrijf.bedrijfprofile', compact('user'));
+    }
+
+    /**
+     * Update het profiel van het bedrijf.
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'telefoon' => 'nullable|string|max:255',
+            'adres' => 'nullable|string|max:255',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('bedrijf.profile.show')->with('success', 'Profiel succesvol bijgewerkt.');
+    }
+
+    /**
+     * Toon het planningsschema voor het bedrijf.
+     * Genereert indien nodig tijdslots voor vandaag (behalve tijdens de middagpauze).
+     */
     public function showPlanning()
     {
         $bedrijf = Auth::user(); 
@@ -35,6 +69,7 @@ class BedrijfController extends Controller
             $end = Carbon::createFromTime(17, 0);
 
             while ($start < $end) {
+                // Sla de middagpauze tussen 12:30 en 13:30 over
                 if ($start->between(Carbon::createFromTime(12, 30), Carbon::createFromTime(13, 30))) {
                     $start->addMinutes(5);
                     continue;
@@ -55,6 +90,9 @@ class BedrijfController extends Controller
         return view('bedrijf.bedrijfplanning', compact('bedrijf'));
     }
 
+    /**
+     * Toon de reserveringen (afspraken) voor vandaag.
+     */
     public function afspraken()
     {
         $bedrijf = Auth::user();

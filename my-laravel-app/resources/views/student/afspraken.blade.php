@@ -84,6 +84,12 @@
         background-color: #16a34a !important;
     }
 
+    .taken {
+        background-color: #dc2626 !important;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
     .cancel-btn {
         position: absolute;
         top: -6px;
@@ -107,8 +113,7 @@
 </style>
 
 <div class="planning-container">
-    <div class="planning-title">Jouw Planning Vandaag</div>
-    <div class="bedrijf-subtitle">{{ auth()->user()->name }}</div>
+    <div class="planning-title">Beschikbaarheid</div>
 
     @php
         use App\Models\Reservation;
@@ -134,22 +139,25 @@
                         $minuteBlock = $start->copy()->addMinutes($i);
                         if ($minuteBlock->between(\Carbon\Carbon::createFromTime(12, 30), \Carbon\Carbon::createFromTime(13, 30))) continue;
 
-                        $reservation = Reservation::where('student_id', auth()->id())
-                            ->where('date', $date)
+                        $reservation = Reservation::where('date', $date)
                             ->where('start_time', $minuteBlock->format('H:i'))
+                            ->where('status', 'reserved')
                             ->first();
 
                         $class = 'minute-block';
                         $hasReservation = false;
+                        $isMine = false;
+
                         if ($reservation) {
-                            $class .= ' reserved';
                             $hasReservation = true;
+                            $isMine = $reservation->student_id === auth()->id();
+                            $class .= $isMine ? ' reserved' : ' taken';
                         }
                     @endphp
 
                     <div class="{{ $class }}" id="block-{{ $minuteBlock->format('Hi') }}">
                         {{ $minuteBlock->format('H:i') }}
-                        @if ($hasReservation)
+                        @if ($hasReservation && $isMine)
                             <button class="cancel-btn"
                                 onclick="cancelReservation('{{ $reservation->id }}', 'block-{{ $minuteBlock->format('Hi') }}')">×</button>
                         @endif
@@ -179,6 +187,7 @@
             const block = document.getElementById(blockId);
             if (block) {
                 block.classList.remove('reserved');
+                block.classList.remove('taken');
                 const btn = block.querySelector('.cancel-btn');
                 if (btn) btn.remove();
             }
@@ -188,7 +197,7 @@
         });
     }
 
-    document.querySelectorAll('.minute-block:not(.reserved)').forEach(block => {
+    document.querySelectorAll('.minute-block:not(.reserved):not(.taken)').forEach(block => {
         block.addEventListener('click', function () {
             const tijd = this.textContent.trim();
             const bedrijfId = {{ $bedrijfId }};
@@ -215,7 +224,6 @@
             .then(res => res.json())
             .then(data => {
                 if (data.message) {
-                    this.classList.add('reserved');
                     location.reload();
                 } else {
                     alert(data.error || 'Er is een fout opgetreden.');
