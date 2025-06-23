@@ -114,10 +114,25 @@
         font-size: 0.9rem;
     }
 
-    .arrow {
+    .vacature-box {
+        background: #f1f5f9;
+        padding: 1rem 1.5rem;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .vacature-box h4 {
+        margin: 0;
+        font-size: 1.1rem;
         color: #1E40AF;
-        font-size: 1.4rem;
-        font-weight: bold;
+    }
+
+    .vacature-box span {
+        font-size: 0.95rem;
+        color: #475569;
     }
 
     .no-vacatures {
@@ -137,6 +152,7 @@
         <button type="button" id="showVacatureBtn">Vacature</button>
     </div>
 
+    {{-- Speeddate bedrijven --}}
     <div id="speedDateCard" class="card" style="display: none;">
         <h2>Bedrijven voor Speed Date</h2>
         @if($bedrijven->count())
@@ -156,9 +172,22 @@
         @endif
     </div>
 
+    {{-- Vacaturelijst --}}
     <div id="vacatureCard" class="card" style="display: none;">
-        <h2>Vacatures binnenkort beschikbaar</h2>
-        <p class="no-vacatures">Nog geen vacatures geplaatst.</p>
+        <h2>Vacatures</h2>
+        @if($vacatures->count())
+            @foreach($vacatures as $vacature)
+                <div class="vacature-box">
+                    <div>
+                        <h4>{{ $vacature->title }}</h4>
+                        <span>{{ $vacature->location ?? 'Locatie onbekend' }}</span>
+                    </div>
+                    <a href="{{ route('vacature.show', $vacature->id) }}" class="arrow">&rarr;</a>
+                </div>
+            @endforeach
+        @else
+            <p class="no-vacatures">Nog geen vacatures geplaatst.</p>
+        @endif
     </div>
 </div>
 
