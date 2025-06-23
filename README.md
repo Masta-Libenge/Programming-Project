@@ -1,52 +1,91 @@
-🚀 Deployment Steps (Laravel Project)
-Follow these steps to set up and deploy this Laravel project locally or on a server.
+# 🎓 CareerLaunch — Netwerkplatform voor Studenten en Recruiters
 
-🔧 Requirements
-PHP >= 8.1
+Welkom bij **CareerLaunch**, een webapplicatie die studenten helpt om eenvoudig in contact te komen met bedrijven en recruiters. Het platform combineert vacatures en speeddatesessies zodat studenten hun netwerk kunnen uitbreiden en interessante stages of banen kunnen vinden.
 
-Composer
+---
 
-MySQL (or MariaDB)
+## 📌 Projectbeschrijving
 
-Node.js & npm (for frontend assets, optional)
+Dit project is ontwikkeld als onderdeel van een programmeeropdracht. De opdracht was om een website te bouwen waarmee studenten beter kunnen netwerken en connecties kunnen leggen met bedrijven.
 
-1. 📥 Clone the Repository
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+Om dit te realiseren hebben we gekozen voor:
 
-2. 📦 Install Dependencies
+- **Vacatures:** Bedrijven kunnen vacatures plaatsen en beheren. Studenten kunnen solliciteren en hun sollicitaties volgen.
+- **Speeddates:** Studenten kunnen speeddatesessies plannen met bedrijven voor een laagdrempelig kennismakingsgesprek.
+- **Bedrijfspanel:** Recruiters kunnen alle sollicitaties inzien en beheren (accepteren of weigeren).
+- **Studentenpaneel:** Studenten hebben een duidelijk overzicht van beschikbare vacatures en speeddate-afspraken.
+
+---
+
+## ⚙️ Technologieën
+
+- **Laravel** (PHP framework)
+- **MySQL** (database)
+- **XAMPP** (Apache server & MySQL server)
+- **Git** (versiebeheer)
+
+---
+
+## 🚀 Installatie & Uitvoering
+
+Volg onderstaande stappen om het project lokaal op te zetten en te draaien:
+
+1️⃣ **Installeer XAMPP**\
+Zorg ervoor dat je [XAMPP](https://www.apachefriends.org/nl/index.html) geïnstalleerd hebt.
+
+2️⃣ **Start Apache & MySQL**\
+Open de XAMPP Control Panel en start **Apache** en **MySQL**.
+
+3️⃣ **Kloon de repository**
+
+```bash
+git clone https://github.com/Masta-Libenge/Programming-Project
+```
+
+4️⃣ **Navigeer naar de projectmap**
+
+```bash
+cd Programming-Project/my-laravel-app
+```
+
+5️⃣ **Installeer dependencies**\
+*(Indien nodig)*
+
+```bash
 composer install
-npm install && npm run dev # (Optional: for front-end assets)
+```
 
-3. ⚙️ Set Up Environment
-cp .env.example .env
+6️⃣ **Voer de migraties uit om de database tabellen aan te maken**
 
-Update the .env file with your database credentials:
-
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=project_db
-DB_USERNAME=root
-DB_PASSWORD=your_password
-
-4. 🔑 Generate Application Key
-php artisan key:generate
-
-5. 🛠 Run Migrations (Set Up Database Tables)
+```bash
 php artisan migrate
+```
 
-Optional: Run seeders to create default users or test data:
-php artisan db:seed
+7️⃣ **Start de Laravel server**
 
-6. 🧪 Serve the Application
+```bash
 php artisan serve
+```
 
-Open http://localhost:8000 in your browser.
+8️⃣ **Open de website**\
+Ga in je browser naar [http://127.0.0.1:8000](http://127.0.0.1:8000) om de applicatie te gebruiken.
 
-✅ Features
-Laravel MVC structure: Controllers, Routing, Views (Blade)
+---
 
-User roles handled via MySQL database
+## ✅ Belangrijk
 
-Conditional rendering via controllers based on user type
+- Vergeet niet een database aan te maken in **phpMyAdmin** met dezelfde naam als opgegeven in `.env`.
+- Vul je `.env` bestand aan met de juiste databasegegevens indien nodig.
+
+---
+
+## 👥 Auteurs
+
+Dit project is gemaakt door **Masta Libenge**  **Nohman Benmohand**    **Omar Ouanane**     als onderdeel van het vak **Programming Project**.
+
+---
+
+## 📎 Repository
+
+👉 [GitHub Repository](https://github.com/Masta-Libenge/Programming-Project)
+
