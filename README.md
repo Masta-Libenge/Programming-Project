@@ -87,7 +87,7 @@ Ga in je browser naar [http://127.0.0.1:8000](http://127.0.0.1:8000) om de appli
 
 ## 👥 Auteurs
 
-Dit project is gemaakt door **Masta Libenge**  **Nohman Benmohand**    **Omar Ouanane**     als onderdeel van het vak **Programming Project**.
+Dit project is gemaakt door **Masta Libenge**  **Nohman Benmohand**    **Omar Ouanane**   **Yousra Azanay**    als onderdeel van het vak **Programming Project**.
 
 ---
 
