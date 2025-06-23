@@ -1,14 +1,18 @@
 @php
     $homeRoute = url('/');
-    $profileRoute = '#'; // Valeur par défaut
+    $profileRoute = '#';
+    $planningRoute = route('planning');
+    $faqRoute = route('faq');
+    $contactRoute = route('contact');
+    $aboutRoute = route('about');
 
-    if(auth()->check()) {
-        if(auth()->user()->type === 'student') {
+    if (auth()->check()) {
+        if (auth()->user()->type === 'student') {
             $homeRoute = route('student.dashboard');
             $profileRoute = route('student.profile.show');
-        } elseif(auth()->user()->type === 'bedrijf') {
+        } elseif (auth()->user()->type === 'bedrijf') {
             $homeRoute = route('bedrijf.dashboard');
-            $profileRoute = '#'; // À remplacer si un profil entreprise existe
+            $profileRoute = route('bedrijf.profile.show'); // 🔄 corriger ici
         }
     }
 @endphp
@@ -20,10 +24,10 @@
     </a>
 
     <div class="nav-links" style="display: flex; align-items: center;">
-      <a href="{{ route('planning') }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Planning</a>
-      <a href="{{ route('about') }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">About Us</a>
-      <a href="{{ route('faq') }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">FAQ</a>
-      <a href="{{ route('contact') }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Contact</a>
+      <a href="{{ $planningRoute }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Planning</a>
+      <a href="{{ $aboutRoute }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">About Us</a>
+      <a href="{{ $faqRoute }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">FAQ</a>
+      <a href="{{ $contactRoute }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Contact</a>
       @auth
         <a href="{{ $profileRoute }}" style="margin-left: 2rem; text-decoration: none; color: white; font-weight: 600;">Profiel</a>
       @endauth

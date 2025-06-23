@@ -316,8 +316,7 @@
       <div class="logo">CareerLaunch</div>
       <nav class="nav-links">
         <a href="{{ route('about') }}">About Us</a>
-        <a href="{{ route('faq') }}">FAQ</a>
-        <a href="#contact">Contact</a>
+        <a href="{{ route('contact') }}">Contact</a>
       </nav>
     </div>
   </header>
@@ -342,7 +341,7 @@
         <div class="power-button"></div>
         <div class="dynamic-island"></div>
         <div class="chat-mockup">
-          <div class="chat-header">WhatsApp</div>
+          <div class="chat-header">Careerlaunch</div>
           <div class="chat-body">
             <div class="bubble student">Hi 👋</div>
             <div class="bubble bot">Hallo! 👋 Welkom bij CareerLaunch. Ben je op zoek naar een stage of job?</div>
@@ -354,10 +353,6 @@
       </div>
     </div>
   </section>
-
-  <section id="about"></section>
-  <section id="faq"></section>
-  <section id="contact"></section>
 
 </body>
 </html>

@@ -61,21 +61,6 @@
     .reserved {
         background-color: #16a34a !important;
     }
-
-    .cancel-btn {
-        background-color: #ef4444;
-        border: none;
-        color: white;
-        font-size: 0.8rem;
-        padding: 0.2rem 0.5rem;
-        border-radius: 6px;
-        margin-top: 4px;
-        cursor: pointer;
-    }
-
-    .cancel-btn:hover {
-        background-color: #dc2626;
-    }
 </style>
 
 @php
@@ -97,7 +82,6 @@
                     @foreach ($group as $r)
                         <div style="margin-bottom: 6px;">
                             Gesprek met {{ $r->bedrijf->name ?? 'onbekend' }} om {{ Carbon::parse($r->start_time)->format('H:i') }}.
-                            <button class="cancel-btn" onclick="cancelReservation('{{ $r->bedrijf_id }}', '{{ $r->date }}', '{{ $r->start_time }}', this)">Annuleer</button>
                         </div>
                     @endforeach
                 @else
@@ -107,32 +91,4 @@
         @endforeach
     </div>
 </div>
-
-<script>
-    function cancelReservation(bedrijfId, date, startTime, button) {
-        if (!confirm('Weet je zeker dat je deze afspraak wilt annuleren?')) return;
-
-        fetch('{{ route('reservation.destroy') }}', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                bedrijf_id: bedrijfId,
-                date: date,
-                start_time: startTime
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                button.closest('div').innerHTML = '<em>Afspraak geannuleerd</em>';
-            } else {
-                alert(data.error || 'Er is een fout opgetreden.');
-            }
-        })
-        .catch(() => alert('Er is een fout opgetreden bij het annuleren.'));
-    }
-</script>
 @endsection

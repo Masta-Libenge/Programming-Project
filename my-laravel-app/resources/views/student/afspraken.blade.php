@@ -5,6 +5,8 @@
 @section('content')
 <x-navbar />
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <style>
     :root {
         --primary: #1E40AF;
@@ -74,10 +76,32 @@
         color: white;
         font-size: 0.9rem;
         transition: background-color 0.2s;
+        position: relative;
+        cursor: pointer;
     }
 
     .reserved {
         background-color: #16a34a !important;
+    }
+
+    .taken {
+        background-color: #dc2626 !important;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    .cancel-btn {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #ef4444;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        color: white;
+        cursor: pointer;
     }
 
     .pause-row {
@@ -89,14 +113,14 @@
 </style>
 
 <div class="planning-container">
-    <div class="planning-title">Jouw Planning Vandaag</div>
-    <div class="bedrijf-subtitle">{{ auth()->user()->name }}</div>
+    <div class="planning-title">Beschikbaarheid</div>
 
     @php
         use App\Models\Reservation;
         $start = \Carbon\Carbon::createFromTime(9, 0);
         $end = \Carbon\Carbon::createFromTime(17, 0);
         $date = now()->toDateString();
+        $bedrijfId = request()->route('bedrijfId') ?? 1;
     @endphp
 
     @while ($start < $end)
@@ -115,19 +139,28 @@
                         $minuteBlock = $start->copy()->addMinutes($i);
                         if ($minuteBlock->between(\Carbon\Carbon::createFromTime(12, 30), \Carbon\Carbon::createFromTime(13, 30))) continue;
 
-                        $reservation = Reservation::where('student_id', auth()->id())
-                            ->where('date', $date)
+                        $reservation = Reservation::where('date', $date)
                             ->where('start_time', $minuteBlock->format('H:i'))
+                            ->where('status', 'reserved')
                             ->first();
 
                         $class = 'minute-block';
+                        $hasReservation = false;
+                        $isMine = false;
+
                         if ($reservation) {
-                            $class .= ' reserved';
+                            $hasReservation = true;
+                            $isMine = $reservation->student_id === auth()->id();
+                            $class .= $isMine ? ' reserved' : ' taken';
                         }
                     @endphp
 
-                    <div class="{{ $class }}">
+                    <div class="{{ $class }}" id="block-{{ $minuteBlock->format('Hi') }}">
                         {{ $minuteBlock->format('H:i') }}
+                        @if ($hasReservation && $isMine)
+                            <button class="cancel-btn"
+                                onclick="cancelReservation('{{ $reservation->id }}', 'block-{{ $minuteBlock->format('Hi') }}')">×</button>
+                        @endif
                     </div>
                 @endfor
             </div>
@@ -136,4 +169,68 @@
         @php $start->addHour(); @endphp
     @endwhile
 </div>
+
+<script>
+    function cancelReservation(reservationId, blockId) {
+        fetch(`/student/afspraak/${reservationId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Fout bij annuleren");
+            return res.json();
+        })
+        .then(data => {
+            const block = document.getElementById(blockId);
+            if (block) {
+                block.classList.remove('reserved');
+                block.classList.remove('taken');
+                const btn = block.querySelector('.cancel-btn');
+                if (btn) btn.remove();
+            }
+        })
+        .catch((err) => {
+            alert(err.message || 'Fout bij verbinding met de server.');
+        });
+    }
+
+    document.querySelectorAll('.minute-block:not(.reserved):not(.taken)').forEach(block => {
+        block.addEventListener('click', function () {
+            const tijd = this.textContent.trim();
+            const bedrijfId = {{ $bedrijfId }};
+            const date = "{{ now()->toDateString() }}";
+            const [h, m] = tijd.split(":");
+            const end = new Date();
+            end.setHours(h);
+            end.setMinutes(parseInt(m) + 5);
+            const endTime = end.toTimeString().substring(0, 5);
+
+            fetch("{{ route('reservation.store') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    bedrijf_id: bedrijfId,
+                    date: date,
+                    start_time: tijd,
+                    end_time: endTime
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message) {
+                    location.reload();
+                } else {
+                    alert(data.error || 'Er is een fout opgetreden.');
+                }
+            })
+            .catch(err => alert(err.message || 'Fout bij reserveren.'));
+        });
+    });
+</script>
 @endsection

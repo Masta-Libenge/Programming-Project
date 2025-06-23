@@ -22,52 +22,7 @@
       color: var(--text-dark);
       scroll-behavior: smooth;
     }
-    .navbar {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      background-color: var(--bg-blue);
-      padding: 1rem 6%;
-      z-index: 999;
-    }
-    .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #ffffff;
-    }
-    .nav-links a {
-      margin-left: 2rem;
-      text-decoration: none;
-      color: #ffffff;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-    .nav-links a:hover {
-      color: #000000;
-    }
-    @media (max-width: 768px) {
-      .nav-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .nav-links {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 1rem;
-      }
-      .nav-links a {
-        margin-left: 0;
-      }
-    }
+    
     .form-container {
       background: white;
       border-radius: var(--radius);
@@ -149,16 +104,6 @@
 </head>
 <body>
 
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">CareerLaunch</div>
-    <nav class="nav-links">
-      <a href="{{ route('about') }}">About Us</a>  
-      <a href="{{ route('faq') }}">FAQ</a>     
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
 
 <div class="form-container">
   <a href="{{ url()->previous() }}" class="back-button">← Terug</a>

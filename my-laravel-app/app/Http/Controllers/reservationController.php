@@ -20,7 +20,6 @@ class ReservationController extends Controller
         $studentId = Auth::id();
         $bedrijfId = $request->bedrijf_id;
 
-    
         $alreadyReserved = Reservation::where('bedrijf_id', $bedrijfId)
             ->where('student_id', $studentId)
             ->where('date', $request->date)
@@ -30,49 +29,45 @@ class ReservationController extends Controller
             return response()->json(['error' => 'Je hebt al een reservatie bij dit bedrijf.'], 403);
         }
 
-    
         $reservation = Reservation::where('bedrijf_id', $bedrijfId)
             ->where('date', $request->date)
             ->where('start_time', $request->start_time)
-            ->where('end_time', $request->end_time)
-            ->where('status', 'free')
             ->first();
 
         if (!$reservation) {
-            return response()->json(['error' => 'Tijdslot is niet beschikbaar.'], 404);
+            $reservation = Reservation::create([
+                'bedrijf_id' => $bedrijfId,
+                'date' => $request->date,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'student_id' => $studentId,
+                'status' => 'reserved',
+            ]);
+        } else {
+            if ($reservation->status !== 'free') {
+                return response()->json(['error' => 'Tijdslot is al gereserveerd.'], 409);
+            }
+            $reservation->update([
+                'student_id' => $studentId,
+                'status' => 'reserved',
+            ]);
         }
-
-    
-        $reservation->update([
-            'student_id' => $studentId,
-            'status' => 'reserved',
-        ]);
 
         return response()->json(['message' => 'Reservatie bevestigd.']);
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $request->validate([
-            'bedrijf_id' => 'required|exists:users,id',
-            'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-        ]);
-
         $studentId = Auth::id();
 
-        $reservation = Reservation::where('bedrijf_id', $request->bedrijf_id)
+        $reservation = Reservation::where('id', $id)
             ->where('student_id', $studentId)
-            ->where('date', $request->date)
-            ->where('start_time', $request->start_time)
-            ->where('status', 'reserved')
             ->first();
 
         if (!$reservation) {
             return response()->json(['error' => 'Reservatie niet gevonden.'], 404);
         }
 
-        
         $reservation->update([
             'student_id' => null,
             'status' => 'free',
