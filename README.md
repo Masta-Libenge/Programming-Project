@@ -17,7 +17,13 @@ Om dit te realiseren hebben we gekozen voor:
 
 ---
 
+![image](https://github.com/user-attachments/assets/c4654a3c-d214-4d7b-8d73-e554017461e9)
+
+
 ## ⚙️ Technologieën
+
+
+
 
 - **Laravel** (PHP framework)
 - **MySQL** (database)
