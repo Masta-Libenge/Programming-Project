@@ -10,23 +10,22 @@ class Vacature extends Model
     use HasFactory;
 
     protected $fillable = [
-    'title',
-    'desc',
-    'type',
-    'sector',
-    'location',
-    'experience',
-    'salary',
-    'deadline',
-    'color',
-    'contract_duur',
-    'contract_type',
-    'werkrooster',
-    'studies',
-    'talenkennis',
-    'user_id',
-];
-
+        'title',
+        'desc',
+        'type',
+        'sector',
+        'location',
+        'experience',
+        'salary',
+        'deadline',
+        'color',
+        'contract_duur',
+        'contract_type',
+        'werkrooster',
+        'studies',
+        'talenkennis',
+        'user_id',
+    ];
 
     public function user()
     {
@@ -34,9 +33,9 @@ class Vacature extends Model
     }
 
     public function applicants()
-{
-    return $this->belongsToMany(User::class, 'vacature_student', 'vacature_id', 'student_id');
-}
-
-
+    {
+        return $this->belongsToMany(User::class, 'vacature_student', 'vacature_id', 'student_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }

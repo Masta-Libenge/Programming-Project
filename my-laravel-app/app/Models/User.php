@@ -46,17 +46,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function profile()
-{
-    return $this->hasOne(Profile::class);
-}
+    {
+        return $this->hasOne(Profile::class);
+    }
 
-
-public function appliedVacatures()
-{
-    return $this->belongsToMany(Vacature::class, 'vacature_student', 'student_id', 'vacature_id');
-}
-
-
-
+    public function appliedVacatures()
+    {
+        return $this->belongsToMany(Vacature::class, 'vacature_student', 'student_id', 'vacature_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }
